@@ -32,14 +32,22 @@ class Field {
         return this.alive;
     }
 
+    makeAlive() {
+        this.alive = true;
+        this.element.style.backgroundColor = "black";
+    }
+
+    makeDead() {
+        this.alive = false;
+        this.element.style.backgroundColor = "white";
+    }
+
     click() {
         if (this.alive) {
-            this.alive = false;
-            this.element.style.backgroundColor = "white";
+            this.makeDead();
         }
         else {
-            this.alive = true;
-            this.element.style.backgroundColor = "black";
+            this.makeAlive();
         }
     }
 }

@@ -2,10 +2,11 @@ class Board {
     constructor(width, height, fieldSize) {
         this.element = document.createElement("div");
         this.element.className = "board";
-        this.width = width;
-        this.height = height;
+        this.width = parseInt(width);
+        this.height = parseInt(height);
         this.fieldSize = fieldSize;
         this.fields = [];
+        this.interval = null;
         this.makeNewBoard();
     }
 
@@ -47,25 +48,70 @@ class Board {
     }
 
     changeInputSpaceship(event) {
-        console.log(event.target.checked);
+
     }
 
     start() {
         document.querySelectorAll("input").forEach((el) => el.disabled = true);
         document.querySelector("#restart").disabled = false;
         start.disabled = true;
+        this.interval = setInterval(() => this.steps(), 100);
     }
 
     restart() {
         document.querySelectorAll("input").forEach((el) => el.disabled = false);
         document.querySelector("#restart").disabled = true;
         start.disabled = false;
+        clearInterval(this.interval);
         this.makeNewBoard();
     }
 
     fieldClick(width, height) {
         if (document.querySelector("#spaceship").checked && !document.querySelector("#start").disabled) {
             this.fields[width][height].click();
+        }
+    }
+
+    steps() {
+        let fieldsCopy = [];
+        for (let i = 0; i < this.fields.length; i++) {
+            fieldsCopy[i] = [];
+            for (let j = 0; j < this.fields[i].length; j++) {
+                fieldsCopy[i][j] = {
+                    width: i,
+                    height: j,
+                    isAlive: this.fields[i][j].isAlive(),
+                };
+            }
+        }
+
+        for (let i = 0; i < this.fields.length; i++) {
+            for (let j = 0; j < this.fields[i].length; j++) {
+                this.changeFields(i, j, fieldsCopy);
+            }
+        }
+    }
+
+    changeFields(width, height, fieldsCopy) {
+        let neighborsNumber = 0;
+        if (fieldsCopy[(width + this.height - 1) % this.height][(height + this.width - 1) % this.width].isAlive) neighborsNumber++;
+        if (fieldsCopy[(width + this.height - 1) % this.height][(height + this.width) % this.width].isAlive) neighborsNumber++;
+        if (fieldsCopy[(width + this.height - 1) % this.height][(height + this.width + 1) % this.width].isAlive) neighborsNumber++;
+        if (fieldsCopy[(width + this.height) % this.height][(height + this.width - 1) % this.width].isAlive) neighborsNumber++;
+        if (fieldsCopy[(width + this.height) % this.height][(height + this.width + 1) % this.width].isAlive) neighborsNumber++;
+        if (fieldsCopy[(width + this.height + 1) % this.height][(height + this.width - 1) % this.width].isAlive) neighborsNumber++;
+        if (fieldsCopy[(width + this.height + 1) % this.height][(height + this.width) % this.width].isAlive) neighborsNumber++;
+        if (fieldsCopy[(width + this.height + 1) % this.height][(height + this.width + 1) % this.width].isAlive) neighborsNumber++;
+
+        if (fieldsCopy[width][height].isAlive) {
+            if (neighborsNumber != 2 && neighborsNumber != 3) {
+                this.fields[width][height].makeDead();
+            }
+        }
+        else {
+            if (neighborsNumber == 3) {
+                this.fields[width][height].makeAlive();
+            }
         }
     }
 }
