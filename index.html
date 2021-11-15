@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8" />
     <title>Gra w życie</title>
@@ -14,6 +15,7 @@
         })
     </script>
 </head>
+
 <body>
     <div id="main">
         <div id="menu">
@@ -22,10 +24,17 @@
 
             <label for="height">Height:</label>
             <input type="range" id="height" name="height" min="10" max="50" value="10" class="ranges">
-            
+
             <label for="size">Size:</label>
             <input type="range" id="size" name="size" min="5" max="100" value="50" class="ranges">
+
+            <label for="spaceship">Set</label><br>
+            <input type="checkbox" id="spaceship" name="spaceship" value="spaceship">
+
+            <button id="start">Start</button>
+            <button id="restart" disabled="true">Restart</button>
         </div>
     </div>
 </body>
+
 </html>

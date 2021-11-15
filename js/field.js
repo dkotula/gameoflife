@@ -7,6 +7,7 @@ class Field {
         this.element.className = "field";
         this.element.style.width = size + "px";
         this.element.style.height = size + "px";
+        this.alive = false;
     }
 
     getElement() {
@@ -25,5 +26,20 @@ class Field {
 
     changeHeight(height) {
         this.height = height;
+    }
+
+    isAlive() {
+        return this.alive;
+    }
+
+    click() {
+        if (this.alive) {
+            this.alive = false;
+            this.element.style.backgroundColor = "white";
+        }
+        else {
+            this.alive = true;
+            this.element.style.backgroundColor = "black";
+        }
     }
 }

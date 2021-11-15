@@ -15,10 +15,11 @@ class Board {
         this.element.style.gridTemplateColumns = "repeat(" + this.width + ", 1fr)";
         this.element.style.width = this.fieldSize * this.width + "px";
         this.element.style.height = this.fieldSize * this.height + "px";
-        for(let i = 0; i < this.height; i++) {
+        for (let i = 0; i < this.height; i++) {
             this.fields[i] = [];
-            for(let j = 0; j < this.width; j++) {
+            for (let j = 0; j < this.width; j++) {
                 this.fields[i][j] = new Field(i, j, this.fieldSize);
+                this.fields[i][j].getElement().addEventListener("click", () => this.fieldClick(i, j));
                 this.element.appendChild(this.fields[i][j].getElement());
             }
         }
@@ -42,6 +43,29 @@ class Board {
             this.element.style.width = this.fieldSize * this.width + "px";
             this.element.style.height = this.fieldSize * this.height + "px";
             this.fields.forEach((el) => el.forEach((el) => el.changeSize(parseInt(event.target.value))));
+        }
+    }
+
+    changeInputSpaceship(event) {
+        console.log(event.target.checked);
+    }
+
+    start() {
+        document.querySelectorAll("input").forEach((el) => el.disabled = true);
+        document.querySelector("#restart").disabled = false;
+        start.disabled = true;
+    }
+
+    restart() {
+        document.querySelectorAll("input").forEach((el) => el.disabled = false);
+        document.querySelector("#restart").disabled = true;
+        start.disabled = false;
+        this.makeNewBoard();
+    }
+
+    fieldClick(width, height) {
+        if (document.querySelector("#spaceship").checked && !document.querySelector("#start").disabled) {
+            this.fields[width][height].click();
         }
     }
 }
