@@ -34,12 +34,10 @@ class Board {
         if (event.target.name === "width") {
             this.width = parseInt(event.target.value);
             this.makeNewBoard();
-        }
-        else if (event.target.name === "height") {
+        } else if (event.target.name === "height") {
             this.height = parseInt(event.target.value);
             this.makeNewBoard();
-        }
-        else if (event.target.name === "size") {
+        } else if (event.target.name === "size") {
             this.fieldSize = parseInt(event.target.value);
             this.element.style.width = this.fieldSize * this.width + "px";
             this.element.style.height = this.fieldSize * this.height + "px";
@@ -47,21 +45,18 @@ class Board {
         }
     }
 
-    changeInputSpaceship(event) {
-
-    }
-
     start() {
         document.querySelectorAll("input").forEach((el) => el.disabled = true);
         document.querySelector("#restart").disabled = false;
-        start.disabled = true;
+        document.querySelector("#start").disabled = true;
         this.interval = setInterval(() => this.steps(), 100);
+        //TODO add possibility to change time
     }
 
     restart() {
         document.querySelectorAll("input").forEach((el) => el.disabled = false);
         document.querySelector("#restart").disabled = true;
-        start.disabled = false;
+        document.querySelector("#start").disabled = false;
         clearInterval(this.interval);
         this.makeNewBoard();
     }
@@ -104,12 +99,11 @@ class Board {
         if (fieldsCopy[(width + this.height + 1) % this.height][(height + this.width + 1) % this.width].isAlive) neighborsNumber++;
 
         if (fieldsCopy[width][height].isAlive) {
-            if (neighborsNumber != 2 && neighborsNumber != 3) {
+            if (neighborsNumber !== 2 && neighborsNumber !== 3) {
                 this.fields[width][height].makeDead();
             }
-        }
-        else {
-            if (neighborsNumber == 3) {
+        } else {
+            if (neighborsNumber === 3) {
                 this.fields[width][height].makeAlive();
             }
         }
@@ -120,7 +114,7 @@ class Board {
         let shapesInType = configurations[shape[0]];
         let positions = [];
         shapesInType.forEach((el) => {
-            if (el.name == shape[1]) {
+            if (el.name === shape[1]) {
                 positions = el.positions;
             }
         });
@@ -128,5 +122,18 @@ class Board {
         for (let i = 0; i < positions.length; i = i + 2) {
             this.fields[positions[i]][positions[i + 1]].click();
         }
+    }
+
+    fetchShape() {
+        let positions = [];
+        for (let i = 0; i < this.fields.length; i++) {
+            for (let j = 0; j < this.fields[i].length; j++) {
+                if (this.fields[i][j].isAlive()) {
+                    positions.push(i);
+                    positions.push(j);
+                }
+            }
+        }
+        console.log(positions);
     }
 }

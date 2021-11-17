@@ -20,21 +20,13 @@ class Field {
         this.element.style.height = size + "px";
     }
 
-    changeWidth(width) {
-        this.width = width;
-    }
-
-    changeHeight(height) {
-        this.height = height;
-    }
-
     isAlive() {
         return this.alive;
     }
 
     makeAlive() {
         this.alive = true;
-        this.element.style.backgroundColor = "black";
+        this.element.style.backgroundColor = "red";
     }
 
     makeDead() {
@@ -45,8 +37,7 @@ class Field {
     click() {
         if (this.alive) {
             this.makeDead();
-        }
-        else {
+        } else {
             this.makeAlive();
         }
     }

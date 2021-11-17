@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <meta charset="utf-8" />
-    <title>Gra w życie</title>
-    <link rel="icon" type="image/png" href="img/icon.png" />
-    <link href="css/main.css" rel="stylesheet" />
+    <meta charset="utf-8"/>
+    <title>Game of Life</title>
+    <link href="img/icon.png" rel="icon" type="image/png"/>
+    <link href="css/main.css" rel="stylesheet"/>
     <script src="js/field.js"></script>
     <script src="js/board.js"></script>
     <script src="js/main.js"></script>
@@ -17,29 +17,30 @@
 </head>
 
 <body>
-    <div id="main">
-        <div id="menu">
-            <label for="width">Width:</label>
-            <input type="range" id="width" name="width" min="10" max="50" value="15" class="ranges">
+<div id="main">
+    <div id="menu">
+        <label for="width">Width:</label>
+        <input class="ranges" id="width" max="150" min="10" name="width" type="range" value="40">
 
-            <label for="height">Height:</label>
-            <input type="range" id="height" name="height" min="10" max="50" value="10" class="ranges">
+        <label for="height">Height:</label>
+        <input class="ranges" id="height" max="100" min="10" name="height" type="range" value="30">
 
-            <label for="size">Size:</label>
-            <input type="range" id="size" name="size" min="5" max="100" value="50" class="ranges">
+        <label for="size">Size:</label>
+        <input class="ranges" id="size" max="100" min="5" name="size" type="range" value="20">
 
-            <label for="spaceship">Set</label><br>
-            <input type="checkbox" id="spaceship" name="spaceship" value="spaceship">
+        <label for="spaceship">Set</label><br>
+        <input id="spaceship" name="spaceship" type="checkbox" value="spaceship">
 
-            <label for="pet-select">Choose a pet:</label>
+        <label for="configurations">Configurations:</label>
+        <select id="configurations" name="configurations">Configurations</select>
 
-            <select name="configurations" id="configurations"></select>
-            <button id="insertShape">Insert shape</button>
+        <button id="insertShape">Insert shape</button>
+        <button id="fetchShape">Fetch shape</button>
 
-            <button id="start">Start</button>
-            <button id="restart" disabled="true">Restart</button>
-        </div>
+        <button id="start">Start</button>
+        <button disabled="true" id="restart">Restart</button>
     </div>
+</div>
 </body>
 
 </html>
