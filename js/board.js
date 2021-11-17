@@ -114,4 +114,19 @@ class Board {
             }
         }
     }
+
+    insertShape(configurations) {
+        let shape = document.querySelector("#configurations").value.split('_');
+        let shapesInType = configurations[shape[0]];
+        let positions = [];
+        shapesInType.forEach((el) => {
+            if (el.name == shape[1]) {
+                positions = el.positions;
+            }
+        });
+        this.restart();
+        for (let i = 0; i < positions.length; i = i + 2) {
+            this.fields[positions[i]][positions[i + 1]].click();
+        }
+    }
 }
