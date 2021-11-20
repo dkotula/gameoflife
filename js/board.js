@@ -11,6 +11,7 @@ class Board {
         this.isStart = false;
         this.boundaries = document.querySelector("#slider").checked;
         this.timeInterval = parseInt(document.querySelector("#time").value);
+        this.probability = parseInt(document.querySelector("#probability").value);
         this.makeNewBoard();
     }
 
@@ -99,7 +100,12 @@ class Board {
     }
 
     changeFields(width, height, fieldsCopy) {
+        let probability = Math.floor(Math.random() * 100) + 1;
         let neighborsNumber = this.countNeighborsNumber(width, height, fieldsCopy);
+        if (neighborsNumber > 0 && probability > this.probability) {
+            this.fields[width][height].click();
+            return;
+        }
 
         if (fieldsCopy[width][height].isAlive) {
             if (neighborsNumber !== 2 && neighborsNumber !== 3) {
@@ -147,6 +153,15 @@ class Board {
                 positions = el.positions;
             }
         });
+        let positionsI = [];
+        let positionsJ = [];
+        for (let i = 0; i < positions.length; i++) {
+            i % 2 === 0 ? positionsI.push(positions[i]) : positionsJ.push(positions[i]);
+        }
+        if (Math.max(...positionsI) >= this.height || Math.max(...positionsJ) >= this.width) {
+            alert("Too big ship");
+            return;
+        }
         for (let i = 0; i < positions.length; i = i + 2) {
             this.fields[positions[i]][positions[i + 1]].makeAlive();
         }
@@ -189,5 +204,9 @@ class Board {
         if (this.isStart) {
             this.interval = setInterval(() => this.steps(), this.timeInterval);
         }
+    }
+
+    changeProbability(event) {
+        this.probability = parseInt(event.target.value);
     }
 }
