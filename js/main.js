@@ -12,6 +12,7 @@
         document.querySelector("#insertShape").addEventListener("click", () => this.board.insertShape(this.configurations));
         document.querySelector("#fetchShape").addEventListener("click", () => this.board.fetchShape());
         document.querySelector("#slider").addEventListener("change", (event) => this.board.changeBoundaries(event));
+        document.querySelector("#time").addEventListener("input", (event) => this.board.changeTimeInterval(event));
     }
 
     makeMenu() {

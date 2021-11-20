@@ -10,6 +10,7 @@ class Board {
         this.cyclesNumber = 0;
         this.isStart = false;
         this.boundaries = document.querySelector("#slider").checked;
+        this.timeInterval = parseInt(document.querySelector("#time").value);
         this.makeNewBoard();
     }
 
@@ -55,8 +56,7 @@ class Board {
     start() {
         if (!this.isStart) {
             this.isStart = true;
-            this.interval = setInterval(() => this.steps(), 100);
-            //TODO add possibility to change time
+            this.interval = setInterval(() => this.steps(), this.timeInterval);
         }
     }
 
@@ -167,5 +167,13 @@ class Board {
 
     changeBoundaries(event) {
         this.boundaries = event.target.checked;
+    }
+
+    changeTimeInterval(event) {
+        if (this.isStart) {
+            this.timeInterval = event.target.value;
+            clearInterval(this.interval);
+            this.interval = setInterval(() => this.steps(), this.timeInterval);
+        }
     }
 }
