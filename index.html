@@ -6,12 +6,14 @@
     <title>Game of Life</title>
     <link href="img/icon.png" rel="icon" type="image/png"/>
     <link href="css/main.css" rel="stylesheet"/>
+    <link href="css/slider.css" rel="stylesheet"/>
+    <script src="js/json.js"></script>
     <script src="js/field.js"></script>
     <script src="js/board.js"></script>
     <script src="js/main.js"></script>
     <script>
         window.addEventListener("load", function () {
-            const main = new Main();
+            new Main();
         })
     </script>
 </head>
@@ -28,17 +30,25 @@
         <label for="size">Size:</label>
         <input class="ranges" id="size" max="100" min="5" name="size" type="range" value="20">
 
-        <label for="spaceship">Set</label><br>
-        <input id="spaceship" name="spaceship" type="checkbox" value="spaceship">
-
         <label for="configurations">Configurations:</label>
         <select id="configurations" name="configurations">Configurations</select>
 
         <button id="insertShape">Insert shape</button>
         <button id="fetchShape">Fetch shape</button>
 
+        <div>
+            Boundaries
+            <label class="switch">
+                <input checked id="slider" type="checkbox">
+                <span class="slider round"></span>
+            </label>
+        </div>
+
         <button id="start">Start</button>
-        <button disabled="true" id="restart">Restart</button>
+        <button id="stop">Stop</button>
+        <button id="restart">Restart</button>
+
+        <div id="cycles">Cycle 0</div>
     </div>
 </div>
 </body>

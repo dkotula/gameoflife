@@ -1,21 +1,28 @@
 class Board {
-    constructor(width, height, fieldSize) {
+    constructor() {
         this.element = document.createElement("div");
         this.element.className = "board";
-        this.width = parseInt(width);
-        this.height = parseInt(height);
-        this.fieldSize = fieldSize;
+        this.width = parseInt(document.querySelectorAll(".ranges")[0].value);
+        this.height = parseInt(document.querySelectorAll(".ranges")[1].value);
+        this.fieldSize = document.querySelectorAll(".ranges")[2].value;
         this.fields = [];
         this.interval = null;
+        this.cyclesNumber = 0;
+        this.isStart = false;
+        this.boundaries = document.querySelector("#slider").checked;
         this.makeNewBoard();
     }
 
     makeNewBoard() {
+        this.cyclesNumber = 0;
+        document.querySelector("#cycles").innerHTML = "Cycle " + this.cyclesNumber;
+        this.isStart = false;
         this.element.innerHTML = "";
         this.element.style.gridTemplateRows = "repeat(" + this.height + ", 1fr)";
         this.element.style.gridTemplateColumns = "repeat(" + this.width + ", 1fr)";
         this.element.style.width = this.fieldSize * this.width + "px";
         this.element.style.height = this.fieldSize * this.height + "px";
+        this.fields = [];
         for (let i = 0; i < this.height; i++) {
             this.fields[i] = [];
             for (let j = 0; j < this.width; j++) {
@@ -46,23 +53,25 @@ class Board {
     }
 
     start() {
-        document.querySelectorAll("input").forEach((el) => el.disabled = true);
-        document.querySelector("#restart").disabled = false;
-        document.querySelector("#start").disabled = true;
-        this.interval = setInterval(() => this.steps(), 100);
-        //TODO add possibility to change time
+        if (!this.isStart) {
+            this.isStart = true;
+            this.interval = setInterval(() => this.steps(), 100);
+            //TODO add possibility to change time
+        }
+    }
+
+    stop() {
+        this.isStart = false;
+        clearInterval(this.interval);
     }
 
     restart() {
-        document.querySelectorAll("input").forEach((el) => el.disabled = false);
-        document.querySelector("#restart").disabled = true;
-        document.querySelector("#start").disabled = false;
         clearInterval(this.interval);
         this.makeNewBoard();
     }
 
     fieldClick(width, height) {
-        if (document.querySelector("#spaceship").checked && !document.querySelector("#start").disabled) {
+        if (!this.isStart) {
             this.fields[width][height].click();
         }
     }
@@ -85,18 +94,12 @@ class Board {
                 this.changeFields(i, j, fieldsCopy);
             }
         }
+        this.cyclesNumber++;
+        document.querySelector("#cycles").innerHTML = "Cycle " + this.cyclesNumber;
     }
 
     changeFields(width, height, fieldsCopy) {
-        let neighborsNumber = 0;
-        if (fieldsCopy[(width + this.height - 1) % this.height][(height + this.width - 1) % this.width].isAlive) neighborsNumber++;
-        if (fieldsCopy[(width + this.height - 1) % this.height][(height + this.width) % this.width].isAlive) neighborsNumber++;
-        if (fieldsCopy[(width + this.height - 1) % this.height][(height + this.width + 1) % this.width].isAlive) neighborsNumber++;
-        if (fieldsCopy[(width + this.height) % this.height][(height + this.width - 1) % this.width].isAlive) neighborsNumber++;
-        if (fieldsCopy[(width + this.height) % this.height][(height + this.width + 1) % this.width].isAlive) neighborsNumber++;
-        if (fieldsCopy[(width + this.height + 1) % this.height][(height + this.width - 1) % this.width].isAlive) neighborsNumber++;
-        if (fieldsCopy[(width + this.height + 1) % this.height][(height + this.width) % this.width].isAlive) neighborsNumber++;
-        if (fieldsCopy[(width + this.height + 1) % this.height][(height + this.width + 1) % this.width].isAlive) neighborsNumber++;
+        let neighborsNumber = this.countNeighborsNumber(width, height, fieldsCopy);
 
         if (fieldsCopy[width][height].isAlive) {
             if (neighborsNumber !== 2 && neighborsNumber !== 3) {
@@ -109,6 +112,32 @@ class Board {
         }
     }
 
+    countNeighborsNumber(width, height, fieldsCopy) {
+        let neighborsNumber = 0
+
+        if (this.boundaries) {
+            if (width > 0 && height > 0) if (fieldsCopy[width - 1][height - 1].isAlive) neighborsNumber++;
+            if (width > 0) if (fieldsCopy[width - 1][height].isAlive) neighborsNumber++;
+            if (width > 0 && height < this.width - 1) if (fieldsCopy[width - 1][height + 1].isAlive) neighborsNumber++;
+            if (height > 0) if (fieldsCopy[width][height - 1].isAlive) neighborsNumber++;
+            if (height < this.width - 1) if (fieldsCopy[width][height + 1].isAlive) neighborsNumber++;
+            if (width < this.height - 1 && height > 0) if (fieldsCopy[width + 1][height - 1].isAlive) neighborsNumber++;
+            if (width < this.height - 1) if (fieldsCopy[width + 1][height].isAlive) neighborsNumber++;
+            if (width < this.height - 1 && height < this.width - 1) if (fieldsCopy[width + 1][height + 1].isAlive) neighborsNumber++;
+        } else {
+            if (fieldsCopy[(width + this.height - 1) % this.height][(height + this.width - 1) % this.width].isAlive) neighborsNumber++;
+            if (fieldsCopy[(width + this.height - 1) % this.height][(height + this.width) % this.width].isAlive) neighborsNumber++;
+            if (fieldsCopy[(width + this.height - 1) % this.height][(height + this.width + 1) % this.width].isAlive) neighborsNumber++;
+            if (fieldsCopy[(width + this.height) % this.height][(height + this.width - 1) % this.width].isAlive) neighborsNumber++;
+            if (fieldsCopy[(width + this.height) % this.height][(height + this.width + 1) % this.width].isAlive) neighborsNumber++;
+            if (fieldsCopy[(width + this.height + 1) % this.height][(height + this.width - 1) % this.width].isAlive) neighborsNumber++;
+            if (fieldsCopy[(width + this.height + 1) % this.height][(height + this.width) % this.width].isAlive) neighborsNumber++;
+            if (fieldsCopy[(width + this.height + 1) % this.height][(height + this.width + 1) % this.width].isAlive) neighborsNumber++;
+        }
+
+        return neighborsNumber;
+    }
+
     insertShape(configurations) {
         let shape = document.querySelector("#configurations").value.split('_');
         let shapesInType = configurations[shape[0]];
@@ -118,9 +147,8 @@ class Board {
                 positions = el.positions;
             }
         });
-        this.restart();
         for (let i = 0; i < positions.length; i = i + 2) {
-            this.fields[positions[i]][positions[i + 1]].click();
+            this.fields[positions[i]][positions[i + 1]].makeAlive();
         }
     }
 
@@ -135,5 +163,9 @@ class Board {
             }
         }
         console.log(positions);
+    }
+
+    changeBoundaries(event) {
+        this.boundaries = event.target.checked;
     }
 }
