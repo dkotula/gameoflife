@@ -5,14 +5,7 @@
         this.makeMenu();
         this.board = new Board();
         this.main.appendChild(this.board.getElement());
-        document.querySelectorAll(".ranges").forEach((el) => el.addEventListener("input", (event) => this.board.changeBoard(event)));
-        document.querySelector("#start").addEventListener("click", () => this.board.start());
-        document.querySelector("#stop").addEventListener("click", () => this.board.stop());
-        document.querySelector("#restart").addEventListener("click", () => this.board.restart());
-        document.querySelector("#insertShape").addEventListener("click", () => this.board.insertShape(this.configurations));
-        document.querySelector("#fetchShape").addEventListener("click", () => this.board.fetchShape());
-        document.querySelector("#slider").addEventListener("change", (event) => this.board.changeBoundaries(event));
-        document.querySelector("#time").addEventListener("input", (event) => this.board.changeTimeInterval(event));
+        this.addListeners();
     }
 
     makeMenu() {
@@ -21,6 +14,18 @@
                 this.configurations[key].forEach((el) => this.addOption(key, el));
             }
         }
+    }
+
+    addListeners() {
+        document.querySelectorAll(".ranges").forEach((el) => el.addEventListener("input", (event) => this.board.changeBoard(event)));
+        document.querySelector("#start").addEventListener("click", () => this.board.start());
+        document.querySelector("#stop").addEventListener("click", () => this.board.stop());
+        document.querySelector("#restart").addEventListener("click", () => this.board.restart());
+        document.querySelector("#insertShape").addEventListener("click", () => this.board.insertShape(this.configurations));
+        document.querySelector("#fetchShape").addEventListener("click", () => this.board.fetchShape());
+        document.querySelector("#slider").addEventListener("change", (event) => this.board.changeBoundaries(event));
+        document.querySelector("#time").addEventListener("input", (event) => this.board.changeTimeInterval(event));
+        document.querySelector("#clear").addEventListener("click", () => this.board.clearBoard());
     }
 
     addOption(type, el) {

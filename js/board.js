@@ -170,9 +170,23 @@ class Board {
     }
 
     changeTimeInterval(event) {
+        this.timeInterval = event.target.value;
         if (this.isStart) {
-            this.timeInterval = event.target.value;
             clearInterval(this.interval);
+            this.interval = setInterval(() => this.steps(), this.timeInterval);
+        }
+    }
+
+    clearBoard() {
+        if (this.isStart) {
+            clearInterval(this.interval)
+        }
+        for (let i = 0; i < this.height; i++) {
+            for (let j = 0; j < this.width; j++) {
+                this.fields[i][j].makeDead();
+            }
+        }
+        if (this.isStart) {
             this.interval = setInterval(() => this.steps(), this.timeInterval);
         }
     }
