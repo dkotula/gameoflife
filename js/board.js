@@ -215,22 +215,20 @@ class Board {
     }
 
     tests() {
-        this.calculateMean(500);
-        this.calculateDensity(1, 200);
-        this.calculateDensity(2, 200);
-        this.calculateDensity(5, 200);
-        this.calculateDensity(10, 200);
-        this.calculateDensity(20, 200);
-        this.calculateDensity(25, 200);
-        this.calculateDensity(30, 200);
-        this.calculateDensity(35, 200);
-        this.calculateDensity(40, 200);
+        // const rounds = [1, 2, 5, 10, 15, 20, 30, 40, 50];
+        // const probabilities = [100, 99, 98, 95, 90, 70, 50, 30, 1, 0];
+        // for (let i = 0; i < probabilities.length; i++) {
+        //     this.calculateMean(500, probabilities[i]);
+        //     for (let j = 0; j < rounds.length; j++) {
+        //         this.calculateDensity(rounds[j], 200, probabilities[i]);
+        //     }
+        // }
     }
 
-    calculateMean(cycles) {
-        let securityLevel = 5000;
+    calculateMean(cycles, probability) {
+        let securityLevel = 1000;
         let results = [];
-        this.setDefault(10, 10, 99, true);
+        this.setDefault(10, 10, probability, true);
         for (let i = 0; i < cycles; i++) {
             this.makeNewBoard();
             this.coordinatesToShape([4, 4, 4, 5, 5, 4, 5, 5]);
@@ -242,14 +240,13 @@ class Board {
             }
             results[i] = this.cyclesNumber;
         }
-        console.log("mean = " + this.countMean(results));
-        this.saveToFile("mean_c" + cycles, this.array1dToString(results));
+        this.saveToFile("mean_p" + this.probability, this.array1dToString(results));
     }
 
-    calculateDensity(rounds, cycles) {
+    calculateDensity(rounds, cycles, probability) {
         let results = [];
         let resultsTemp = [];
-        this.setDefault(10, 10, 99, true);
+        this.setDefault(10, 10, probability, true);
         for (let height = 0; height < this.height; height++) {
             results[height] = [];
             for (let width = 0; width < this.width; width++) {
@@ -289,7 +286,7 @@ class Board {
                 results[height][width] /= cycles;
             }
         }
-        this.saveToFile("density_r" + rounds + "_c" + cycles, this.array2dToString(results));
+        this.saveToFile("density_r" + rounds + "_p" + this.probability, this.array2dToString(results));
     }
 
     setDefault(width, height, probability, boundaries) {
