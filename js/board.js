@@ -153,6 +153,10 @@ class Board {
                 positions = el.positions;
             }
         });
+        this.coordinatesToShape(positions);
+    }
+
+    coordinatesToShape(positions) {
         let positionsI = [];
         let positionsJ = [];
         for (let i = 0; i < positions.length; i++) {
@@ -208,5 +212,138 @@ class Board {
 
     changeProbability(event) {
         this.probability = parseInt(event.target.value);
+    }
+
+    tests() {
+        this.calculateMean(500);
+        this.calculateDensity(1, 200);
+        this.calculateDensity(2, 200);
+        this.calculateDensity(5, 200);
+        this.calculateDensity(10, 200);
+        this.calculateDensity(20, 200);
+        this.calculateDensity(25, 200);
+        this.calculateDensity(30, 200);
+        this.calculateDensity(35, 200);
+        this.calculateDensity(40, 200);
+    }
+
+    calculateMean(cycles) {
+        let securityLevel = 5000;
+        let results = [];
+        this.setDefault(10, 10, 99, true);
+        for (let i = 0; i < cycles; i++) {
+            this.makeNewBoard();
+            this.coordinatesToShape([4, 4, 4, 5, 5, 4, 5, 5]);
+            for (let j = 0; j < securityLevel; j++) {
+                this.steps();
+                if (this.ifAllDead()) {
+                    break;
+                }
+            }
+            results[i] = this.cyclesNumber;
+        }
+        console.log("mean = " + this.countMean(results));
+        this.saveToFile("mean_c" + cycles, this.array1dToString(results));
+    }
+
+    calculateDensity(rounds, cycles) {
+        let results = [];
+        let resultsTemp = [];
+        this.setDefault(10, 10, 99, true);
+        for (let height = 0; height < this.height; height++) {
+            results[height] = [];
+            for (let width = 0; width < this.width; width++) {
+                results[height][width] = 0;
+            }
+        }
+        for (let i = 0; i < cycles; i++) {
+            this.makeNewBoard();
+            this.coordinatesToShape([4, 4, 4, 5, 5, 4, 5, 5]);
+            for (let height = 0; height < this.height; height++) {
+                resultsTemp[height] = [];
+                for (let width = 0; width < this.width; width++) {
+                    resultsTemp[height][width] = 0;
+                }
+            }
+            for (let j = 0; j < rounds - 1; j++) {
+                for (let height = 0; height < this.height; height++) {
+                    for (let width = 0; width < this.width; width++) {
+                        if (this.fields[height][width].isAlive()) {
+                            resultsTemp[height][width]++;
+                        }
+                    }
+                }
+                this.steps();
+            }
+            for (let height = 0; height < this.height; height++) {
+                for (let width = 0; width < this.width; width++) {
+                    if (this.fields[height][width].isAlive()) {
+                        resultsTemp[height][width]++;
+                    }
+                    results[height][width] += resultsTemp[height][width] / rounds;
+                }
+            }
+        }
+        for (let height = 0; height < this.height; height++) {
+            for (let width = 0; width < this.width; width++) {
+                results[height][width] /= cycles;
+            }
+        }
+        this.saveToFile("density_r" + rounds + "_c" + cycles, this.array2dToString(results));
+    }
+
+    setDefault(width, height, probability, boundaries) {
+        this.width = width;
+        this.height = height;
+        this.probability = probability;
+        this.boundaries = boundaries;
+        document.querySelectorAll(".ranges")[0].value = width;
+        document.querySelectorAll(".ranges")[1].value = height;
+        document.querySelector("#probability").value = probability;
+        document.querySelector("#slider").checked = boundaries;
+    }
+
+    ifAllDead() {
+        for (let i = 0; i < this.height; i++) {
+            for (let j = 0; j < this.width; j++) {
+                if (this.fields[i][j].isAlive()) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    countMean(results) {
+        let sum = results.reduce((a, b) => a + b, 0)
+        return sum / results.length;
+    }
+
+    array1dToString(array) {
+        let string = "";
+        for (let i = 0; i < array.length; i++) {
+            string += i + '\t' + array[i] + '\n';
+        }
+        return string;
+    }
+
+    array2dToString(array) {
+        let string = "";
+        for (let i = 0; i < array.length; i++) {
+            for (let j = 0; j < array[i].length; j++) {
+                string += i + '\t' + j + '\t' + array[i][j] + '\n';
+            }
+        }
+        return string;
+    }
+
+    saveToFile(name, data) {
+        let myBlob = new Blob([data], {type: "text/plain"});
+        let url = window.URL.createObjectURL(myBlob);
+        let anchor = document.createElement("a");
+        anchor.href = url;
+        anchor.download = name + ".txt";
+        anchor.click();
+        window.URL.revokeObjectURL(url);
     }
 }

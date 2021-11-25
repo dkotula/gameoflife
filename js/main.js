@@ -6,6 +6,7 @@
         this.board = new Board();
         this.main.appendChild(this.board.getElement());
         this.addListeners();
+        this.board.tests();
     }
 
     makeMenu() {
