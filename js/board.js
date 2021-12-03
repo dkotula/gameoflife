@@ -10,6 +10,7 @@ class Board {
         this.cyclesNumber = 0;
         this.isStart = false;
         this.boundaries = document.querySelector("#slider").checked;
+        this.fractionNeighbors = document.querySelector("#slider2").checked;
         this.timeInterval = parseInt(document.querySelector("#time").value);
         this.probability = parseInt(document.querySelector("#probability").value);
         this.makeNewBoard();
@@ -86,6 +87,7 @@ class Board {
                     width: i,
                     height: j,
                     isAlive: this.fields[i][j].isAlive(),
+                    life: this.fields[i][j].getLife(),
                 };
             }
         }
@@ -101,18 +103,23 @@ class Board {
 
     changeFields(width, height, fieldsCopy) {
         let probability = Math.floor(Math.random() * 100) + 1;
-        let neighborsNumber = this.countNeighborsNumber(width, height, fieldsCopy);
+        let neighborsNumber;
+        if (this.fractionNeighbors) {
+            neighborsNumber = this.countNeighborsFraction(width, height, fieldsCopy);
+        } else {
+            neighborsNumber = this.countNeighborsNumber(width, height, fieldsCopy);
+        }
         if (neighborsNumber > 0 && probability > this.probability) {
             this.fields[width][height].click();
             return;
         }
 
         if (fieldsCopy[width][height].isAlive) {
-            if (neighborsNumber !== 2 && neighborsNumber !== 3) {
+            if (neighborsNumber <= 1 || neighborsNumber >= 4) {
                 this.fields[width][height].makeDead();
             }
         } else {
-            if (neighborsNumber === 3) {
+            if (neighborsNumber > 2 && neighborsNumber <= 3) {
                 this.fields[width][height].makeAlive();
             }
         }
@@ -142,6 +149,32 @@ class Board {
         }
 
         return neighborsNumber;
+    }
+
+    countNeighborsFraction(width, height, fieldsCopy) {
+        let neighborsFraction = 0.0
+
+        if (this.boundaries) {
+            if (width > 0 && height > 0) if (fieldsCopy[width - 1][height - 1].isAlive) neighborsFraction += fieldsCopy[width - 1][height - 1].life;
+            if (width > 0) if (fieldsCopy[width - 1][height].isAlive) neighborsFraction += fieldsCopy[width - 1][height].life;
+            if (width > 0 && height < this.width - 1) if (fieldsCopy[width - 1][height + 1].isAlive) neighborsFraction += fieldsCopy[width - 1][height + 1].life;
+            if (height > 0) if (fieldsCopy[width][height - 1].isAlive) neighborsFraction += fieldsCopy[width][height - 1].life;
+            if (height < this.width - 1) if (fieldsCopy[width][height + 1].isAlive) neighborsFraction += fieldsCopy[width][height + 1].life;
+            if (width < this.height - 1 && height > 0) if (fieldsCopy[width + 1][height - 1].isAlive) neighborsFraction += fieldsCopy[width + 1][height - 1].life;
+            if (width < this.height - 1) if (fieldsCopy[width + 1][height].isAlive) neighborsFraction += fieldsCopy[width + 1][height].life;
+            if (width < this.height - 1 && height < this.width - 1) if (fieldsCopy[width + 1][height + 1].isAlive) neighborsFraction += fieldsCopy[width + 1][height + 1].life;
+        } else {
+            if (fieldsCopy[(width + this.height - 1) % this.height][(height + this.width - 1) % this.width].isAlive) neighborsFraction += fieldsCopy[(width + this.height - 1) % this.height][(height + this.width - 1) % this.width].life;
+            if (fieldsCopy[(width + this.height - 1) % this.height][(height + this.width) % this.width].isAlive) neighborsFraction += fieldsCopy[(width + this.height - 1) % this.height][(height + this.width) % this.width].life;
+            if (fieldsCopy[(width + this.height - 1) % this.height][(height + this.width + 1) % this.width].isAlive) neighborsFraction += fieldsCopy[(width + this.height - 1) % this.height][(height + this.width + 1) % this.width].life;
+            if (fieldsCopy[(width + this.height) % this.height][(height + this.width - 1) % this.width].isAlive) neighborsFraction += fieldsCopy[(width + this.height) % this.height][(height + this.width - 1) % this.width].life;
+            if (fieldsCopy[(width + this.height) % this.height][(height + this.width + 1) % this.width].isAlive) neighborsFraction += fieldsCopy[(width + this.height) % this.height][(height + this.width + 1) % this.width].life;
+            if (fieldsCopy[(width + this.height + 1) % this.height][(height + this.width - 1) % this.width].isAlive) neighborsFraction += fieldsCopy[(width + this.height + 1) % this.height][(height + this.width - 1) % this.width].life;
+            if (fieldsCopy[(width + this.height + 1) % this.height][(height + this.width) % this.width].isAlive) neighborsFraction += fieldsCopy[(width + this.height + 1) % this.height][(height + this.width) % this.width].life;
+            if (fieldsCopy[(width + this.height + 1) % this.height][(height + this.width + 1) % this.width].isAlive) neighborsFraction += fieldsCopy[(width + this.height + 1) % this.height][(height + this.width + 1) % this.width].life;
+        }
+
+        return neighborsFraction;
     }
 
     insertShape(configurations) {
@@ -342,5 +375,9 @@ class Board {
         anchor.download = name + ".txt";
         anchor.click();
         window.URL.revokeObjectURL(url);
+    }
+
+    changeNeighbors(event) {
+        this.fractionNeighbors = event.target.checked;
     }
 }

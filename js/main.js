@@ -25,6 +25,7 @@
         document.querySelector("#insertShape").addEventListener("click", () => this.board.insertShape(this.configurations));
         document.querySelector("#fetchShape").addEventListener("click", () => this.board.fetchShape());
         document.querySelector("#slider").addEventListener("change", (event) => this.board.changeBoundaries(event));
+        document.querySelector("#slider2").addEventListener("change", (event) => this.board.changeNeighbors(event));
         document.querySelector("#time").addEventListener("input", (event) => this.board.changeTimeInterval(event));
         document.querySelector("#clear").addEventListener("click", () => this.board.clearBoard());
         document.querySelector("#probability").addEventListener("input", (event) => this.board.changeProbability(event));

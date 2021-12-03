@@ -8,6 +8,7 @@ class Field {
         this.element.style.width = size + "px";
         this.element.style.height = size + "px";
         this.alive = false;
+        this.life = 1.0;
     }
 
     getElement() {
@@ -25,8 +26,9 @@ class Field {
     }
 
     makeAlive() {
+        this.life = (Math.floor(Math.random() * 50) + 51) / 100;
         this.alive = true;
-        this.element.style.backgroundColor = "red";
+        this.element.style.backgroundColor = "rgba(255,0,0," + this.life + ")";
     }
 
     makeDead() {
@@ -40,5 +42,9 @@ class Field {
         } else {
             this.makeAlive();
         }
+    }
+
+    getLife() {
+        return this.life;
     }
 }
