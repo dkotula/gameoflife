@@ -37,7 +37,8 @@
             <input id="time" max="1500" min="10" name="time" type="range" value="200">
 
             <label for="probability">Probability:</label>
-            <input id="probability" max="100" min="0" name="probability" type="range" value="99">
+            <input id="probability" max="100" min="0" name="probability" step="0.1" type="number" value="99">
+
         </div>
 
         <div>
@@ -66,6 +67,37 @@
             <button id="restart">Restart</button>
             <button id="clear">Clear</button>
         </div>
+
+        Borders:
+        <table>
+            <tr>
+                <td></td>
+                <td class="border" colspan="3" id="upBorder"></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="border" rowspan="3" id="leftBorder"></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td class="border" rowspan="3" id="rightBorder"></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="border" colspan="3" id="downBorder"></td>
+                <td></td>
+            </tr>
+        </table>
 
         <div id="cycles">Cycle 0</div>
     </div>

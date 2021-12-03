@@ -29,6 +29,7 @@
         document.querySelector("#time").addEventListener("input", (event) => this.board.changeTimeInterval(event));
         document.querySelector("#clear").addEventListener("click", () => this.board.clearBoard());
         document.querySelector("#probability").addEventListener("input", (event) => this.board.changeProbability(event));
+        document.querySelectorAll(".border").forEach((el) => el.addEventListener("click", (event) => this.board.changeBorder(event)));
     }
 
     addOption(type, el) {
