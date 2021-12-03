@@ -21,47 +21,51 @@
 <body>
 <div id="main">
     <div id="menu">
-        <label for="width">Width:</label>
-        <input class="ranges" id="width" max="150" min="10" name="width" type="range" value="10">
-
-        <label for="height">Height:</label>
-        <input class="ranges" id="height" max="100" min="10" name="height" type="range" value="10">
-
-        <label for="size">Size:</label>
-        <input class="ranges" id="size" max="100" min="5" name="size" type="range" value="50">
-
-        <label for="time">Time:</label>
-        <input id="time" max="1500" min="10" name="time" type="range" value="200">
-
-        <label for="probability">Probability:</label>
-        <input id="probability" max="100" min="0" name="probability" type="range" value="99">
-
-        <label for="configurations">Configurations:</label>
-        <select id="configurations" name="configurations">Configurations</select>
-
-        <button id="insertShape">Insert shape</button>
-        <button id="fetchShape">Fetch shape</button>
-
         <div>
-            Boundaries
-            <label class="switch">
-                <input checked id="slider" type="checkbox">
-                <span class="slider round"></span>
-            </label>
+            <label for="width">Width:</label>
+            <input class="ranges" id="width" max="150" min="10" name="width" type="range" value="10">
+
+            <label for="height">Height:</label>
+            <input class="ranges" id="height" max="100" min="10" name="height" type="range" value="10">
+
+            <label for="size">Size:</label>
+            <input class="ranges" id="size" max="100" min="5" name="size" type="range" value="50">
         </div>
 
         <div>
-            Fraction life
-            <label class="switch">
-                <input checked id="slider2" type="checkbox">
-                <span class="slider round"></span>
-            </label>
+            <label for="time">Time:</label>
+            <input id="time" max="1500" min="10" name="time" type="range" value="200">
+
+            <label for="probability">Probability:</label>
+            <input id="probability" max="100" min="0" name="probability" type="range" value="99">
         </div>
 
-        <button id="start">Start</button>
-        <button id="stop">Stop</button>
-        <button id="restart">Restart</button>
-        <button id="clear">Clear</button>
+        <div>
+            <label for="configurations">Configurations:</label>
+            <select id="configurations" name="configurations">Configurations</select>
+
+            <button id="insertShape">Insert shape</button>
+            <button id="fetchShape">Fetch shape</button>
+        </div>
+
+        Boundaries
+        <label class="switch">
+            <input checked id="slider" type="checkbox">
+            <span class="slider round"></span>
+        </label>
+
+        Fraction life
+        <label class="switch">
+            <input checked id="slider2" type="checkbox">
+            <span class="slider round"></span>
+        </label>
+
+        <div>
+            <button id="start">Start</button>
+            <button id="stop">Stop</button>
+            <button id="restart">Restart</button>
+            <button id="clear">Clear</button>
+        </div>
 
         <div id="cycles">Cycle 0</div>
     </div>
