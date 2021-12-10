@@ -105,7 +105,7 @@ class Board {
     }
 
     changeFields(width, height, fieldsCopy) {
-        let probability = Math.floor(Math.random() * 100) + 1;
+        let probability = Math.random() * 100;
         let neighborsNumber;
         if (this.fractionNeighbors) {
             neighborsNumber = this.countNeighborsFraction(width, height, fieldsCopy);
@@ -250,9 +250,9 @@ class Board {
         //     }
         // }
 
-
-        // for (let i = 85; i < 100; i++) {
-        //     this.calculateMean(500, i);
+        // const probabilities = [99.9, 99.8, 99.7, 99.6, 99.5, 99.4, 99.3, 99.2, 99.1, 99];
+        // for (let i = 0; i < probabilities.length; i++) {
+        //     this.calculateMean(500, probabilities[i]);
         // }
     }
 
