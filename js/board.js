@@ -53,6 +53,8 @@ class Board {
             this.element.style.width = this.fieldSize * this.width + "px";
             this.element.style.height = this.fieldSize * this.height + "px";
             this.fields.forEach((el) => el.forEach((el) => el.changeSize(parseInt(event.target.value))));
+            this.element.style.width = this.width * this.fieldSize + 2 * this.width + "px";
+            this.element.style.height = this.height * this.fieldSize + 2 * this.height + "px";
         }
     }
 
