@@ -249,12 +249,22 @@ class Board {
         //         this.calculateDensity(rounds[j], 200, probabilities[i]);
         //     }
         // }
+
+
+        // for (let i = 85; i < 100; i++) {
+        //     this.calculateMean(500, i);
+        // }
     }
 
     calculateMean(cycles, probability) {
         let securityLevel = 1000;
         let results = [];
-        this.setDefault(10, 10, probability,  {borderTop: true, borderBottom: true, borderLeft: true, borderRight: true});
+        this.setDefault(10, 10, probability, {
+            borderTop: true,
+            borderBottom: true,
+            borderLeft: true,
+            borderRight: true
+        }, false);
         for (let i = 0; i < cycles; i++) {
             this.makeNewBoard();
             this.coordinatesToShape([4, 4, 4, 5, 5, 4, 5, 5]);
@@ -272,7 +282,12 @@ class Board {
     calculateDensity(rounds, cycles, probability) {
         let results = [];
         let resultsTemp = [];
-        this.setDefault(10, 10, probability, {borderTop: true, borderBottom: true, borderLeft: true, borderRight: true});
+        this.setDefault(10, 10, probability, {
+            borderTop: true,
+            borderBottom: true,
+            borderLeft: true,
+            borderRight: true
+        }, false);
         for (let height = 0; height < this.height; height++) {
             results[height] = [];
             for (let width = 0; width < this.width; width++) {
@@ -315,14 +330,16 @@ class Board {
         this.saveToFile("density_r" + rounds + "_p" + this.probability, this.array2dToString(results));
     }
 
-    setDefault(width, height, probability, boundaries) {
+    setDefault(width, height, probability, boundaries, fractionLife) {
         this.width = width;
         this.height = height;
         this.probability = probability;
         this.borders = boundaries;
+        this.fractionNeighbors = fractionLife;
         document.querySelectorAll(".ranges")[0].value = width;
         document.querySelectorAll(".ranges")[1].value = height;
         document.querySelector("#probability").value = probability;
+        document.querySelector("#slider").checked = fractionLife;
         this.setBoundaries();
     }
 
@@ -396,8 +413,7 @@ class Board {
             if (this.borders.hasOwnProperty(border) && this.borders[border]) {
                 el.style.backgroundColor = "black";
                 this.element.style[border] = "10px black solid";
-            }
-            else {
+            } else {
                 el.style.backgroundColor = "white";
                 this.element.style[border] = "10px white solid";
             }
