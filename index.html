@@ -49,15 +49,12 @@
             <button id="fetchShape">Fetch shape</button>
         </div>
 
-        Boundaries
-        <label class="switch">
-            <input checked id="slider" type="checkbox">
-            <span class="slider round"></span>
-        </label>
+        <button id="bordersOn">Enable all boundaries</button>
+        <button id="bordersOff">Disable all boundaries</button>
 
         Fraction life
         <label class="switch">
-            <input checked id="slider2" type="checkbox">
+            <input checked id="slider" type="checkbox">
             <span class="slider round"></span>
         </label>
 
@@ -72,20 +69,15 @@
         <table>
             <tr>
                 <td></td>
-                <td class="border" colspan="3" id="upBorder"></td>
+                <td class="border" colspan="3" id="borderTop"></td>
                 <td></td>
             </tr>
             <tr>
-                <td class="border" rowspan="3" id="leftBorder"></td>
+                <td class="border" rowspan="3" id="borderLeft"></td>
                 <td></td>
                 <td></td>
                 <td></td>
-                <td class="border" rowspan="3" id="rightBorder"></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td class="border" rowspan="3" id="borderRight"></td>
             </tr>
             <tr>
                 <td></td>
@@ -94,7 +86,12 @@
             </tr>
             <tr>
                 <td></td>
-                <td class="border" colspan="3" id="downBorder"></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="border" colspan="3" id="borderBottom"></td>
                 <td></td>
             </tr>
         </table>
