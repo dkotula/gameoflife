@@ -15,10 +15,7 @@ class Board {
         document.querySelector("#cycles").innerHTML = "Cycle " + this.cyclesNumber;
         this.isStart = false;
         this.element.innerHTML = "";
-        this.element.style.gridTemplateRows = "repeat(" + this.options.board.height + ", 1fr)";
-        this.element.style.gridTemplateColumns = "repeat(" + this.options.board.width + ", 1fr)";
-        this.element.style.width = this.options.board.width * this.options.board.fieldSize + 2 * this.options.board.width + "px";
-        this.element.style.height = this.options.board.height * this.options.board.fieldSize + 2 * this.options.board.height + "px";
+        this.changeBoardStyle();
         this.fields = [];
         for (let i = 0; i < this.options.board.height; i++) {
             this.fields[i] = [];
@@ -29,6 +26,13 @@ class Board {
             }
         }
         this.setBoundaries();
+    }
+
+    changeBoardStyle() {
+        this.element.style.gridTemplateRows = "repeat(" + this.options.board.height + ", 1fr)";
+        this.element.style.gridTemplateColumns = "repeat(" + this.options.board.width + ", 1fr)";
+        this.element.style.width = this.options.board.width * this.options.board.fieldSize + 2 * this.options.board.width + "px";
+        this.element.style.height = this.options.board.height * this.options.board.fieldSize + 2 * this.options.board.height + "px";
     }
 
     getElement() {
@@ -44,11 +48,8 @@ class Board {
             this.makeNewBoard();
         } else if (event.target.name === "size") {
             this.options.board.fieldSize = parseInt(event.target.value);
-            this.element.style.width = this.options.board.fieldSize * this.options.board.width + "px";
-            this.element.style.height = this.options.board.fieldSize * this.options.board.height + "px";
             this.fields.forEach((el) => el.forEach((el) => el.changeSize(parseInt(event.target.value))));
-            this.element.style.width = this.options.board.width * this.options.board.fieldSize + 2 * this.options.board.width + "px";
-            this.element.style.height = this.options.board.height * this.options.board.fieldSize + 2 * this.options.board.height + "px";
+            this.changeBoardStyle();
         }
     }
 
@@ -231,7 +232,7 @@ class Board {
     }
 
     changeProbability(event) {
-        this.options.probability = parseInt(event.target.value);
+        this.options.probability = event.target.value;
     }
 
     changeNeighbors(event) {
@@ -265,5 +266,13 @@ class Board {
                 this.element.style[border] = "10px white solid";
             }
         }
+    }
+
+    changeTribesNumber(event) {
+        this.options.tribesNumber = parseInt(event.target.value);
+    }
+
+    generateTribes() {
+        console.log(this)
     }
 }

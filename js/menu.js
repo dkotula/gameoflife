@@ -35,6 +35,8 @@ class Menu {
         document.querySelectorAll(".border").forEach((el) => el.addEventListener("click", (event) => board.changeBorder(event)));
         document.querySelector("#bordersOn").addEventListener("click", () => board.boundariesOn());
         document.querySelector("#bordersOff").addEventListener("click", () => board.boundariesOff());
+        document.querySelector("#tribesNumber").addEventListener("input", (event) => board.changeTribesNumber(event));
+        document.querySelector("#generateTribes").addEventListener("click", () => board.generateTribes());
     }
 
     setInitialValues() {

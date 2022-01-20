@@ -13,4 +13,5 @@ const options = {
     },
     fractionNeighbors: true,
     timeInterval: 200,
+    tribesNumber: 3,
 }
