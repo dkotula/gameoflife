@@ -7,13 +7,16 @@
     <link href="img/icon.png" rel="icon" type="image/png"/>
     <link href="css/main.css" rel="stylesheet"/>
     <link href="css/slider.css" rel="stylesheet"/>
+    <script src="js/menu.js"></script>
     <script src="js/data.js"></script>
     <script src="js/field.js"></script>
     <script src="js/board.js"></script>
+    <script src="js/tests.js"></script>
     <script src="js/main.js"></script>
     <script>
         window.addEventListener("load", function () {
-            new Main();
+            const main = new Main();
+            document.querySelector("#main").appendChild(main.getElement());
         })
     </script>
 </head>
@@ -73,11 +76,11 @@
                 <td></td>
             </tr>
             <tr>
-                <td class="border" rowspan="3" id="borderLeft"></td>
+                <td class="border" id="borderLeft" rowspan="3"></td>
                 <td></td>
                 <td></td>
                 <td></td>
-                <td class="border" rowspan="3" id="borderRight"></td>
+                <td class="border" id="borderRight" rowspan="3"></td>
             </tr>
             <tr>
                 <td></td>

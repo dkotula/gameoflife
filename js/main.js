@@ -1,42 +1,16 @@
 ﻿class Main {
     constructor() {
-        this.main = document.querySelector("#main");
+        this.element = document.createElement("div");
         this.configurations = configurations_json;
-        this.makeMenu();
+        this.menu = new Menu(this.configurations);
         this.board = new Board();
-        this.main.appendChild(this.board.getElement());
-        this.addListeners();
-        this.board.tests();
+        this.element.appendChild(this.board.getElement());
+        this.menu.addListeners(this.board);
+        this.tests = new Tests(this.board);
+        this.tests.makeTests();
     }
 
-    makeMenu() {
-        for (let key in this.configurations) {
-            if (this.configurations.hasOwnProperty(key)) {
-                this.configurations[key].forEach((el) => this.addOption(key, el));
-            }
-        }
-    }
-
-    addListeners() {
-        document.querySelectorAll(".ranges").forEach((el) => el.addEventListener("input", (event) => this.board.changeBoard(event)));
-        document.querySelector("#start").addEventListener("click", () => this.board.start());
-        document.querySelector("#stop").addEventListener("click", () => this.board.stop());
-        document.querySelector("#restart").addEventListener("click", () => this.board.restart());
-        document.querySelector("#insertShape").addEventListener("click", () => this.board.insertShape(this.configurations));
-        document.querySelector("#fetchShape").addEventListener("click", () => this.board.fetchShape());
-        document.querySelector("#slider").addEventListener("change", (event) => this.board.changeNeighbors(event));
-        document.querySelector("#time").addEventListener("input", (event) => this.board.changeTimeInterval(event));
-        document.querySelector("#clear").addEventListener("click", () => this.board.clearBoard());
-        document.querySelector("#probability").addEventListener("input", (event) => this.board.changeProbability(event));
-        document.querySelectorAll(".border").forEach((el) => el.addEventListener("click", (event) => this.board.changeBorder(event)));
-        document.querySelector("#bordersOn").addEventListener("click", () => this.board.boundariesOn());
-        document.querySelector("#bordersOff").addEventListener("click", () => this.board.boundariesOff());
-    }
-
-    addOption(type, el) {
-        let option = document.createElement("option");
-        option.value = type + "_" + el.name;
-        option.innerHTML = type + "-" + el.name;
-        document.querySelector("#configurations").appendChild(option);
+    getElement() {
+        return this.element;
     }
 }
