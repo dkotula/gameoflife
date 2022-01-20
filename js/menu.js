@@ -38,9 +38,9 @@ class Menu {
     }
 
     setInitialValues() {
-        document.querySelectorAll(".ranges")[0].value = this.options.board.width;
-        document.querySelectorAll(".ranges")[1].value = this.options.board.height;
-        document.querySelectorAll(".ranges")[2].value = this.options.board.fieldSize;
+        document.querySelector("#width").value = this.options.board.width;
+        document.querySelector("#height").value = this.options.board.height;
+        document.querySelector("#fieldSize").value = this.options.board.fieldSize;
         document.querySelector("#probability").value = this.options.probability;
         document.querySelector("#slider").checked = this.options.fractionNeighbors;
         document.querySelector("#time").value = this.options.timeInterval;

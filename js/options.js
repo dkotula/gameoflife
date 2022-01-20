@@ -4,7 +4,7 @@ const options = {
         height: 10,
         fieldSize: 50,
     },
-    probability: 99,
+    probability: 100,
     borders: {
         borderTop: true,
         borderBottom: true,

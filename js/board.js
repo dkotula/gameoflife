@@ -209,7 +209,7 @@ class Board {
     }
 
     changeTimeInterval(event) {
-        this.options.timeInterval = event.target.value;
+        this.options.timeInterval = parseInt(event.target.value);
         if (this.isStart) {
             clearInterval(this.interval);
             this.interval = setInterval(() => this.steps(), this.options.timeInterval);
@@ -231,7 +231,7 @@ class Board {
     }
 
     changeProbability(event) {
-        this.options.probability = event.target.value;
+        this.options.probability = parseInt(event.target.value);
     }
 
     changeNeighbors(event) {
