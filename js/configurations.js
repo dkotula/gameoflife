@@ -1,4 +1,4 @@
-const configurations_json = {
+const configurations = {
     still: [
         {name: "block", positions: [0, 0, 0, 1, 1, 0, 1, 1]},
         {name: "bee-hive", positions: [1, 0, 0, 1, 0, 2, 1, 3, 2, 2, 2, 1]},

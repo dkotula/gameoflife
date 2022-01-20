@@ -1,7 +1,9 @@
 class Menu {
-    constructor(configurations) {
+    constructor(options, configurations) {
+        this.options = options;
         this.configurations = configurations;
         this.makeMenu();
+        this.setInitialValues();
     }
 
     makeMenu() {
@@ -33,5 +35,14 @@ class Menu {
         document.querySelectorAll(".border").forEach((el) => el.addEventListener("click", (event) => board.changeBorder(event)));
         document.querySelector("#bordersOn").addEventListener("click", () => board.boundariesOn());
         document.querySelector("#bordersOff").addEventListener("click", () => board.boundariesOff());
+    }
+
+    setInitialValues() {
+        document.querySelectorAll(".ranges")[0].value = this.options.board.width;
+        document.querySelectorAll(".ranges")[1].value = this.options.board.height;
+        document.querySelectorAll(".ranges")[2].value = this.options.board.fieldSize;
+        document.querySelector("#probability").value = this.options.probability;
+        document.querySelector("#slider").checked = this.options.fractionNeighbors;
+        document.querySelector("#time").value = this.options.timeInterval;
     }
 }
