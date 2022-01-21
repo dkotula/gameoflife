@@ -7,6 +7,7 @@ class Board {
         this.interval = null;
         this.cyclesNumber = 0;
         this.isStart = false;
+        this.colors = ["255,0,0", "0,255,0", "0,0,255", "255,255,0", "255,0,255", "0,255,255"];
         this.makeNewBoard();
     }
 
@@ -273,6 +274,21 @@ class Board {
     }
 
     generateTribes() {
-        console.log(this)
+        this.makeNewBoard();
+        for (let tribe = 0; tribe < this.colors.length && tribe < this.options.tribesNumber; tribe++) {
+            let x0 = (Math.floor(Math.random() * this.options.board.height));
+            let y0 = (Math.floor(Math.random() * this.options.board.height));
+            for (let i = 0; i < this.options.board.height; i++) {
+                for (let j = 0; j < this.options.board.width; j++) {
+                    const sigma = 8;
+                    let life = Math.exp(-((this.fields[i][j].width - x0) * (this.fields[i][j].width - x0) / sigma + (this.fields[i][j].height - y0) * (this.fields[i][j].height - y0) / sigma));
+                    if (life < 0.01) life = 0;
+                    if (life > this.fields[i][j].getLife()) {
+                        this.fields[i][j].setColor(this.colors[tribe]);
+                        this.fields[i][j].setLife(life);
+                    }
+                }
+            }
+        }
     }
 }
