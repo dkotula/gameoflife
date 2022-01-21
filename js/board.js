@@ -280,8 +280,9 @@ class Board {
             let y0 = (Math.floor(Math.random() * this.options.board.height));
             for (let i = 0; i < this.options.board.height; i++) {
                 for (let j = 0; j < this.options.board.width; j++) {
-                    const sigma = 8;
-                    let life = Math.exp(-((this.fields[i][j].width - x0) * (this.fields[i][j].width - x0) / sigma + (this.fields[i][j].height - y0) * (this.fields[i][j].height - y0) / sigma));
+                    const sigma = this.options.board.height;
+                    const sigma2 = this.options.board.height * this.options.board.height / 10
+                    let life = Math.exp(-((this.fields[i][j].width - x0) * (this.fields[i][j].width - x0) / sigma2 + (this.fields[i][j].height - y0) * (this.fields[i][j].height - y0) / sigma2));
                     if (life < 0.01) life = 0;
                     if (life > this.fields[i][j].getLife()) {
                         this.fields[i][j].setColor(this.colors[tribe]);
