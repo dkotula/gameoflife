@@ -13,5 +13,8 @@ const options = {
     },
     fractionNeighbors: true,
     timeInterval: 200,
-    tribesNumber: 3,
+    tribesNumber: 1,
+    innerBorders: false,
+    subtractGenerating: true,
+    gaussRange: 50,
 }

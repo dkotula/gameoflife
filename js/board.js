@@ -21,8 +21,10 @@ class Board {
         for (let i = 0; i < this.options.board.height; i++) {
             this.fields[i] = [];
             for (let j = 0; j < this.options.board.width; j++) {
-                this.fields[i][j] = new Field(i, j, this.options.board.fieldSize);
+                this.fields[i][j] = new Field(i, j, this.options.board.fieldSize, this.options);
                 this.fields[i][j].getElement().addEventListener("click", () => this.fieldClick(i, j));
+                if (!this.options.innerBorders)
+                    this.fields[i][j].getElement().style.border = "none";
                 this.element.appendChild(this.fields[i][j].getElement());
             }
         }
@@ -32,8 +34,16 @@ class Board {
     changeBoardStyle() {
         this.element.style.gridTemplateRows = "repeat(" + this.options.board.height + ", 1fr)";
         this.element.style.gridTemplateColumns = "repeat(" + this.options.board.width + ", 1fr)";
-        this.element.style.width = this.options.board.width * this.options.board.fieldSize + 2 * this.options.board.width + "px";
-        this.element.style.height = this.options.board.height * this.options.board.fieldSize + 2 * this.options.board.height + "px";
+        if (this.options.innerBorders) {
+            this.element.style.width = this.options.board.width * this.options.board.fieldSize + 2 * this.options.board.width + "px";
+            this.element.style.height = this.options.board.height * this.options.board.fieldSize + 2 * this.options.board.height + "px";
+            this.fields.forEach((el) => el.forEach((el) => el.getElement().style.border = "1px grey solid"));
+        }
+        else {
+            this.element.style.width = this.options.board.width * this.options.board.fieldSize + "px";
+            this.element.style.height = this.options.board.height * this.options.board.fieldSize + "px";
+            this.fields.forEach((el) => el.forEach((el) => el.getElement().style.border = "none"));
+        }
     }
 
     getElement() {
@@ -87,6 +97,7 @@ class Board {
                     height: j,
                     isAlive: this.fields[i][j].isAlive(),
                     life: this.fields[i][j].getLife(),
+                    color: this.fields[i][j].getColor(),
                 };
             }
         }
@@ -113,13 +124,26 @@ class Board {
             return;
         }
 
-        if (fieldsCopy[width][height].isAlive) {
-            if (neighborsNumber <= 1 || neighborsNumber >= 4) {
-                this.fields[width][height].makeDead();
+        if (this.options.fractionNeighbors) {
+            if (fieldsCopy[width][height].isAlive) {
+                if (neighborsNumber <= 1 || neighborsNumber >= 4) {
+                    this.fields[width][height].makeDead();
+                }
+            } else {
+                if (neighborsNumber > 2 && neighborsNumber <= 3) {
+                    this.fields[width][height].makeAlive();
+                }
             }
-        } else {
-            if (neighborsNumber > 2 && neighborsNumber <= 3) {
-                this.fields[width][height].makeAlive();
+        }
+        else {
+            if (fieldsCopy[width][height].isAlive) {
+                if (neighborsNumber < 2 || neighborsNumber > 3) {
+                    this.fields[width][height].makeDead();
+                }
+            } else {
+                if (neighborsNumber === 3) {
+                    this.fields[width][height].makeAlive();
+                }
             }
         }
     }
@@ -238,6 +262,7 @@ class Board {
 
     changeNeighbors(event) {
         this.options.fractionNeighbors = event.target.checked;
+        this.fields.forEach((el) => el.forEach((el) => el.changeFraction()));
     }
 
     changeBorder(event) {
@@ -280,16 +305,37 @@ class Board {
             let y0 = (Math.floor(Math.random() * this.options.board.height));
             for (let i = 0; i < this.options.board.height; i++) {
                 for (let j = 0; j < this.options.board.width; j++) {
-                    const sigma = this.options.board.height;
-                    const sigma2 = this.options.board.height * this.options.board.height / 10
-                    let life = Math.exp(-((this.fields[i][j].width - x0) * (this.fields[i][j].width - x0) / sigma2 + (this.fields[i][j].height - y0) * (this.fields[i][j].height - y0) / sigma2));
+                    const sigma = this.options.board.height * this.options.board.height * this.options.gaussRange / 500
+                    let life = Math.exp(-((this.fields[i][j].width - x0) * (this.fields[i][j].width - x0) / sigma + (this.fields[i][j].height - y0) * (this.fields[i][j].height - y0) / sigma));
                     if (life < 0.01) life = 0;
-                    if (life > this.fields[i][j].getLife()) {
+                    if (this.options.subtractGenerating) {
+                        if (life > this.fields[i][j].getLife()) {
+                            this.fields[i][j].setColor(this.colors[tribe]);
+                            this.fields[i][j].setLife(life - this.fields[i][j].getLife());
+                        }
+                        else if (this.fields[i][j].isAlive()) {
+                            this.fields[i][j].setLife(this.fields[i][j].getLife() - life);
+                        }
+                    }
+                    else if (life > this.fields[i][j].getLife()) {
                         this.fields[i][j].setColor(this.colors[tribe]);
                         this.fields[i][j].setLife(life);
                     }
                 }
             }
         }
+    }
+
+    changeInnerBorders(event) {
+        this.options.innerBorders = event.target.checked;
+        this.changeBoardStyle();
+    }
+
+    changeSubtractGenerating(event) {
+        this.options.subtractGenerating = event.target.checked;
+    }
+
+    changeGaussRange(event) {
+        this.options.gaussRange = parseInt(event.target.value);
     }
 }

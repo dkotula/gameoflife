@@ -28,7 +28,7 @@ class Menu {
         document.querySelector("#restart").addEventListener("click", () => board.restart());
         document.querySelector("#insertShape").addEventListener("click", () => board.insertShape(this.configurations));
         document.querySelector("#fetchShape").addEventListener("click", () => board.fetchShape());
-        document.querySelector("#slider").addEventListener("change", (event) => board.changeNeighbors(event));
+        document.querySelector("#fractionLife").addEventListener("change", (event) => board.changeNeighbors(event));
         document.querySelector("#time").addEventListener("input", (event) => board.changeTimeInterval(event));
         document.querySelector("#clear").addEventListener("click", () => board.clearBoard());
         document.querySelector("#probability").addEventListener("input", (event) => board.changeProbability(event));
@@ -37,6 +37,9 @@ class Menu {
         document.querySelector("#bordersOff").addEventListener("click", () => board.boundariesOff());
         document.querySelector("#tribesNumber").addEventListener("input", (event) => board.changeTribesNumber(event));
         document.querySelector("#generateTribes").addEventListener("click", () => board.generateTribes());
+        document.querySelector("#innerBorders").addEventListener("change", (event) => board.changeInnerBorders(event));
+        document.querySelector("#subtractGenerating").addEventListener("change", (event) => board.changeSubtractGenerating(event));
+        document.querySelector("#gaussRange").addEventListener("input", (event) => board.changeGaussRange(event));
     }
 
     setInitialValues() {
@@ -44,7 +47,11 @@ class Menu {
         document.querySelector("#height").value = this.options.board.height;
         document.querySelector("#fieldSize").value = this.options.board.fieldSize;
         document.querySelector("#probability").value = this.options.probability;
-        document.querySelector("#slider").checked = this.options.fractionNeighbors;
+        document.querySelector("#fractionLife").checked = this.options.fractionNeighbors;
         document.querySelector("#time").value = this.options.timeInterval;
+        document.querySelector("#tribesNumber").value = this.options.tribesNumber;
+        document.querySelector("#innerBorders").checked = this.options.innerBorders;
+        document.querySelector("#subtractGenerating").checked = this.options.subtractGenerating;
+        document.querySelector("#gaussRange").value = this.options.gaussRange;
     }
 }

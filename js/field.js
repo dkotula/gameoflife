@@ -1,8 +1,9 @@
 class Field {
-    constructor(width, height, size) {
+    constructor(width, height, size, options) {
         this.width = width;
         this.height = height;
         this.size = size;
+        this.options = options;
         this.element = document.createElement("div");
         this.element.className = "field";
         this.element.style.width = size + "px";
@@ -29,11 +30,16 @@ class Field {
     makeAlive() {
         this.life = (Math.floor(Math.random() * 50) + 51) / 100;
         this.alive = true;
-        this.element.style.backgroundColor = "rgba(" + this.color + "," + this.life + ")";
+        if (this.options.fractionNeighbors)
+            this.element.style.backgroundColor = "rgba(" + this.color + "," + this.life + ")";
+        else
+            this.element.style.backgroundColor = "rgb(" + this.color + ")";
+
     }
 
     makeDead() {
         this.alive = false;
+        this.life = 0.0;
         this.element.style.backgroundColor = "white";
     }
 
@@ -52,10 +58,26 @@ class Field {
     setLife(life) {
         this.life = life;
         this.alive = true;
-        this.element.style.backgroundColor = "rgba(" + this.color + "," + this.life + ")";
+        if (this.options.fractionNeighbors)
+            this.element.style.backgroundColor = "rgba(" + this.color + "," + this.life + ")";
+        else
+            this.element.style.backgroundColor = "rgb(" + this.color + ")";
     }
 
     setColor(color) {
         this.color = color;
+    }
+
+    getColor() {
+        return this.color;
+    }
+
+    changeFraction() {
+        if (this.alive) {
+            if (this.options.fractionNeighbors)
+                this.element.style.backgroundColor = "rgba(" + this.color + "," + this.life + ")";
+            else
+                this.element.style.backgroundColor = "rgb(" + this.color + ")";
+        }
     }
 }

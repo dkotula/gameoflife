@@ -58,7 +58,7 @@
 
         Fraction life
         <label class="switch">
-            <input checked id="slider" type="checkbox">
+            <input checked id="fractionLife" type="checkbox">
             <span class="slider round"></span>
         </label>
 
@@ -73,6 +73,23 @@
             <label for="tribesNumber">Number of tribes:</label>
             <input id="tribesNumber" max="5" min="1" name="tribeNumber" type="number" value="3">
             <button id="generateTribes">Generate Tribes</button>
+        </div>
+
+        Inner Borders
+        <label class="switch">
+            <input id="innerBorders" type="checkbox">
+            <span class="slider round"></span>
+        </label>
+
+        <br/>Subtract when generating
+        <label class="switch">
+            <input checked id="subtractGenerating" type="checkbox">
+            <span class="slider round"></span>
+        </label>
+
+        <div>
+            <label for="gaussRange">Gauss range:</label>
+            <input id="gaussRange" max="500" min="1" name="size" type="range" value="50">
         </div>
 
         Borders:
