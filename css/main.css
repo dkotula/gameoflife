@@ -7,6 +7,7 @@
 
 .board {
     display: grid;
+    margin: 5px;
 }
 
 .field {
@@ -22,4 +23,49 @@ td {
     border: 1px black solid;
     cursor: pointer;
     background-color: black;
+}
+
+#main {
+    display: flex;
+}
+
+#menu {
+    border-right: 2px black solid;
+    padding: 5px;
+    min-width: 350px;
+    background-color: #c5eee2;
+    position: relative;
+}
+
+#menu div {
+    margin-bottom: 5px;
+}
+
+#hideMenu {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    margin: 0;
+    border-bottom: 1px black solid;
+    border-left: 1px black solid;
+    cursor: pointer;
+}
+
+#showMenuContainer {
+    width: 50px;
+    height: 100%;
+    background-color: #c5eee2;
+    display: none;
+}
+
+#showMenu {
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    border: 1px black solid;
+    cursor: pointer;
+    margin: 5px auto;
 }

@@ -2,6 +2,10 @@ class Menu {
     constructor(options, configurations) {
         this.options = options;
         this.configurations = configurations;
+        this.hiddenMenu = false;
+        this.element = document.querySelector("#menu");
+        this.hideMenuElement = document.querySelector("#hideMenu");
+        this.showMenuElement = document.querySelector("#showMenuContainer");
         this.makeMenu();
         this.setInitialValues();
     }
@@ -40,6 +44,8 @@ class Menu {
         document.querySelector("#innerBorders").addEventListener("change", (event) => board.changeInnerBorders(event));
         document.querySelector("#subtractGenerating").addEventListener("change", (event) => board.changeSubtractGenerating(event));
         document.querySelector("#gaussRange").addEventListener("input", (event) => board.changeGaussRange(event));
+        document.querySelector("#hideMenu").addEventListener("click", () => this.showAndHideMenu());
+        document.querySelector("#showMenu").addEventListener("click", () => this.showAndHideMenu());
     }
 
     setInitialValues() {
@@ -53,5 +59,19 @@ class Menu {
         document.querySelector("#innerBorders").checked = this.options.innerBorders;
         document.querySelector("#subtractGenerating").checked = this.options.subtractGenerating;
         document.querySelector("#gaussRange").value = this.options.gaussRange;
+    }
+
+    showAndHideMenu() {
+        if (this.hiddenMenu) {
+            this.element.style.display = "block";
+            this.hideMenuElement.style.display = "block";
+            this.showMenuElement.style.display = "none";
+        }
+        else {
+            this.element.style.display = "none";
+            this.hideMenuElement.style.display = "none";
+            this.showMenuElement.style.display = "block";
+        }
+        this.hiddenMenu = !this.hiddenMenu;
     }
 }
