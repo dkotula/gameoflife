@@ -18,8 +18,8 @@ const options = {
     subtractGenerating: true,
     showFullColor: true,
     gaussRange: 50,
-    underpopulation: 0.1,
-    overpopulation: 0.6,
-    minDeadCell: 0.1,
-    maxDeadCell: 0.6,
+    underpopulation: 1,
+    overpopulation: 4,
+    minDeadCell: 2,
+    maxDeadCell: 3,
 }

@@ -125,11 +125,11 @@ class Board {
 
         if (this.options.fractionNeighbors) {
             if (fieldsCopy[width][height].isAlive) {
-                if (neighborsNumber <= 1 || neighborsNumber >= 4) {
+                if (neighborsNumber < this.options.underpopulation || neighborsNumber > this.options.overpopulation) {
                     this.fields[width][height].makeDead();
                 }
             } else {
-                if (neighborsNumber > 2 && neighborsNumber <= 3) {
+                if (neighborsNumber > this.options.minDeadCell && neighborsNumber < this.options.maxDeadCell) {
                     this.fields[width][height].makeAlive();
                 }
             }
