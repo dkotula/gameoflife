@@ -74,4 +74,11 @@ class Field {
                 this.element.style.backgroundColor = "rgb(" + this.color + ")";
         }
     }
+
+    reduceLifeByVolume(volume) {
+        if (this.life > 0.0001) {
+            this.life /= volume;
+            this.changeFullColor();
+        }
+    }
 }

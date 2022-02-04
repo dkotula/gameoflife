@@ -130,7 +130,7 @@ class Board {
                 }
             } else {
                 if (neighborsNumber > this.options.minDeadCell && neighborsNumber < this.options.maxDeadCell) {
-                    this.fields[width][height].makeAlive();
+                    this.fields[width][height].setLife(neighborsNumber / 2.0);
                 }
             }
         } else {
@@ -298,14 +298,18 @@ class Board {
 
     generateTribes() {
         this.makeNewBoard();
+        const sigma = this.options.board.height * this.options.board.height * this.options.gaussRange / 500;
+        // const volume = sigma * Math.PI;
+        let sum = 0.0;
         for (let tribe = 0; tribe < this.colors.length && tribe < this.options.tribesNumber; tribe++) {
             let x0 = (Math.floor(Math.random() * this.options.board.height));
             let y0 = (Math.floor(Math.random() * this.options.board.height));
             for (let i = 0; i < this.options.board.height; i++) {
                 for (let j = 0; j < this.options.board.width; j++) {
-                    const sigma = this.options.board.height * this.options.board.height * this.options.gaussRange / 500
                     let life = Math.exp(-((this.fields[i][j].width - x0) * (this.fields[i][j].width - x0) / sigma + (this.fields[i][j].height - y0) * (this.fields[i][j].height - y0) / sigma));
-                    if (life < 0.01) life = 0;
+                    sum += life;
+                    // life /= volume;
+                    if (life < 0.0001) life = 0;
                     if (this.options.subtractGenerating) {
                         if (life > this.fields[i][j].getLife()) {
                             this.fields[i][j].setColor(this.colors[tribe]);
@@ -319,6 +323,7 @@ class Board {
                     }
                 }
             }
+            this.fields.forEach((el) => el.forEach((el) => el.reduceLifeByVolume(sum)));
         }
     }
 
