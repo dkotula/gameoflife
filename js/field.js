@@ -30,10 +30,7 @@ class Field {
     makeAlive() {
         this.life = (Math.floor(Math.random() * 50) + 51) / 100;
         this.alive = true;
-        if (this.options.fractionNeighbors)
-            this.element.style.backgroundColor = "rgba(" + this.color + "," + this.life + ")";
-        else
-            this.element.style.backgroundColor = "rgb(" + this.color + ")";
+        this.changeFullColor();
 
     }
 
@@ -58,10 +55,7 @@ class Field {
     setLife(life) {
         this.life = life;
         this.alive = true;
-        if (this.options.fractionNeighbors)
-            this.element.style.backgroundColor = "rgba(" + this.color + "," + this.life + ")";
-        else
-            this.element.style.backgroundColor = "rgb(" + this.color + ")";
+        this.changeFullColor();
     }
 
     setColor(color) {
@@ -72,9 +66,9 @@ class Field {
         return this.color;
     }
 
-    changeFraction() {
+    changeFullColor() {
         if (this.alive) {
-            if (this.options.fractionNeighbors)
+            if (this.options.fractionNeighbors && !this.options.showFullColor)
                 this.element.style.backgroundColor = "rgba(" + this.color + "," + this.life + ")";
             else
                 this.element.style.backgroundColor = "rgb(" + this.color + ")";

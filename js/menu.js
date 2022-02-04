@@ -46,6 +46,11 @@ class Menu {
         document.querySelector("#gaussRange").addEventListener("input", (event) => board.changeGaussRange(event));
         document.querySelector("#hideMenu").addEventListener("click", () => this.showAndHideMenu());
         document.querySelector("#showMenu").addEventListener("click", () => this.showAndHideMenu());
+        document.querySelector("#showFullColor").addEventListener("change", (event) => board.changeFullColor(event));
+        document.querySelector("#underpopulation").addEventListener("input", (event) => board.changeUnderpopulation(event));
+        document.querySelector("#overpopulation").addEventListener("input", (event) => board.changeOverpopulation(event));
+        document.querySelector("#minDeadCell").addEventListener("input", (event) => board.changeMinDeadCell(event));
+        document.querySelector("#maxDeadCell").addEventListener("input", (event) => board.changeMaxDeadCell(event));
     }
 
     setInitialValues() {
@@ -58,7 +63,12 @@ class Menu {
         document.querySelector("#tribesNumber").value = this.options.tribesNumber;
         document.querySelector("#innerBorders").checked = this.options.innerBorders;
         document.querySelector("#subtractGenerating").checked = this.options.subtractGenerating;
+        document.querySelector("#showFullColor").checked = this.options.showFullColor;
         document.querySelector("#gaussRange").value = this.options.gaussRange;
+        document.querySelector("#underpopulation").value = this.options.underpopulation;
+        document.querySelector("#overpopulation").value = this.options.overpopulation;
+        document.querySelector("#minDeadCell").value = this.options.minDeadCell;
+        document.querySelector("#maxDeadCell").value = this.options.maxDeadCell;
     }
 
     showAndHideMenu() {
@@ -66,8 +76,7 @@ class Menu {
             this.element.style.display = "block";
             this.hideMenuElement.style.display = "block";
             this.showMenuElement.style.display = "none";
-        }
-        else {
+        } else {
             this.element.style.display = "none";
             this.hideMenuElement.style.display = "none";
             this.showMenuElement.style.display = "block";

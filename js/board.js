@@ -38,8 +38,7 @@ class Board {
             this.element.style.width = this.options.board.width * this.options.board.fieldSize + 2 * this.options.board.width + "px";
             this.element.style.height = this.options.board.height * this.options.board.fieldSize + 2 * this.options.board.height + "px";
             this.fields.forEach((el) => el.forEach((el) => el.getElement().style.border = "1px grey solid"));
-        }
-        else {
+        } else {
             this.element.style.width = this.options.board.width * this.options.board.fieldSize + "px";
             this.element.style.height = this.options.board.height * this.options.board.fieldSize + "px";
             this.fields.forEach((el) => el.forEach((el) => el.getElement().style.border = "none"));
@@ -134,8 +133,7 @@ class Board {
                     this.fields[width][height].makeAlive();
                 }
             }
-        }
-        else {
+        } else {
             if (fieldsCopy[width][height].isAlive) {
                 if (neighborsNumber < 2 || neighborsNumber > 3) {
                     this.fields[width][height].makeDead();
@@ -262,7 +260,7 @@ class Board {
 
     changeNeighbors(event) {
         this.options.fractionNeighbors = event.target.checked;
-        this.fields.forEach((el) => el.forEach((el) => el.changeFraction()));
+        this.fields.forEach((el) => el.forEach((el) => el.changeFullColor()));
     }
 
     changeBorder(event) {
@@ -312,12 +310,10 @@ class Board {
                         if (life > this.fields[i][j].getLife()) {
                             this.fields[i][j].setColor(this.colors[tribe]);
                             this.fields[i][j].setLife(life - this.fields[i][j].getLife());
-                        }
-                        else if (this.fields[i][j].isAlive()) {
+                        } else if (this.fields[i][j].isAlive()) {
                             this.fields[i][j].setLife(this.fields[i][j].getLife() - life);
                         }
-                    }
-                    else if (life > this.fields[i][j].getLife()) {
+                    } else if (life > this.fields[i][j].getLife()) {
                         this.fields[i][j].setColor(this.colors[tribe]);
                         this.fields[i][j].setLife(life);
                     }
@@ -337,5 +333,26 @@ class Board {
 
     changeGaussRange(event) {
         this.options.gaussRange = parseInt(event.target.value);
+    }
+
+    changeFullColor(event) {
+        this.options.showFullColor = event.target.checked;
+        this.fields.forEach((el) => el.forEach((el) => el.changeFullColor()));
+    }
+
+    changeUnderpopulation(event) {
+        this.options.underpopulation = event.target.value;
+    }
+
+    changeOverpopulation(event) {
+        this.options.overpopulation = event.target.value;
+    }
+
+    changeMinDeadCell(event) {
+        this.options.minDeadCell = event.target.value;
+    }
+
+    changeMaxDeadCell(event) {
+        this.options.maxDeadCell = event.target.value;
     }
 }

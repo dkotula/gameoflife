@@ -16,5 +16,10 @@ const options = {
     tribesNumber: 1,
     innerBorders: false,
     subtractGenerating: true,
+    showFullColor: true,
     gaussRange: 50,
+    underpopulation: 0.1,
+    overpopulation: 0.6,
+    minDeadCell: 0.1,
+    maxDeadCell: 0.6,
 }
