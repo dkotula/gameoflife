@@ -305,11 +305,11 @@ class Board {
         // const volume = sigma * Math.PI;
         let sum = 0.0;
         for (let tribe = 0; tribe < this.colors.length && tribe < this.options.tribesNumber; tribe++) {
-            let x0 = (Math.floor(Math.random() * this.options.board.height));
+            let x0 = (Math.floor(Math.random() * this.options.board.width));
             let y0 = (Math.floor(Math.random() * this.options.board.height));
             for (let i = 0; i < this.options.board.height; i++) {
                 for (let j = 0; j < this.options.board.width; j++) {
-                    let life = Math.exp(-((this.fields[i][j].width - x0) * (this.fields[i][j].width - x0) / sigma + (this.fields[i][j].height - y0) * (this.fields[i][j].height - y0) / sigma));
+                    let life = this.calculateLife(x0, y0, this.fields[i][j].height, this.fields[i][j].width, sigma);
                     sum += life;
                     // life /= volume;
                     if (life < 0.0001) life = 0;
@@ -328,6 +328,30 @@ class Board {
             }
             this.fields.forEach((el) => el.forEach((el) => el.reduceLifeByVolume(sum / sum)));
         }
+    }
+
+    calculateLife(x0, y0, x, y, sigma) {
+        let distanceXMin = Math.abs(x0 - x);
+        let distanceYMin = Math.abs(y0 - y);
+
+        if (!this.options.borders.borderTop) {
+            const distanceY = y0 + this.options.board.height - y;
+            if (distanceYMin > distanceY) distanceYMin = distanceY;
+        }
+        if (!this.options.borders.borderBottom) {
+            const distanceY = y + this.options.board.height - y0;
+            if (distanceYMin > distanceY) distanceYMin = distanceY;
+        }
+        if (!this.options.borders.borderLeft) {
+            const distanceX = x0 + this.options.board.width - x;
+            if (distanceXMin > distanceX) distanceXMin = distanceX;
+        }
+        if (!this.options.borders.borderRight) {
+            const distanceX = x + this.options.board.width - x0;
+            if (distanceXMin > distanceX) distanceXMin = distanceX;
+        }
+
+        return Math.exp(-(distanceXMin * distanceXMin / sigma + distanceYMin * distanceYMin / sigma));
     }
 
     changeInnerBorders(event) {
