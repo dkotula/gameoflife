@@ -5,9 +5,7 @@ class Field {
         this.size = size;
         this.options = options;
         this.element = document.createElement("div");
-        this.element.className = "field";
-        this.element.style.width = size + "px";
-        this.element.style.height = size + "px";
+        this.element.className = "field fieldSize";
         this.alive = false;
         this.life = 0.0;
         this.color = "255,0,0";
@@ -15,12 +13,6 @@ class Field {
 
     getElement() {
         return this.element;
-    }
-
-    changeSize(size) {
-        this.size = size;
-        this.element.style.width = size + "px";
-        this.element.style.height = size + "px";
     }
 
     isAlive() {

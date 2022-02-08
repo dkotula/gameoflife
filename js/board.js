@@ -8,6 +8,9 @@ class Board {
         this.cyclesNumber = 0;
         this.isStart = false;
         this.colors = ["255,0,0", "0,255,0", "0,0,255", "255,255,0", "255,0,255", "0,255,255"];
+        this.fieldSizeStyle = document.createElement('style');
+        this.fieldSizeStyle.innerHTML = '.fieldSize { width: ' + this.options.board.fieldSize + 'px; height: ' + this.options.board.fieldSize + 'px; }';
+        document.head.appendChild(this.fieldSizeStyle);
         this.makeNewBoard();
     }
 
@@ -58,7 +61,7 @@ class Board {
             this.makeNewBoard();
         } else if (event.target.name === "size") {
             this.options.board.fieldSize = parseInt(event.target.value);
-            this.fields.forEach((el) => el.forEach((el) => el.changeSize(parseInt(event.target.value))));
+            this.fieldSizeStyle.innerHTML = '.fieldSize { width: ' + parseInt(event.target.value) + 'px; height: ' + parseInt(event.target.value) + 'px; }';
             this.changeBoardStyle();
         }
     }
@@ -323,7 +326,7 @@ class Board {
                     }
                 }
             }
-            this.fields.forEach((el) => el.forEach((el) => el.reduceLifeByVolume(sum)));
+            this.fields.forEach((el) => el.forEach((el) => el.reduceLifeByVolume(sum / sum)));
         }
     }
 
