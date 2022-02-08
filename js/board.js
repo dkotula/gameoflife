@@ -309,7 +309,7 @@ class Board {
             let y0 = (Math.floor(Math.random() * this.options.board.height));
             for (let i = 0; i < this.options.board.height; i++) {
                 for (let j = 0; j < this.options.board.width; j++) {
-                    let life = this.calculateLife(x0, y0, this.fields[i][j].height, this.fields[i][j].width, sigma);
+                    let life = this.calculateLife(x0, y0, this.fields[i][j].x, this.fields[i][j].y, sigma);
                     sum += life;
                     // life /= volume;
                     if (life < 0.0001) life = 0;

@@ -1,7 +1,7 @@
 class Field {
-    constructor(width, height, size, options) {
-        this.width = width;
-        this.height = height;
+    constructor(y, x, size, options) {
+        this.y = y;
+        this.x = x;
         this.size = size;
         this.options = options;
         this.element = document.createElement("div");
