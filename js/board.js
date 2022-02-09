@@ -326,7 +326,7 @@ class Board {
                     }
                 }
             }
-            this.fields.forEach((el) => el.forEach((el) => el.reduceLifeByVolume(sum / sum)));
+            this.fields.forEach((el) => el.forEach((el) => el.reduceLifeByVolume(sum / 5.0)));
         }
     }
 
