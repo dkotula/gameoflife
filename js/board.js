@@ -135,8 +135,9 @@ class Board {
                     this.fields[width][height].setLife(this.fields[width][height].color, neighborsNumber[0] / 2.0 + neighborsNumber[1] / 3.0);
                 }
             } else {
-                if (neighborsNumber[0] > this.options.minDeadCell && neighborsNumber[0] < this.options.maxDeadCell && neighborsNumber[1] < this.options.toManyOtherTribes) {
-                    this.fields[width][height].setLife(this.fields[width][height].color, neighborsNumber[0] / 2.0 + neighborsNumber[1] / 4.0);
+                let neighbors = this.countNeighborsNumberAndColor(width, height, fieldsCopy)
+                if (neighbors[0] > this.options.minDeadCell && neighbors[0] < this.options.maxDeadCell && neighbors[1] < this.options.toManyOtherTribes) {
+                    this.fields[width][height].setLife(neighbors[2], neighbors[0] / 2.0 + neighbors[1] / 4.0);
                 }
             }
         } else {
@@ -201,6 +202,18 @@ class Board {
     addNeighborsFraction(neighborsFraction, field1, field2) {
         if (field1.color === field2.color) neighborsFraction[0] += field2.life;
         else neighborsFraction[1] += field2.life;
+    }
+
+    countNeighborsNumberAndColor(width, height, fieldsCopy) {
+        let neighbors = [0.0, 0.0, fieldsCopy[width][height].color];
+        for (let tribe = 0; tribe < this.colors.length && tribe < this.options.tribesNumber; tribe++) {
+            fieldsCopy[width][height].color = this.colors[tribe];
+            const neighborsFraction = this.countNeighborsFraction(width, height, fieldsCopy);
+            if (neighborsFraction[0] > neighbors[0]) {
+                neighbors = [neighborsFraction[0], neighborsFraction[1], fieldsCopy[width][height].color];
+            }
+        }
+        return neighbors;
     }
 
     insertShape(configurations) {
