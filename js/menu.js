@@ -51,6 +51,7 @@ class Menu {
         document.querySelector("#overpopulation").addEventListener("input", (event) => board.changeOverpopulation(event));
         document.querySelector("#minDeadCell").addEventListener("input", (event) => board.changeMinDeadCell(event));
         document.querySelector("#maxDeadCell").addEventListener("input", (event) => board.changeMaxDeadCell(event));
+        document.querySelector("#toManyOtherTribes").addEventListener("input", (event) => board.changeToManyOtherTribes(event));
     }
 
     setInitialValues() {
@@ -69,6 +70,7 @@ class Menu {
         document.querySelector("#overpopulation").value = this.options.overpopulation;
         document.querySelector("#minDeadCell").value = this.options.minDeadCell;
         document.querySelector("#maxDeadCell").value = this.options.maxDeadCell;
+        document.querySelector("#toManyOtherTribes").value = this.options.toManyOtherTribes;
     }
 
     showAndHideMenu() {

@@ -155,11 +155,13 @@
         </div>
 
         <div>
-            Dead cell comes alive <br/>
-            <label for="minDeadCell">for a number of neighbors greater than:</label>
-            <input id="minDeadCell" max="10" min="0" name="minDeadCell" step="0.01" type="number" value="2"><br/>
+            Dead cell comes alive
+            <label for="minDeadCell">for a number of neighbors of the same tribe greater than:</label>
+            <input id="minDeadCell" max="10" min="0" name="minDeadCell" step="0.01" type="number" value="2">
             <label for="maxDeadCell">and less than:</label>
             <input id="maxDeadCell" max="10" min="0" name="maxDeadCell" step="0.01" type="number" value="3">
+            <label for="toManyOtherTribes">and for a number of neighbors of the others tribes less than:</label>
+            <input id="toManyOtherTribes" max="10" min="0" name="toManyOtherTribes" step="0.01" type="number" value="3">
         </div>
 
         <div>

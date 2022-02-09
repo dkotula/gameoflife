@@ -33,6 +33,7 @@ td {
     border-right: 2px black solid;
     padding: 5px;
     min-width: 350px;
+    width: 350px;
     background-color: #c5eee2;
     position: relative;
 }

@@ -131,9 +131,12 @@ class Board {
                 if (neighborsNumber[0] < this.options.underpopulation || neighborsNumber[0] > this.options.overpopulation) {
                     this.fields[width][height].makeDead();
                 }
+                else {
+                    this.fields[width][height].setLife(this.fields[width][height].color, neighborsNumber[0] / 2.0 + neighborsNumber[1] / 3.0);
+                }
             } else {
-                if (neighborsNumber[0] > this.options.minDeadCell && neighborsNumber[0] < this.options.maxDeadCell) {
-                    this.fields[width][height].setLife(this.fields[width][height].color, neighborsNumber[0] / 2.0);
+                if (neighborsNumber[0] > this.options.minDeadCell && neighborsNumber[0] < this.options.maxDeadCell && neighborsNumber[1] < this.options.toManyOtherTribes) {
+                    this.fields[width][height].setLife(this.fields[width][height].color, neighborsNumber[0] / 2.0 + neighborsNumber[1] / 4.0);
                 }
             }
         } else {
@@ -389,5 +392,9 @@ class Board {
 
     changeMaxDeadCell(event) {
         this.options.maxDeadCell = event.target.value;
+    }
+
+    changeToManyOtherTribes(event) {
+        this.options.toManyOtherTribes = event.target.value;
     }
 }
