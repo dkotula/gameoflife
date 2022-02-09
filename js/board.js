@@ -303,8 +303,8 @@ class Board {
         this.makeNewBoard();
         const sigma = this.options.board.height * this.options.board.height * this.options.gaussRange / 500;
         // const volume = sigma * Math.PI;
-        let sum = 0.0;
         for (let tribe = 0; tribe < this.colors.length && tribe < this.options.tribesNumber; tribe++) {
+            let sum = 0.0;
             let x0 = (Math.floor(Math.random() * this.options.board.width));
             let y0 = (Math.floor(Math.random() * this.options.board.height));
             for (let i = 0; i < this.options.board.height; i++) {
