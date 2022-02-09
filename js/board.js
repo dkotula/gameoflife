@@ -133,7 +133,7 @@ class Board {
                 }
             } else {
                 if (neighborsNumber[0] > this.options.minDeadCell && neighborsNumber[0] < this.options.maxDeadCell) {
-                    this.fields[width][height].setLife(neighborsNumber[0] / 2.0);
+                    this.fields[width][height].setLife(this.fields[width][height].color, neighborsNumber[0] / 2.0);
                 }
             }
         } else {
@@ -320,14 +320,12 @@ class Board {
                     if (life < 0.0001) life = 0;
                     if (this.options.subtractGenerating) {
                         if (life > this.fields[i][j].getLife()) {
-                            this.fields[i][j].setColor(this.colors[tribe]);
-                            this.fields[i][j].setLife(life - this.fields[i][j].getLife());
+                            this.fields[i][j].setLife(this.colors[tribe], life - this.fields[i][j].getLife());
                         } else if (this.fields[i][j].isAlive()) {
-                            this.fields[i][j].setLife(this.fields[i][j].getLife() - life);
+                            this.fields[i][j].setLife(this.fields[i][j].color, this.fields[i][j].getLife() - life);
                         }
                     } else if (life > this.fields[i][j].getLife()) {
-                        this.fields[i][j].setColor(this.colors[tribe]);
-                        this.fields[i][j].setLife(life);
+                        this.fields[i][j].setLife(this.colors[tribe], life);
                     }
                 }
             }

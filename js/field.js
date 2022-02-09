@@ -44,14 +44,11 @@ class Field {
         return this.life;
     }
 
-    setLife(life) {
+    setLife(color, life) {
+        this.color = color;
         this.life = life;
         this.alive = true;
         this.changeFullColor();
-    }
-
-    setColor(color) {
-        this.color = color;
     }
 
     getColor() {
