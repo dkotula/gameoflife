@@ -1,7 +1,8 @@
 class Tests {
-    constructor(board, options) {
+    constructor(board, options, menu) {
         this.board = board;
         this.options = options;
+        this.menu = menu;
     }
 
     makeTests() {
@@ -151,5 +152,13 @@ class Tests {
         anchor.download = name + ".txt";
         anchor.click();
         window.URL.revokeObjectURL(url);
+    }
+
+    setOptions(options) {
+        for (let option in options) {
+            if (this.options.hasOwnProperty(option))
+                this.options[option] = options[option];
+        }
+        this.menu.setInitialValues();
     }
 }

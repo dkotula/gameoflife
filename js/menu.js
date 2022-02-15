@@ -1,7 +1,8 @@
 class Menu {
-    constructor(options, configurations) {
+    constructor(options, configurations, board) {
         this.options = options;
         this.configurations = configurations;
+        this.board = board;
         this.hiddenMenu = false;
         this.element = document.querySelector("#menu");
         this.hideMenuElement = document.querySelector("#hideMenu");
@@ -71,6 +72,7 @@ class Menu {
         document.querySelector("#minDeadCell").value = this.options.minDeadCell;
         document.querySelector("#maxDeadCell").value = this.options.maxDeadCell;
         document.querySelector("#toManyOtherTribes").value = this.options.toManyOtherTribes;
+        this.board.setBoundaries();
     }
 
     showAndHideMenu() {

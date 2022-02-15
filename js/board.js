@@ -31,7 +31,6 @@ class Board {
                 this.element.appendChild(this.fields[i][j].getElement());
             }
         }
-        this.setBoundaries();
     }
 
     changeBoardStyle() {
