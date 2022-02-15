@@ -3,11 +3,13 @@ class Tests {
         this.board = board;
         this.options = options;
         this.menu = menu;
+        this.makeTests();
     }
 
     makeTests() {
         // this.meanAndDensityTest();
         // this.meanTest();
+        this.getCenterOfWeight();
     }
 
     meanAndDensityTest() {
@@ -160,5 +162,9 @@ class Tests {
                 this.options[option] = options[option];
         }
         this.menu.setInitialValues();
+    }
+
+    getCenterOfWeight() {
+        
     }
 }

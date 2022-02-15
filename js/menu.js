@@ -9,6 +9,7 @@ class Menu {
         this.showMenuElement = document.querySelector("#showMenuContainer");
         this.makeMenu();
         this.setInitialValues();
+        this.addListeners();
     }
 
     makeMenu() {
@@ -26,33 +27,33 @@ class Menu {
         document.querySelector("#configurations").appendChild(option);
     }
 
-    addListeners(board) {
-        document.querySelectorAll(".ranges").forEach((el) => el.addEventListener("input", (event) => board.changeBoard(event)));
-        document.querySelector("#start").addEventListener("click", () => board.start());
-        document.querySelector("#stop").addEventListener("click", () => board.stop());
-        document.querySelector("#restart").addEventListener("click", () => board.restart());
-        document.querySelector("#insertShape").addEventListener("click", () => board.insertShape(this.configurations));
-        document.querySelector("#fetchShape").addEventListener("click", () => board.fetchShape());
-        document.querySelector("#fractionLife").addEventListener("change", (event) => board.changeNeighbors(event));
-        document.querySelector("#time").addEventListener("input", (event) => board.changeTimeInterval(event));
-        document.querySelector("#clear").addEventListener("click", () => board.clearBoard());
-        document.querySelector("#probability").addEventListener("input", (event) => board.changeProbability(event));
-        document.querySelectorAll(".border").forEach((el) => el.addEventListener("click", (event) => board.changeBorder(event)));
-        document.querySelector("#bordersOn").addEventListener("click", () => board.boundariesOn());
-        document.querySelector("#bordersOff").addEventListener("click", () => board.boundariesOff());
-        document.querySelector("#tribesNumber").addEventListener("input", (event) => board.changeTribesNumber(event));
-        document.querySelector("#generateTribes").addEventListener("click", () => board.generateTribes());
-        document.querySelector("#innerBorders").addEventListener("change", (event) => board.changeInnerBorders(event));
-        document.querySelector("#subtractGenerating").addEventListener("change", (event) => board.changeSubtractGenerating(event));
-        document.querySelector("#gaussRange").addEventListener("input", (event) => board.changeGaussRange(event));
+    addListeners() {
+        document.querySelectorAll(".ranges").forEach((el) => el.addEventListener("input", (event) => this.board.changeBoard(event)));
+        document.querySelector("#start").addEventListener("click", () => this.board.start());
+        document.querySelector("#stop").addEventListener("click", () => this.board.stop());
+        document.querySelector("#restart").addEventListener("click", () => this.board.restart());
+        document.querySelector("#insertShape").addEventListener("click", () => this.board.insertShape(this.configurations));
+        document.querySelector("#fetchShape").addEventListener("click", () => this.board.fetchShape());
+        document.querySelector("#fractionLife").addEventListener("change", (event) => this.board.changeNeighbors(event));
+        document.querySelector("#time").addEventListener("input", (event) => this.board.changeTimeInterval(event));
+        document.querySelector("#clear").addEventListener("click", () => this.board.clearBoard());
+        document.querySelector("#probability").addEventListener("input", (event) => this.board.changeProbability(event));
+        document.querySelectorAll(".border").forEach((el) => el.addEventListener("click", (event) => this.board.changeBorder(event)));
+        document.querySelector("#bordersOn").addEventListener("click", () => this.board.boundariesOn());
+        document.querySelector("#bordersOff").addEventListener("click", () => this.board.boundariesOff());
+        document.querySelector("#tribesNumber").addEventListener("input", (event) => this.board.changeTribesNumber(event));
+        document.querySelector("#generateTribes").addEventListener("click", () => this.board.generateTribes());
+        document.querySelector("#innerBorders").addEventListener("change", (event) => this.board.changeInnerBorders(event));
+        document.querySelector("#subtractGenerating").addEventListener("change", (event) => this.board.changeSubtractGenerating(event));
+        document.querySelector("#gaussRange").addEventListener("input", (event) => this.board.changeGaussRange(event));
         document.querySelector("#hideMenu").addEventListener("click", () => this.showAndHideMenu());
         document.querySelector("#showMenu").addEventListener("click", () => this.showAndHideMenu());
-        document.querySelector("#showFullColor").addEventListener("change", (event) => board.changeFullColor(event));
-        document.querySelector("#underpopulation").addEventListener("input", (event) => board.changeUnderpopulation(event));
-        document.querySelector("#overpopulation").addEventListener("input", (event) => board.changeOverpopulation(event));
-        document.querySelector("#minDeadCell").addEventListener("input", (event) => board.changeMinDeadCell(event));
-        document.querySelector("#maxDeadCell").addEventListener("input", (event) => board.changeMaxDeadCell(event));
-        document.querySelector("#toManyOtherTribes").addEventListener("input", (event) => board.changeToManyOtherTribes(event));
+        document.querySelector("#showFullColor").addEventListener("change", (event) => this.board.changeFullColor(event));
+        document.querySelector("#underpopulation").addEventListener("input", (event) => this.board.changeUnderpopulation(event));
+        document.querySelector("#overpopulation").addEventListener("input", (event) => this.board.changeOverpopulation(event));
+        document.querySelector("#minDeadCell").addEventListener("input", (event) => this.board.changeMinDeadCell(event));
+        document.querySelector("#maxDeadCell").addEventListener("input", (event) => this.board.changeMaxDeadCell(event));
+        document.querySelector("#toManyOtherTribes").addEventListener("input", (event) => this.board.changeToManyOtherTribes(event));
     }
 
     setInitialValues() {
