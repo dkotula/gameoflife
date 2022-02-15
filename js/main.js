@@ -7,7 +7,7 @@
         this.element.appendChild(this.board.getElement());
         this.menu = new Menu(this.options, this.configurations);
         this.menu.addListeners(this.board);
-        this.tests = new Tests(this.board);
+        this.tests = new Tests(this.board, this.options);
         this.tests.makeTests();
     }
 

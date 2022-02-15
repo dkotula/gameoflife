@@ -1,6 +1,7 @@
 class Tests {
-    constructor(board) {
+    constructor(board, options) {
         this.board = board;
+        this.options = options;
     }
 
     makeTests() {
@@ -46,7 +47,7 @@ class Tests {
             }
             results.push(this.board.cyclesNumber);
         }
-        this.saveToFile("mean_p" + this.board.probability, this.array1dToString(results));
+        this.saveToFile("mean_p" + this.options.probability, this.array1dToString(results));
     }
 
     calculateDensity(rounds, cycles, probability) {
@@ -58,24 +59,24 @@ class Tests {
             borderLeft: false,
             borderRight: true
         }, false);
-        for (let height = 0; height < this.board.height; height++) {
+        for (let height = 0; height < this.options.board.height; height++) {
             results[height] = [];
-            for (let width = 0; width < this.board.width; width++) {
+            for (let width = 0; width < this.options.board.width; width++) {
                 results[height][width] = 0;
             }
         }
         for (let i = 0; i < cycles; i++) {
             this.board.makeNewBoard();
             this.board.coordinatesToShape([4, 1, 4, 2, 4, 7, 4, 8, 5, 1, 5, 2, 5, 7, 5, 8]);
-            for (let height = 0; height < this.board.height; height++) {
+            for (let height = 0; height < this.options.board.height; height++) {
                 resultsTemp[height] = [];
-                for (let width = 0; width < this.board.width; width++) {
+                for (let width = 0; width < this.options.board.width; width++) {
                     resultsTemp[height][width] = 0;
                 }
             }
             for (let j = 0; j < rounds - 1; j++) {
-                for (let height = 0; height < this.board.height; height++) {
-                    for (let width = 0; width < this.board.width; width++) {
+                for (let height = 0; height < this.options.board.height; height++) {
+                    for (let width = 0; width < this.options.board.width; width++) {
                         if (this.board.fields[height][width].isAlive()) {
                             resultsTemp[height][width]++;
                         }
@@ -83,8 +84,8 @@ class Tests {
                 }
                 this.board.steps();
             }
-            for (let height = 0; height < this.board.height; height++) {
-                for (let width = 0; width < this.board.width; width++) {
+            for (let height = 0; height < this.options.board.height; height++) {
+                for (let width = 0; width < this.options.board.width; width++) {
                     if (this.board.fields[height][width].isAlive()) {
                         resultsTemp[height][width]++;
                     }
@@ -92,20 +93,20 @@ class Tests {
                 }
             }
         }
-        for (let height = 0; height < this.board.height; height++) {
-            for (let width = 0; width < this.board.width; width++) {
+        for (let height = 0; height < this.options.board.height; height++) {
+            for (let width = 0; width < this.options.board.width; width++) {
                 results[height][width] /= cycles;
             }
         }
-        this.saveToFile("density_r" + rounds + "_p" + this.board.probability, this.array2dToString(results));
+        this.saveToFile("density_r" + rounds + "_p" + this.options.probability, this.array2dToString(results));
     }
 
     setDefault(width, height, probability, boundaries, fractionLife) {
-        this.board.width = width;
-        this.board.height = height;
-        this.board.probability = probability;
-        this.board.borders = boundaries;
-        this.board.fractionNeighbors = fractionLife;
+        this.options.board.width = width;
+        this.options.board.height = height;
+        this.options.probability = probability;
+        this.options.borders = boundaries;
+        this.options.fractionNeighbors = fractionLife;
         document.querySelectorAll(".ranges")[0].value = width;
         document.querySelectorAll(".ranges")[1].value = height;
         document.querySelector("#probability").value = probability;
@@ -114,8 +115,8 @@ class Tests {
     }
 
     ifAllDead() {
-        for (let i = 0; i < this.board.height; i++) {
-            for (let j = 0; j < this.board.width; j++) {
+        for (let i = 0; i < this.options.board.height; i++) {
+            for (let j = 0; j < this.options.board.width; j++) {
                 if (this.board.fields[i][j].isAlive()) {
                     return false;
                 }
