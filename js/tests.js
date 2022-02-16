@@ -196,7 +196,7 @@ class Tests {
         this.board.generateTribes();
 
         let results = [this.calculateWeight()];
-        for (let i = 0; i < 19; i++) {
+        for (let i = 0; i < 0; i++) {
             this.board.steps();
             if (this.ifAllDead()) {
                 break;
@@ -219,39 +219,35 @@ class Tests {
             let weight = 0.0;
             let centerX = 0.0;
             for (let j = 0; j < this.options.board.width; j++) {
-                if (weight + this.board.fields[i][j].getLife() !== 0.0) {
-                    centerX = (weight * centerX + this.board.fields[i][j].getLife() * (j + 1)) / (weight + this.board.fields[i][j].getLife());
-                    weight += this.board.fields[i][j].getLife();
-                }
+                weight += this.board.fields[i][j].getLife();
+                centerX += this.board.fields[i][j].getLife() * (j + 1)
             }
-            centerXVect.push({center: centerX, weight: weight})
+            if (weight !== 0.0) centerXVect.push({center: centerX / weight, weight: weight});
+            else centerXVect.push({center: 0.0, weight: 0.0});
         }
 
         for (let i = 0; i < centerXVect.length; i++) {
-            if (weightX + centerXVect[i].weight !== 0.0) {
-                x = (weightX * x + centerXVect[i].weight * centerXVect[i].center) / (weightX + centerXVect[i].weight);
-                weightX += centerXVect[i].weight;
-            }
+            weightX += centerXVect[i].weight;
+            x += centerXVect[i].weight * centerXVect[i].center;
         }
-        
-        for(let j = 0; j < this.options.board.width; j++) {
+        if (weightX !== 0.0) x /= weightX;
+
+        for (let j = 0; j < this.options.board.width; j++) {
             let weight = 0.0;
             let centerY = 0.0;
             for (let i = 0; i < this.options.board.height; i++) {
-                if (weight + this.board.fields[i][j].getLife() !== 0.0) {
-                    centerY = (weight * centerY + this.board.fields[i][j].getLife() * (i + 1)) / (weight + this.board.fields[i][j].getLife());
-                    weight += this.board.fields[i][j].getLife();
-                }
+                weight += this.board.fields[i][j].getLife();
+                centerY += this.board.fields[i][j].getLife() * (i + 1)
             }
-            centerYVect.push({center: centerY, weight: weight})
+            if (weight !== 0.0) centerYVect.push({center: centerY / weight, weight: weight});
+            else centerYVect.push({center: 0.0, weight: 0.0});
         }
 
         for (let i = 0; i < centerYVect.length; i++) {
-            if (weightY + centerYVect[i].weight !== 0.0) {
-                y = (weightY * y + centerYVect[i].weight * centerYVect[i].center) / (weightY + centerYVect[i].weight);
-                weightY += centerYVect[i].weight;
-            }
+            weightY += centerYVect[i].weight;
+            y += centerYVect[i].weight * centerYVect[i].center;
         }
+        if (weightY !== 0.0) y /= weightY;
         
         return [{x: x - 1, y: y - 1, weight: weightX}];
     }
