@@ -9,7 +9,7 @@ class Tests {
     makeTests() {
         // this.meanAndDensityTest();
         // this.meanTest();
-        this.getCenterOfWeight();
+        this.getCenterOfWeight(2, 20);
     }
 
     meanAndDensityTest() {
@@ -164,7 +164,8 @@ class Tests {
         this.menu.setInitialValues();
     }
 
-    getCenterOfWeight() {
+    getCenterOfWeight(tribesNumber, cyclesNumber) {
+        let tribesResults = [];
         this.setOptions({
             board: {
                 width: 10,
@@ -180,7 +181,7 @@ class Tests {
             },
             fractionNeighbors: true,
             timeInterval: 200,
-            tribesNumber: 1,
+            tribesNumber: tribesNumber,
             innerBorders: false,
             subtractGenerating: true,
             showFullColor: false,
@@ -195,19 +196,26 @@ class Tests {
         this.board.makeNewBoard();
         this.board.generateTribes();
 
-        let results = [this.calculateWeight()];
-        for (let i = 0; i < 0; i++) {
+        for (let tribe = 0; tribe < tribesNumber; tribe++) {
+            tribesResults[tribe] = [this.calculateWeight(this.options.colors[tribe])];
+        }
+
+        for (let i = 0; i < cyclesNumber - 1; i++) {
             this.board.steps();
             if (this.ifAllDead()) {
                 break;
             }
-            results.push(this.calculateWeight());
+            for (let tribe = 0; tribe < tribesNumber; tribe++) {
+                tribesResults[tribe].push(this.calculateWeight(this.options.colors[tribe]));
+            }
         }
 
-        this.saveToFile("weight1Tribe", this.centerOfWeightToString(results));
+        for (let tribe = 0; tribe < tribesNumber; tribe++) {
+            this.saveToFile("weight" + tribesNumber + "Tribe" + tribe, this.centerOfWeightToString(tribesResults[tribe]));
+        }
     }
 
-    calculateWeight() {
+    calculateWeight(color) {
         let x = 0.0;
         let y = 0.0;
         let weightX = 0.0;
@@ -219,8 +227,10 @@ class Tests {
             let weight = 0.0;
             let centerX = 0.0;
             for (let j = 0; j < this.options.board.width; j++) {
-                weight += this.board.fields[i][j].getLife();
-                centerX += this.board.fields[i][j].getLife() * (j + 1);
+                if (this.board.fields[i][j].getColor() === color) {
+                    weight += this.board.fields[i][j].getLife();
+                    centerX += this.board.fields[i][j].getLife() * (j + 1);
+                }
             }
             if (weight !== 0.0) centerXVect.push({center: centerX / weight, weight: weight});
             else centerXVect.push({center: 0.0, weight: 0.0});
@@ -236,8 +246,10 @@ class Tests {
             let weight = 0.0;
             let centerY = 0.0;
             for (let i = 0; i < this.options.board.height; i++) {
-                weight += this.board.fields[i][j].getLife();
-                centerY += this.board.fields[i][j].getLife() * (i + 1);
+                if (this.board.fields[i][j].getColor() === color) {
+                    weight += this.board.fields[i][j].getLife();
+                    centerY += this.board.fields[i][j].getLife() * (i + 1);
+                }
             }
             if (weight !== 0.0) centerYVect.push({center: centerY / weight, weight: weight});
             else centerYVect.push({center: 0.0, weight: 0.0});
