@@ -7,7 +7,6 @@ class Board {
         this.interval = null;
         this.cyclesNumber = 0;
         this.isStart = false;
-        this.colors = ["255,0,0", "0,255,0", "0,0,255", "255,255,0", "255,0,255", "0,255,255"];
         this.fieldSizeStyle = document.createElement('style');
         this.fieldSizeStyle.innerHTML = '.fieldSize { width: ' + this.options.board.fieldSize + 'px; height: ' + this.options.board.fieldSize + 'px; }';
         document.head.appendChild(this.fieldSizeStyle);
@@ -205,8 +204,8 @@ class Board {
 
     countNeighborsNumberAndColor(width, height, fieldsCopy) {
         let neighbors = [0.0, 0.0, fieldsCopy[width][height].color];
-        for (let tribe = 0; tribe < this.colors.length && tribe < this.options.tribesNumber; tribe++) {
-            fieldsCopy[width][height].color = this.colors[tribe];
+        for (let tribe = 0; tribe < this.options.colors.length && tribe < this.options.tribesNumber; tribe++) {
+            fieldsCopy[width][height].color = this.options.colors[tribe];
             const neighborsFraction = this.countNeighborsFraction(width, height, fieldsCopy);
             if (neighborsFraction[0] > neighbors[0]) {
                 neighbors = [neighborsFraction[0], neighborsFraction[1], fieldsCopy[width][height].color];
@@ -323,7 +322,7 @@ class Board {
         this.makeNewBoard();
         const sigma = this.options.board.height * this.options.board.height * this.options.gaussRange / 500;
         // const volume = sigma * Math.PI;
-        for (let tribe = 0; tribe < this.colors.length && tribe < this.options.tribesNumber; tribe++) {
+        for (let tribe = 0; tribe < this.options.colors.length && tribe < this.options.tribesNumber; tribe++) {
             let sum = 0.0;
             let x0 = (Math.floor(Math.random() * this.options.board.width));
             let y0 = (Math.floor(Math.random() * this.options.board.height));
@@ -335,12 +334,12 @@ class Board {
                     if (life < 0.0001) life = 0;
                     if (this.options.subtractGenerating) {
                         if (life > this.fields[i][j].getLife()) {
-                            this.fields[i][j].setLife(this.colors[tribe], life - this.fields[i][j].getLife());
+                            this.fields[i][j].setLife(this.options.colors[tribe], life - this.fields[i][j].getLife());
                         } else if (this.fields[i][j].isAlive()) {
                             this.fields[i][j].setLife(this.fields[i][j].color, this.fields[i][j].getLife() - life);
                         }
                     } else if (life > this.fields[i][j].getLife()) {
-                        this.fields[i][j].setLife(this.colors[tribe], life);
+                        this.fields[i][j].setLife(this.options.colors[tribe], life);
                     }
                 }
             }

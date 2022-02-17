@@ -220,7 +220,7 @@ class Tests {
             let centerX = 0.0;
             for (let j = 0; j < this.options.board.width; j++) {
                 weight += this.board.fields[i][j].getLife();
-                centerX += this.board.fields[i][j].getLife() * (j + 1)
+                centerX += this.board.fields[i][j].getLife() * (j + 1);
             }
             if (weight !== 0.0) centerXVect.push({center: centerX / weight, weight: weight});
             else centerXVect.push({center: 0.0, weight: 0.0});
@@ -237,7 +237,7 @@ class Tests {
             let centerY = 0.0;
             for (let i = 0; i < this.options.board.height; i++) {
                 weight += this.board.fields[i][j].getLife();
-                centerY += this.board.fields[i][j].getLife() * (i + 1)
+                centerY += this.board.fields[i][j].getLife() * (i + 1);
             }
             if (weight !== 0.0) centerYVect.push({center: centerY / weight, weight: weight});
             else centerYVect.push({center: 0.0, weight: 0.0});
