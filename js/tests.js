@@ -9,7 +9,7 @@ class Tests {
     makeTests() {
         // this.meanAndDensityTest();
         // this.meanTest();
-        this.getCenterOfWeight(2, 20);
+        // this.getCenterOfWeight(5, 100);
     }
 
     meanAndDensityTest() {
@@ -168,9 +168,9 @@ class Tests {
         let tribesResults = [];
         this.setOptions({
             board: {
-                width: 10,
-                height: 10,
-                fieldSize: 50,
+                width: 100,
+                height: 100,
+                fieldSize: 5,
             },
             probability: 100,
             borders: {
@@ -183,9 +183,10 @@ class Tests {
             timeInterval: 200,
             tribesNumber: tribesNumber,
             innerBorders: false,
-            subtractGenerating: true,
+            subtractGenerating: false,
             showFullColor: false,
-            gaussRange: 20,
+            gaussRange: 300,
+            massOfTribe: 100,
             underpopulation: 0.3,
             overpopulation: 0.6,
             minDeadCell: 0.45,

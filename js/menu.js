@@ -46,6 +46,7 @@ class Menu {
         document.querySelector("#innerBorders").addEventListener("change", (event) => this.board.changeInnerBorders(event));
         document.querySelector("#subtractGenerating").addEventListener("change", (event) => this.board.changeSubtractGenerating(event));
         document.querySelector("#gaussRange").addEventListener("input", (event) => this.board.changeGaussRange(event));
+        document.querySelector("#massOfTribe").addEventListener("input", (event) => this.board.changeMassOfTribe(event));
         document.querySelector("#hideMenu").addEventListener("click", () => this.showAndHideMenu());
         document.querySelector("#showMenu").addEventListener("click", () => this.showAndHideMenu());
         document.querySelector("#showFullColor").addEventListener("change", (event) => this.board.changeFullColor(event));
@@ -68,6 +69,7 @@ class Menu {
         document.querySelector("#subtractGenerating").checked = this.options.subtractGenerating;
         document.querySelector("#showFullColor").checked = this.options.showFullColor;
         document.querySelector("#gaussRange").value = this.options.gaussRange;
+        document.querySelector("#massOfTribe").value = this.options.massOfTribe;
         document.querySelector("#underpopulation").value = this.options.underpopulation;
         document.querySelector("#overpopulation").value = this.options.overpopulation;
         document.querySelector("#minDeadCell").value = this.options.minDeadCell;

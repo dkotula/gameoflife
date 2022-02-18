@@ -44,6 +44,7 @@ class Board {
             this.element.style.height = this.options.board.height * this.options.board.fieldSize + "px";
             this.fields.forEach((el) => el.forEach((el) => el.getElement().style.border = "none"));
         }
+        this.fieldSizeStyle.innerHTML = '.fieldSize { width: ' + this.options.board.fieldSize + 'px; height: ' + this.options.board.fieldSize + 'px; }';
     }
 
     getElement() {
@@ -59,7 +60,7 @@ class Board {
             this.makeNewBoard();
         } else if (event.target.name === "size") {
             this.options.board.fieldSize = parseInt(event.target.value);
-            this.fieldSizeStyle.innerHTML = '.fieldSize { width: ' + parseInt(event.target.value) + 'px; height: ' + parseInt(event.target.value) + 'px; }';
+            this.fieldSizeStyle.innerHTML = '.fieldSize { width: ' + this.options.board.fieldSize + 'px; height: ' + this.options.board.fieldSize + 'px; }';
             this.changeBoardStyle();
         }
     }
@@ -320,8 +321,7 @@ class Board {
 
     generateTribes() {
         this.makeNewBoard();
-        const sigma = this.options.board.height * this.options.board.height * this.options.gaussRange / 500;
-        // const volume = sigma * Math.PI;
+        const sigma = this.options.gaussRange / 5;
         for (let tribe = 0; tribe < this.options.colors.length && tribe < this.options.tribesNumber; tribe++) {
             let sum = 0.0;
             let x0 = (Math.floor(Math.random() * this.options.board.width));
@@ -330,7 +330,6 @@ class Board {
                 for (let j = 0; j < this.options.board.width; j++) {
                     let life = this.calculateLife(x0, y0, this.fields[i][j].x, this.fields[i][j].y, sigma);
                     sum += life;
-                    // life /= volume;
                     if (life < 0.0001) life = 0;
                     if (this.options.subtractGenerating) {
                         if (life > this.fields[i][j].getLife()) {
@@ -343,7 +342,7 @@ class Board {
                     }
                 }
             }
-            this.fields.forEach((el) => el.forEach((el) => el.reduceLifeByVolume(sum / 5.0)));
+            this.fields.forEach((el) => el.forEach((el) => el.reduceLifeByVolume(sum / this.options.massOfTribe)));
         }
     }
 
@@ -382,6 +381,10 @@ class Board {
 
     changeGaussRange(event) {
         this.options.gaussRange = parseInt(event.target.value);
+    }
+
+    changeMassOfTribe(event) {
+        this.options.massOfTribe = parseInt(event.target.value);
     }
 
     changeFullColor(event) {

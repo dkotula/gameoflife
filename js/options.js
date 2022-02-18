@@ -18,6 +18,7 @@ const options = {
     subtractGenerating: true,
     showFullColor: false,
     gaussRange: 20,
+    massOfTribe: 5,
     underpopulation: 0.3,
     overpopulation: 0.6,
     minDeadCell: 0.45,
