@@ -55,6 +55,7 @@ class Menu {
         document.querySelector("#minDeadCell").addEventListener("input", (event) => this.board.changeMinDeadCell(event));
         document.querySelector("#maxDeadCell").addEventListener("input", (event) => this.board.changeMaxDeadCell(event));
         document.querySelector("#toManyOtherTribes").addEventListener("input", (event) => this.board.changeToManyOtherTribes(event));
+        document.querySelector("#setBlock").addEventListener("change", (event) => this.board.changeSetBlock(event));
     }
 
     setInitialValues() {
@@ -75,6 +76,7 @@ class Menu {
         document.querySelector("#minDeadCell").value = this.options.minDeadCell;
         document.querySelector("#maxDeadCell").value = this.options.maxDeadCell;
         document.querySelector("#toManyOtherTribes").value = this.options.toManyOtherTribes;
+        document.querySelector("#setBlock").checked = this.options.setBlock;
         this.board.setBoundaries();
     }
 

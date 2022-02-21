@@ -65,8 +65,8 @@
         </div>
 
         <div>
-            <button id="bordersOn">Enable all boundaries</button>
-            <button id="bordersOff">Disable all boundaries</button>
+            <button id="bordersOn">Enable all borders</button>
+            <button id="bordersOff">Disable all borders</button>
         </div>
 
         <div style="display:flex; align-items:center;">
@@ -107,6 +107,12 @@
                 <input checked id="fractionLife" type="checkbox">
                 <span class="slider round"></span>
             </label>
+            
+            Show full color
+            <label class="switch">
+                <input id="showFullColor" type="checkbox">
+                <span class="slider round"></span>
+            </label>
         </div>
 
         <div>
@@ -126,13 +132,6 @@
         <div>Subtract when generating
             <label class="switch">
                 <input checked id="subtractGenerating" type="checkbox">
-                <span class="slider round"></span>
-            </label>
-        </div>
-
-        <div>Show full color
-            <label class="switch">
-                <input checked id="showFullColor" type="checkbox">
                 <span class="slider round"></span>
             </label>
         </div>
@@ -167,6 +166,13 @@
             <input id="maxDeadCell" max="10" min="0" name="maxDeadCell" step="0.01" type="number" value="3">
             <label for="toManyOtherTribes">and for a number of neighbors of the others tribes less than:</label>
             <input id="toManyOtherTribes" max="10" min="0" name="toManyOtherTribes" step="0.01" type="number" value="3">
+        </div>
+
+        <div>Set block
+            <label class="switch">
+                <input id="setBlock" type="checkbox">
+                <span class="slider round"></span>
+            </label>
         </div>
 
         <div>

@@ -37,7 +37,7 @@ class Field {
     }
 
     makeBlock() {
-        this.alive = false;
+        this.type = "block";
         this.color = "127,127,127";
         this.element.style.backgroundColor = "grey";
     }

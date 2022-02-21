@@ -413,4 +413,8 @@ class Board {
     changeToManyOtherTribes(event) {
         this.options.toManyOtherTribes = event.target.value;
     }
+
+    changeSetBlock(event) {
+        this.options.setBlock = event.target.checked;
+    }
 }
