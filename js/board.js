@@ -84,7 +84,12 @@ class Board {
 
     fieldClick(width, height) {
         if (!this.isStart) {
-            this.fields[width][height].click();
+            if (this.options.setBlock) {
+                this.fields[width][height].makeBlock();
+            }
+            else {
+                this.fields[width][height].click();
+            }
         }
     }
 
