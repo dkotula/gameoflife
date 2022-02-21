@@ -6,9 +6,9 @@ class Field {
         this.options = options;
         this.element = document.createElement("div");
         this.element.className = "field fieldSize";
-        this.alive = false;
         this.life = 0.0;
         this.color = "255,0,0";
+        this.type = "dead";
     }
 
     getElement() {
@@ -16,26 +16,36 @@ class Field {
     }
 
     isAlive() {
-        return this.alive;
+        return this.type === "alive";
+    }
+
+    getType() {
+        return this.type;
     }
 
     makeAlive() {
         this.life = (Math.floor(Math.random() * 50) + 51) / 100;
-        this.alive = true;
+        this.type = "alive";
         this.changeFullColor();
 
     }
 
     makeDead() {
-        this.alive = false;
+        this.type = "dead";
         this.life = 0.0;
         this.element.style.backgroundColor = "white";
     }
 
+    makeBlock() {
+        this.alive = false;
+        this.color = "127,127,127";
+        this.element.style.backgroundColor = "grey";
+    }
+
     click() {
-        if (this.alive) {
+        if (this.type === "alive") {
             this.makeDead();
-        } else {
+        } else if (this.type === "dead") {
             this.makeAlive();
         }
     }
@@ -47,7 +57,10 @@ class Field {
     setLife(color, life) {
         this.color = color;
         this.life = life;
-        this.alive = true;
+        this.type = "alive";
+        if (this.life === 0.0) {
+            this.type = "dead";
+        }
         this.changeFullColor();
     }
 
@@ -56,7 +69,7 @@ class Field {
     }
 
     changeFullColor() {
-        if (this.alive) {
+        if (this.type === "alive") {
             if (this.options.fractionNeighbors && !this.options.showFullColor)
                 this.element.style.backgroundColor = "rgba(" + this.color + "," + this.life + ")";
             else
@@ -64,8 +77,8 @@ class Field {
         }
     }
 
-    reduceLifeByVolume(volume) {
-        if (this.life > 0.0001) {
+    reduceLifeByVolume(color, volume) {
+        if (this.life > 0.0001 && volume > 0.0 && this.color === color) {
             this.life /= volume;
             this.changeFullColor();
         }
