@@ -86,8 +86,7 @@ class Board {
         if (!this.isStart) {
             if (this.options.setBlock) {
                 this.fields[width][height].makeBlock();
-            }
-            else {
+            } else {
                 this.fields[width][height].click();
             }
         }
@@ -134,11 +133,10 @@ class Board {
             if (fieldsCopy[width][height].type === "alive") {
                 if (neighborsNumber[0] < this.options.underpopulation || neighborsNumber[0] > this.options.overpopulation) {
                     this.fields[width][height].makeDead();
-                }
-                else {
+                } else {
                     this.fields[width][height].setLife(this.fields[width][height].color, neighborsNumber[0] / 2.0 + neighborsNumber[1] / 3.0);
                 }
-            } else if(fieldsCopy[width][height].type === "dead") {
+            } else if (fieldsCopy[width][height].type === "dead") {
                 let neighbors = this.countNeighborsNumberAndColor(width, height, fieldsCopy)
                 if (neighbors[0] > this.options.minDeadCell && neighbors[0] < this.options.maxDeadCell && neighbors[1] < this.options.toManyOtherTribes) {
                     this.fields[width][height].setLife(neighbors[2], neighbors[0] / 2.0 + neighbors[1] / 4.0);
@@ -149,7 +147,7 @@ class Board {
                 if (neighborsNumber[0] < 2 || neighborsNumber[0] > 3) {
                     this.fields[width][height].makeDead();
                 }
-            } else if(fieldsCopy[width][height].type === "dead") {
+            } else if (fieldsCopy[width][height].type === "dead") {
                 if (neighborsNumber[0] === 3) {
                     this.fields[width][height].makeAlive();
                 }

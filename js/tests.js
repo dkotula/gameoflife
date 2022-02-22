@@ -261,7 +261,7 @@ class Tests {
             y += centerYVect[i].weight * centerYVect[i].center;
         }
         if (weightY !== 0.0) y /= weightY;
-        
+
         return [{x: x - 1, y: y - 1, weight: weightX}];
     }
 
