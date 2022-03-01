@@ -37,6 +37,7 @@ td {
     width: 350px;
     background-color: #c5eee2;
     position: relative;
+    overflow: auto;
 }
 
 #menu div {
