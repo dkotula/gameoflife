@@ -272,13 +272,15 @@ class Board {
         }
     }
 
-    clearBoard() {
+    clearBoard(clearBlocks) {
         if (this.isStart) {
             clearInterval(this.interval)
         }
         for (let i = 0; i < this.options.board.height; i++) {
             for (let j = 0; j < this.options.board.width; j++) {
-                this.fields[i][j].makeDead();
+                if (clearBlocks || this.fields[i][j].getType() !== "block") {
+                    this.fields[i][j].makeDead();
+                }
             }
         }
         if (this.isStart) {
@@ -329,7 +331,7 @@ class Board {
     }
 
     generateTribes() {
-        this.makeNewBoard();
+        this.clearBoard(false);
         const sigma = this.options.gaussRange / 5;
         for (let tribe = 0; tribe < this.options.colors.length && tribe < this.options.tribesNumber; tribe++) {
             let sum = 0.0;

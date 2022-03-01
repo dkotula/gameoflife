@@ -36,7 +36,7 @@ class Menu {
         document.querySelector("#fetchShape").addEventListener("click", () => this.board.fetchShape());
         document.querySelector("#fractionLife").addEventListener("change", (event) => this.board.changeNeighbors(event));
         document.querySelector("#time").addEventListener("input", (event) => this.board.changeTimeInterval(event));
-        document.querySelector("#clear").addEventListener("click", () => this.board.clearBoard());
+        document.querySelector("#clear").addEventListener("click", () => this.board.clearBoard(true));
         document.querySelector("#probability").addEventListener("input", (event) => this.board.changeProbability(event));
         document.querySelectorAll(".border").forEach((el) => el.addEventListener("click", (event) => this.board.changeBorder(event)));
         document.querySelector("#bordersOn").addEventListener("click", () => this.board.boundariesOn());

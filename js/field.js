@@ -78,7 +78,7 @@ class Field {
     }
 
     reduceLifeByVolume(color, volume) {
-        if (this.life > 0.0001 && volume > 0.0 && this.color === color) {
+        if (this.life > 0.0001 && volume > 0.0 && this.color === color && this.type !== "block") {
             this.life /= volume;
             this.changeFullColor();
         }
