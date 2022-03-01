@@ -103,13 +103,13 @@
         </div>
 
         <div>Fraction life
-            <label class="switch">
+            <label class="switch" for="fractionLife">
                 <input checked id="fractionLife" type="checkbox">
                 <span class="slider round"></span>
             </label>
 
             Show full color
-            <label class="switch">
+            <label class="switch" for="showFullColor">
                 <input id="showFullColor" type="checkbox">
                 <span class="slider round"></span>
             </label>
@@ -123,14 +123,14 @@
 
         <div>
             Inner Borders
-            <label class="switch">
+            <label class="switch" for="innerBorders">
                 <input id="innerBorders" type="checkbox">
                 <span class="slider round"></span>
             </label>
         </div>
 
         <div>Subtract when generating
-            <label class="switch">
+            <label class="switch" for="subtractGenerating">
                 <input checked id="subtractGenerating" type="checkbox">
                 <span class="slider round"></span>
             </label>
@@ -168,9 +168,36 @@
             <input id="toManyOtherTribes" max="10" min="0" name="toManyOtherTribes" step="0.01" type="number" value="3">
         </div>
 
-        <div>Set block
-            <label class="switch">
+        <div>
+            Whole column
+            <label class="switch" for="wholeColumn">
+                <input id="wholeColumn" type="checkbox">
+                <span class="slider round"></span>
+            </label>
+
+            Whole row
+            <label class="switch" for="wholeRow">
+                <input id="wholeRow" type="checkbox">
+                <span class="slider round"></span>
+            </label>
+        </div>
+
+        <div>
+            Set block
+            <label class="switch" for="setBlock">
                 <input id="setBlock" type="checkbox">
+                <span class="slider round"></span>
+            </label>
+
+            Make dead
+            <label class="switch" for="setDead">
+                <input id="setDead" type="checkbox">
+                <span class="slider round"></span>
+            </label>
+
+            Make alive
+            <label class="switch" for="setAlive">
+                <input id="setAlive" type="checkbox">
                 <span class="slider round"></span>
             </label>
         </div>

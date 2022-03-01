@@ -24,8 +24,8 @@ class Board {
             this.fields[i] = [];
             for (let j = 0; j < this.options.board.width; j++) {
                 this.fields[i][j] = new Field(i, j, this.options.board.fieldSize, this.options);
-                this.fields[i][j].getElement().addEventListener("mousedown", () => this.fieldMouseDown(this.fields[i][j]));
-                this.fields[i][j].getElement().addEventListener("mouseover", () => this.fieldMouseOver(this.fields[i][j]));
+                this.fields[i][j].getElement().addEventListener("mousedown", () => this.fieldMouseDown(i, j));
+                this.fields[i][j].getElement().addEventListener("mouseover", () => this.fieldMouseOver(i, j));
                 if (!this.options.innerBorders)
                     this.fields[i][j].getElement().style.border = "none";
                 this.element.appendChild(this.fields[i][j].getElement());
@@ -91,21 +91,49 @@ class Board {
         this.options.mouseDown = false;
     }
 
-    fieldMouseDown(field) {
+    fieldMouseDown(i, j) {
         this.fieldClick();
-        this.fieldMouseOver(field);
+        this.fieldMouseOver(i, j);
     }
 
-    fieldMouseOver(field) {
+    fieldMouseOver(i, j) {
         if (!this.isStart && this.options.mouseDown) {
             if (this.options.setBlock) {
-                if (field.getType() === "block") {
-                    field.makeDead();
-                } else {
-                    field.makeBlock();
-                }
+                this.fields[i][j].makeBlock();
+                if (this.options.wholeColumn)
+                    for (let k = 0; k < this.options.board.height; k++)
+                        this.fields[k][j].makeBlock();
+                if (this.options.wholeRow)
+                    for (let k = 0; k < this.options.board.width; k++)
+                        this.fields[i][k].makeBlock();
+            } else if (this.options.setDead) {
+                this.fields[i][j].makeDead();
+                if (this.options.wholeColumn)
+                    for (let k = 0; k < this.options.board.height; k++)
+                        this.fields[k][j].makeDead();
+                if (this.options.wholeRow)
+                    for (let k = 0; k < this.options.board.width; k++)
+                        this.fields[i][k].makeDead();
+            } else if (this.options.setAlive) {
+                this.fields[i][j].makeAlive();
+                if (this.options.wholeColumn)
+                    for (let k = 0; k < this.options.board.height; k++)
+                        this.fields[k][j].makeAlive();
+                if (this.options.wholeRow)
+                    for (let k = 0; k < this.options.board.width; k++)
+                        this.fields[i][k].makeAlive();
             } else {
-                field.click();
+                this.fields[i][j].click();
+                if (this.options.wholeColumn) {
+                    for (let k = 0; k < this.options.board.height; k++) {
+                        if (k !== i) this.fields[k][j].click();
+                    }
+                }
+                if (this.options.wholeRow) {
+                    for (let k = 0; k < this.options.board.width; k++) {
+                        if (k !== j) this.fields[i][k].click();
+                    }
+                }
             }
         }
     }
@@ -441,5 +469,39 @@ class Board {
 
     changeSetBlock(event) {
         this.options.setBlock = event.target.checked;
+        if (this.options.setBlock) {
+            this.options.setDead = false;
+            document.querySelector("#setDead").checked = false;
+            this.options.setAlive = false;
+            document.querySelector("#setAlive").checked = false;
+        }
+    }
+
+    changeSetDead(event) {
+        this.options.setDead = event.target.checked;
+        if (this.options.setDead) {
+            this.options.setBlock = false;
+            document.querySelector("#setBlock").checked = false;
+            this.options.setAlive = false;
+            document.querySelector("#setAlive").checked = false;
+        }
+    }
+
+    changeSetAlive(event) {
+        this.options.setAlive = event.target.checked;
+        if (this.options.setAlive) {
+            this.options.setBlock = false;
+            document.querySelector("#setBlock").checked = false;
+            this.options.setDead = false;
+            document.querySelector("#setDead").checked = false;
+        }
+    }
+
+    changeWholeColumn(event) {
+        this.options.wholeColumn = event.target.checked;
+    }
+
+    changeWholeRow(event) {
+        this.options.wholeRow = event.target.checked;
     }
 }

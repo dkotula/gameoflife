@@ -56,6 +56,10 @@ class Menu {
         document.querySelector("#maxDeadCell").addEventListener("input", (event) => this.board.changeMaxDeadCell(event));
         document.querySelector("#toManyOtherTribes").addEventListener("input", (event) => this.board.changeToManyOtherTribes(event));
         document.querySelector("#setBlock").addEventListener("change", (event) => this.board.changeSetBlock(event));
+        document.querySelector("#setDead").addEventListener("change", (event) => this.board.changeSetDead(event));
+        document.querySelector("#setAlive").addEventListener("change", (event) => this.board.changeSetAlive(event));
+        document.querySelector("#wholeColumn").addEventListener("change", (event) => this.board.changeWholeColumn(event));
+        document.querySelector("#wholeRow").addEventListener("change", (event) => this.board.changeWholeRow(event));
         document.querySelector("#main").addEventListener("mousedown", () => this.board.fieldClick());
         document.querySelector("#main").addEventListener("mouseup", () => this.board.fieldUnClick());
         document.querySelector("#clearWithoutBlocks").addEventListener("click", () => this.board.clearBoard(false));
@@ -80,6 +84,10 @@ class Menu {
         document.querySelector("#maxDeadCell").value = this.options.maxDeadCell;
         document.querySelector("#toManyOtherTribes").value = this.options.toManyOtherTribes;
         document.querySelector("#setBlock").checked = this.options.setBlock;
+        document.querySelector("#setDead").checked = this.options.setDead;
+        document.querySelector("#setAlive").checked = this.options.setAlive;
+        document.querySelector("#wholeColumn").checked = this.options.wholeColumn;
+        document.querySelector("#wholeRow").checked = this.options.wholeRow;
         this.board.setBoundaries();
     }
 
