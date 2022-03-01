@@ -58,6 +58,7 @@ class Menu {
         document.querySelector("#setBlock").addEventListener("change", (event) => this.board.changeSetBlock(event));
         document.querySelector("#main").addEventListener("mousedown", () => this.board.fieldClick());
         document.querySelector("#main").addEventListener("mouseup", () => this.board.fieldUnClick());
+        document.querySelector("#clearWithoutBlocks").addEventListener("click", () => this.board.clearBoard(false));
     }
 
     setInitialValues() {
