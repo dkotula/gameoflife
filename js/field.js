@@ -43,7 +43,7 @@ class Field {
     }
 
     click() {
-        if (this.type === "alive") {
+        if (this.type === "alive" || this.type === "block") {
             this.makeDead();
         } else if (this.type === "dead") {
             this.makeAlive();

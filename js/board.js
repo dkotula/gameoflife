@@ -125,7 +125,9 @@ class Board {
             neighborsNumber = this.countNeighborsNumber(width, height, fieldsCopy);
         }
         if (neighborsNumber[0] > 0 && probability > this.options.probability) {
-            this.fields[width][height].click();
+            if (this.fields[width][height].getType() !== "block") {
+                this.fields[width][height].click();
+            }
             return;
         }
 
