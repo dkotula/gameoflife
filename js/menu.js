@@ -56,6 +56,8 @@ class Menu {
         document.querySelector("#maxDeadCell").addEventListener("input", (event) => this.board.changeMaxDeadCell(event));
         document.querySelector("#toManyOtherTribes").addEventListener("input", (event) => this.board.changeToManyOtherTribes(event));
         document.querySelector("#setBlock").addEventListener("change", (event) => this.board.changeSetBlock(event));
+        document.querySelector("#main").addEventListener("mousedown", () => this.board.fieldClick());
+        document.querySelector("#main").addEventListener("mouseup", () => this.board.fieldUnClick());
     }
 
     setInitialValues() {

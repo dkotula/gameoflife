@@ -24,7 +24,8 @@ class Board {
             this.fields[i] = [];
             for (let j = 0; j < this.options.board.width; j++) {
                 this.fields[i][j] = new Field(i, j, this.options.board.fieldSize, this.options);
-                this.fields[i][j].getElement().addEventListener("click", () => this.fieldClick(i, j));
+                this.fields[i][j].getElement().addEventListener("mousedown", () => this.fieldMouseDown(this.fields[i][j]));
+                this.fields[i][j].getElement().addEventListener("mouseover", () => this.fieldMouseOver(this.fields[i][j]));
                 if (!this.options.innerBorders)
                     this.fields[i][j].getElement().style.border = "none";
                 this.element.appendChild(this.fields[i][j].getElement());
@@ -82,16 +83,29 @@ class Board {
         this.makeNewBoard();
     }
 
-    fieldClick(width, height) {
-        if (!this.isStart) {
+    fieldClick() {
+        this.options.mouseDown = true;
+    }
+
+    fieldUnClick() {
+        this.options.mouseDown = false;
+    }
+
+    fieldMouseDown(field) {
+        this.fieldClick();
+        this.fieldMouseOver(field);
+    }
+
+    fieldMouseOver(field) {
+        if (!this.isStart && this.options.mouseDown) {
             if (this.options.setBlock) {
-                if (this.fields[width][height].getType() === "block") {
-                    this.fields[width][height].makeDead();
+                if (field.getType() === "block") {
+                    field.makeDead();
                 } else {
-                    this.fields[width][height].makeBlock();
+                    field.makeBlock();
                 }
             } else {
-                this.fields[width][height].click();
+                field.click();
             }
         }
     }

@@ -26,4 +26,5 @@ const options = {
     toManyOtherTribes: 0.3,
     colors: ["255,0,0", "0,255,0", "0,0,255", "255,255,0", "255,0,255", "0,255,255"],
     setBlock: false,
+    mouseDown: false,
 }
