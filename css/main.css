@@ -8,7 +8,7 @@
 
 .board {
     display: grid;
-    margin: 5px;
+    margin: 10px auto;
 }
 
 .field {
@@ -30,45 +30,62 @@ td {
     display: flex;
 }
 
-#menu {
-    border-right: 2px black solid;
+#menu, #menuBlock {
     padding: 5px;
-    min-width: 350px;
-    width: 350px;
+    min-width: 360px;
+    width: 360px;
     background-color: #c5eee2;
     position: relative;
     overflow: auto;
+}
+
+#game {
+    border-left: 2px black solid;
+    border-right: 2px black solid;
+    width: 100%;
 }
 
 #menu div {
     margin-bottom: 5px;
 }
 
-#hideMenu {
+#hideMenu, #hideMenuBlock {
     position: absolute;
     top: 0;
-    right: 0;
     width: 20px;
     height: 20px;
     text-align: center;
     margin: 0;
-    border-bottom: 1px black solid;
-    border-left: 1px black solid;
     cursor: pointer;
+    border-bottom: 1px black solid;
 }
 
-#showMenuContainer {
+#hideMenu {
+    right: 0;
+    border-left: 1px black solid;
+}
+
+#hideMenuBlock {
+    left: 0;
+    border-right: 1px black solid;
+}
+
+#showMenuContainer, #showMenuBlockContainer {
     width: 50px;
     height: 100%;
     background-color: #c5eee2;
     display: none;
 }
 
-#showMenu {
+#showMenu, #showMenuBlock {
     width: 20px;
     height: 20px;
     text-align: center;
     border: 1px black solid;
     cursor: pointer;
     margin: 5px auto;
+}
+
+#menuBlock, #showMenuBlockContainer {
+    order: 2;
 }

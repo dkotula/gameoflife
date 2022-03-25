@@ -4,9 +4,13 @@ class Menu {
         this.configurations = configurations;
         this.board = board;
         this.hiddenMenu = false;
+        this.hiddenMenuBlock = false;
         this.element = document.querySelector("#menu");
+        this.elementBlock = document.querySelector("#menuBlock");
         this.hideMenuElement = document.querySelector("#hideMenu");
         this.showMenuElement = document.querySelector("#showMenuContainer");
+        this.hideMenuBlockElement = document.querySelector("#hideMenuBlock");
+        this.showMenuBlockElement = document.querySelector("#showMenuBlockContainer");
         this.makeMenu();
         this.setInitialValues();
         this.addListeners();
@@ -63,6 +67,8 @@ class Menu {
         document.querySelector("#main").addEventListener("mousedown", () => this.board.fieldClick());
         document.querySelector("#main").addEventListener("mouseup", () => this.board.fieldUnClick());
         document.querySelector("#clearWithoutBlocks").addEventListener("click", () => this.board.clearBoard(false));
+        document.querySelector("#hideMenuBlock").addEventListener("click", () => this.showAndHideMenuBlock());
+        document.querySelector("#showMenuBlock").addEventListener("click", () => this.showAndHideMenuBlock());
     }
 
     setInitialValues() {
@@ -102,5 +108,18 @@ class Menu {
             this.showMenuElement.style.display = "block";
         }
         this.hiddenMenu = !this.hiddenMenu;
+    }
+
+    showAndHideMenuBlock() {
+        if (this.hiddenMenuBlock) {
+            this.elementBlock.style.display = "block";
+            this.hideMenuBlockElement.style.display = "block";
+            this.showMenuBlockElement.style.display = "none";
+        } else {
+            this.elementBlock.style.display = "none";
+            this.hideMenuBlockElement.style.display = "none";
+            this.showMenuBlockElement.style.display = "block";
+        }
+        this.hiddenMenuBlock = !this.hiddenMenuBlock;
     }
 }

@@ -1,6 +1,7 @@
 ﻿class Main {
     constructor() {
         this.element = document.createElement("div");
+        this.element.id = "game"
         this.options = options;
         this.configurations = configurations;
         this.board = new Board(this.options);
