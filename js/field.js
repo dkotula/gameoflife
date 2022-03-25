@@ -38,8 +38,8 @@ class Field {
 
     makeBlock() {
         this.type = "block";
-        this.life = 0.0;
-        this.element.style.backgroundColor = "grey";
+        this.life = this.options.blockIntensity / 100;
+        this.changeFullColor();
     }
 
     click() {
@@ -74,6 +74,12 @@ class Field {
                 this.element.style.backgroundColor = "rgba(" + this.color + "," + this.life + ")";
             else
                 this.element.style.backgroundColor = "rgb(" + this.color + ")";
+        }
+        else if(this.type === "block") {
+            if (this.options.fractionNeighbors && !this.options.showFullColor)
+                this.element.style.backgroundColor = "rgba(128,128,128," + this.life + ")";
+            else
+                this.element.style.backgroundColor = "rgb(128,128,128)";
         }
     }
 

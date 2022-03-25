@@ -504,4 +504,8 @@ class Board {
     changeWholeRow(event) {
         this.options.wholeRow = event.target.checked;
     }
+
+    changeBlockIntensity(event) {
+        this.options.blockIntensity = parseInt(event.target.value);
+    }
 }

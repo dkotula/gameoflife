@@ -183,12 +183,6 @@
         </div>
 
         <div>
-            Set block
-            <label class="switch" for="setBlock">
-                <input id="setBlock" type="checkbox">
-                <span class="slider round"></span>
-            </label>
-
             Make dead
             <label class="switch" for="setDead">
                 <input id="setDead" type="checkbox">
@@ -209,10 +203,6 @@
             <button id="clear">Clear</button>
         </div>
 
-        <div>
-            <button id="clearWithoutBlocks">Clear Without Blocks</button>
-        </div>
-
         <div id="cycles">Cycle 0</div>
     </div>
 
@@ -222,6 +212,23 @@
 
     <div id="menuBlock">
         <div id="hideMenuBlock">-</div>
+
+        <div>
+            <label for="blockIntensity">Block intensity:</label>
+            <input id="blockIntensity" max="100" min="1" name="blockIntensity" type="range" value="50">
+        </div>
+
+        <div>
+            Set block
+            <label class="switch" for="setBlock">
+                <input id="setBlock" type="checkbox">
+                <span class="slider round"></span>
+            </label>
+        </div>
+
+        <div>
+            <button id="clearWithoutBlocks">Clear Without Blocks</button>
+        </div>
     </div>
 </div>
 </body>

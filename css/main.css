@@ -45,7 +45,7 @@ td {
     width: 100%;
 }
 
-#menu div {
+#menu div, #menuBlock div {
     margin-bottom: 5px;
 }
 
@@ -88,4 +88,8 @@ td {
 
 #menuBlock, #showMenuBlockContainer {
     order: 2;
+}
+
+#menuBlock {
+    text-align: right;
 }

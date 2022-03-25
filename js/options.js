@@ -31,4 +31,5 @@ const options = {
     wholeColumn: false,
     wholeRow: false,
     mouseDown: false,
+    blockIntensity: 50,
 }

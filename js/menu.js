@@ -69,6 +69,7 @@ class Menu {
         document.querySelector("#clearWithoutBlocks").addEventListener("click", () => this.board.clearBoard(false));
         document.querySelector("#hideMenuBlock").addEventListener("click", () => this.showAndHideMenuBlock());
         document.querySelector("#showMenuBlock").addEventListener("click", () => this.showAndHideMenuBlock());
+        document.querySelector("#blockIntensity").addEventListener("input", (event) => this.board.changeBlockIntensity(event));
     }
 
     setInitialValues() {
@@ -94,6 +95,7 @@ class Menu {
         document.querySelector("#setAlive").checked = this.options.setAlive;
         document.querySelector("#wholeColumn").checked = this.options.wholeColumn;
         document.querySelector("#wholeRow").checked = this.options.wholeRow;
+        document.querySelector("#blockIntensity").value = this.options.blockIntensity;
         this.board.setBoundaries();
     }
 
