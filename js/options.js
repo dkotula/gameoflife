@@ -32,4 +32,7 @@ const options = {
     wholeRow: false,
     mouseDown: false,
     blockIntensity: 50,
+    flashing: false,
+    disappearsAfter: 1,
+    appearsAfter: 1, 
 }

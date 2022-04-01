@@ -70,6 +70,9 @@ class Menu {
         document.querySelector("#hideMenuBlock").addEventListener("click", () => this.showAndHideMenuBlock());
         document.querySelector("#showMenuBlock").addEventListener("click", () => this.showAndHideMenuBlock());
         document.querySelector("#blockIntensity").addEventListener("input", (event) => this.board.changeBlockIntensity(event));
+        document.querySelector("#flashing").addEventListener("change", (event) => this.board.changeflashing(event));
+        document.querySelector("#disappearsAfter").addEventListener("input", (event) => this.board.changeDisappearsAfter(event));
+        document.querySelector("#appearsAfter").addEventListener("input", (event) => this.board.changeAppearsAfter(event));
     }
 
     setInitialValues() {
@@ -96,6 +99,13 @@ class Menu {
         document.querySelector("#wholeColumn").checked = this.options.wholeColumn;
         document.querySelector("#wholeRow").checked = this.options.wholeRow;
         document.querySelector("#blockIntensity").value = this.options.blockIntensity;
+        document.querySelector("#flashing").checked = this.options.flashing;
+        document.querySelector("#disappearsAfter").value = this.options.disappearsAfter;
+        document.querySelector("#appearsAfter").value = this.options.appearsAfter;
+        if (!this.options.flashing) {
+            document.querySelector("#disappearsAfter").disabled = true;
+            document.querySelector("#appearsAfter").disabled = true;
+        }
         this.board.setBoundaries();
     }
 

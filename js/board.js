@@ -508,4 +508,24 @@ class Board {
     changeBlockIntensity(event) {
         this.options.blockIntensity = parseInt(event.target.value);
     }
+
+    changeflashing(event) {
+        this.options.flashing = event.target.checked;
+        if (!this.options.flashing) {
+            document.querySelector("#disappearsAfter").disabled = true;
+            document.querySelector("#appearsAfter").disabled = true;
+        }
+        else {
+            document.querySelector("#disappearsAfter").disabled = false;
+            document.querySelector("#appearsAfter").disabled = false;
+        }
+    }
+
+    changeDisappearsAfter(event) {
+        this.options.disappearsAfter = parseInt(event.target.value);
+    }
+
+    changeAppearsAfter(event) {
+        this.options.appearsAfter = parseInt(event.target.value);
+    }
 }
