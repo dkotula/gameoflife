@@ -143,6 +143,9 @@ class Board {
         for (let i = 0; i < this.fields.length; i++) {
             fieldsCopy[i] = [];
             for (let j = 0; j < this.fields[i].length; j++) {
+                if (this.fields[i][j].getType() === "block") {
+                    this.fields[i][j].nextCycle();
+                }
                 fieldsCopy[i][j] = {
                     width: i,
                     height: j,
@@ -165,6 +168,7 @@ class Board {
     changeFields(width, height, fieldsCopy) {
         let probability = Math.random() * 100;
         let neighborsNumber;
+
         if (this.options.fractionNeighbors) {
             neighborsNumber = this.countNeighborsFraction(width, height, fieldsCopy);
         } else {
@@ -173,6 +177,14 @@ class Board {
         if (neighborsNumber[0] > 0 && probability > this.options.probability) {
             if (this.fields[width][height].getType() !== "block") {
                 this.fields[width][height].click();
+            }
+            else {
+                if (this.fields[width][height].flashing && !this.fields[width][height].isVisible) {
+                    if (this.fields[width][height].life > 0.0)
+                        this.fields[width][height].life = 0.0;
+                    else
+                        this.fields[width][height].life = (Math.floor(Math.random() * 50) + 51) / 100;
+                }
             }
             return;
         }
@@ -189,6 +201,21 @@ class Board {
                 if (neighbors[0] > this.options.minDeadCell && neighbors[0] < this.options.maxDeadCell && neighbors[1] < this.options.toManyOtherTribes) {
                     this.fields[width][height].setLife(neighbors[2], neighbors[0] / 2.0 + neighbors[1] / 4.0);
                 }
+            } else if (fieldsCopy[width][height].type === "block" && this.fields[width][height].flashing && !this.fields[width][height].isVisible) {
+                if (fieldsCopy[width][height].life > 0.0) {
+                    if (neighborsNumber[0] < this.options.underpopulation || neighborsNumber[0] > this.options.overpopulation) {
+                        this.fields[width][height].life = 0.0;
+                    } else {
+                        this.fields[width][height].life = neighborsNumber[0] / 2.0 + neighborsNumber[1] / 3.0;
+                    }
+                }
+                else {
+                    let neighbors = this.countNeighborsNumberAndColor(width, height, fieldsCopy)
+                    if (neighbors[0] > this.options.minDeadCell && neighbors[0] < this.options.maxDeadCell && neighbors[1] < this.options.toManyOtherTribes) {
+                        this.fields[width][height].life = neighbors[0] / 2.0 + neighbors[1] / 4.0;
+                        this.fields[width][height].color = neighbors[2];
+                    }
+                }
             }
         } else {
             if (fieldsCopy[width][height].type === "alive") {
@@ -198,6 +225,17 @@ class Board {
             } else if (fieldsCopy[width][height].type === "dead") {
                 if (neighborsNumber[0] === 3) {
                     this.fields[width][height].makeAlive();
+                }
+            } else if (fieldsCopy[width][height].type === "block" && this.fields[width][height].flashing && !this.fields[width][height].isVisible) {
+                if (fieldsCopy[width][height].life > 0.0) {
+                    if (neighborsNumber[0] < 2 || neighborsNumber[0] > 3) {
+                        fieldsCopy[width][height].life = 0.0
+                    }
+                }
+                else {
+                    if (neighborsNumber[0] === 3) {
+                        this.fields[width][height].life = (Math.floor(Math.random() * 50) + 51) / 100;
+                    }
                 }
             }
         }
@@ -229,27 +267,60 @@ class Board {
     countNeighborsFraction(width, height, fieldsCopy) {
         let neighborsFraction = [0.0, 0.0];
 
-        if (width > 0 && height > 0 || !this.options.borders["borderTop"] && !this.options.borders["borderLeft"])
-            if (fieldsCopy[(width + this.options.board.height - 1) % this.options.board.height][(height + this.options.board.width - 1) % this.options.board.width].type === "alive") this.addNeighborsFraction(neighborsFraction, fieldsCopy[width][height], fieldsCopy[(width + this.options.board.height - 1) % this.options.board.height][(height + this.options.board.width - 1) % this.options.board.width]);
-        if (width > 0 || !this.options.borders["borderTop"])
-            if (fieldsCopy[(width + this.options.board.height - 1) % this.options.board.height][(height + this.options.board.width) % this.options.board.width].type === "alive") this.addNeighborsFraction(neighborsFraction, fieldsCopy[width][height], fieldsCopy[(width + this.options.board.height - 1) % this.options.board.height][(height + this.options.board.width) % this.options.board.width]);
-        if (width > 0 && height < this.options.board.width - 1 || !this.options.borders["borderTop"] && !this.options.borders["borderRight"])
-            if (fieldsCopy[(width + this.options.board.height - 1) % this.options.board.height][(height + this.options.board.width + 1) % this.options.board.width].type === "alive") this.addNeighborsFraction(neighborsFraction, fieldsCopy[width][height], fieldsCopy[(width + this.options.board.height - 1) % this.options.board.height][(height + this.options.board.width + 1) % this.options.board.width]);
-        if (height > 0 || !this.options.borders["borderLeft"])
-            if (fieldsCopy[(width + this.options.board.height) % this.options.board.height][(height + this.options.board.width - 1) % this.options.board.width].type === "alive") this.addNeighborsFraction(neighborsFraction, fieldsCopy[width][height], fieldsCopy[(width + this.options.board.height) % this.options.board.height][(height + this.options.board.width - 1) % this.options.board.width]);
-        if (height < this.options.board.width - 1 || !this.options.borders["borderRight"])
-            if (fieldsCopy[(width + this.options.board.height) % this.options.board.height][(height + this.options.board.width + 1) % this.options.board.width].type === "alive") this.addNeighborsFraction(neighborsFraction, fieldsCopy[width][height], fieldsCopy[(width + this.options.board.height) % this.options.board.height][(height + this.options.board.width + 1) % this.options.board.width]);
-        if (width < this.options.board.height - 1 && height > 0 || !this.options.borders["borderBottom"] && !this.options.borders["borderLeft"])
-            if (fieldsCopy[(width + this.options.board.height + 1) % this.options.board.height][(height + this.options.board.width - 1) % this.options.board.width].type === "alive") this.addNeighborsFraction(neighborsFraction, fieldsCopy[width][height], fieldsCopy[(width + this.options.board.height + 1) % this.options.board.height][(height + this.options.board.width - 1) % this.options.board.width]);
-        if (width < this.options.board.height - 1 || !this.options.borders["borderBottom"])
-            if (fieldsCopy[(width + this.options.board.height + 1) % this.options.board.height][(height + this.options.board.width) % this.options.board.width].type === "alive") this.addNeighborsFraction(neighborsFraction, fieldsCopy[width][height], fieldsCopy[(width + this.options.board.height + 1) % this.options.board.height][(height + this.options.board.width) % this.options.board.width]);
-        if (width < this.options.board.height - 1 && height < this.options.board.width - 1 || !this.options.borders["borderBottom"] && !this.options.borders["borderRight"])
-            if (fieldsCopy[(width + this.options.board.height + 1) % this.options.board.height][(height + this.options.board.width + 1) % this.options.board.width].type === "alive") this.addNeighborsFraction(neighborsFraction, fieldsCopy[width][height], fieldsCopy[(width + this.options.board.height + 1) % this.options.board.height][(height + this.options.board.width + 1) % this.options.board.width]);
+        if (width > 0 && height > 0 || !this.options.borders["borderTop"] && !this.options.borders["borderLeft"]){
+            const i = (width + this.options.board.height - 1) % this.options.board.height;
+            const j = (height + this.options.board.width - 1) % this.options.board.width;
+            if (fieldsCopy[i][j].type === "alive" || (fieldsCopy[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible))
+                this.addNeighborsFraction(neighborsFraction, fieldsCopy[width][height], fieldsCopy[i][j]);
+        }
+        if (width > 0 || !this.options.borders["borderTop"]){
+            const i = (width + this.options.board.height - 1) % this.options.board.height;
+            const j = (height + this.options.board.width) % this.options.board.width;
+            if (fieldsCopy[i][j].type === "alive" || (fieldsCopy[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible))
+                this.addNeighborsFraction(neighborsFraction, fieldsCopy[width][height], fieldsCopy[i][j]);
+        }
+        if (width > 0 && height < this.options.board.width - 1 || !this.options.borders["borderTop"] && !this.options.borders["borderRight"]){
+            const i = (width + this.options.board.height - 1) % this.options.board.height;
+            const j = (height + this.options.board.width + 1) % this.options.board.width;
+            if (fieldsCopy[i][j].type === "alive" || (fieldsCopy[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible))
+                this.addNeighborsFraction(neighborsFraction, fieldsCopy[width][height], fieldsCopy[i][j]);
+        }
+        if (height > 0 || !this.options.borders["borderLeft"]){
+            const i = (width + this.options.board.height) % this.options.board.height;
+            const j = (height + this.options.board.width - 1) % this.options.board.width;
+            if (fieldsCopy[i][j].type === "alive" || (fieldsCopy[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible))
+                this.addNeighborsFraction(neighborsFraction, fieldsCopy[width][height], fieldsCopy[i][j]);
+        }
+        if (height < this.options.board.width - 1 || !this.options.borders["borderRight"]){
+            const i = (width + this.options.board.height) % this.options.board.height;
+            const j = (height + this.options.board.width + 1) % this.options.board.width;
+            if (fieldsCopy[i][j].type === "alive" || (fieldsCopy[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible))
+                this.addNeighborsFraction(neighborsFraction, fieldsCopy[width][height], fieldsCopy[i][j]);
+        }
+        if (width < this.options.board.height - 1 && height > 0 || !this.options.borders["borderBottom"] && !this.options.borders["borderLeft"]){
+            const i = (width + this.options.board.height + 1) % this.options.board.height;
+            const j = (height + this.options.board.width - 1) % this.options.board.width;
+            if (fieldsCopy[i][j].type === "alive" || (fieldsCopy[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible))
+                this.addNeighborsFraction(neighborsFraction, fieldsCopy[width][height], fieldsCopy[i][j]);
+        }
+        if (width < this.options.board.height - 1 || !this.options.borders["borderBottom"]){
+            const i = (width + this.options.board.height + 1) % this.options.board.height;
+            const j = (height + this.options.board.width) % this.options.board.width;
+            if (fieldsCopy[i][j].type === "alive" || (fieldsCopy[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible))
+                this.addNeighborsFraction(neighborsFraction, fieldsCopy[width][height], fieldsCopy[i][j]);
+        }
+        if (width < this.options.board.height - 1 && height < this.options.board.width - 1 || !this.options.borders["borderBottom"] && !this.options.borders["borderRight"]){
+            const i = (width + this.options.board.height + 1) % this.options.board.height;
+            const j = (height + this.options.board.width + 1) % this.options.board.width;
+            if (fieldsCopy[i][j].type === "alive" || (fieldsCopy[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible))
+                this.addNeighborsFraction(neighborsFraction, fieldsCopy[width][height], fieldsCopy[i][j]);
+        }
 
         return neighborsFraction;
     }
 
     addNeighborsFraction(neighborsFraction, field1, field2) {
+        console.log(field1, field2)
         if (field1.color === field2.color) neighborsFraction[0] += field2.life;
         else neighborsFraction[1] += field2.life;
     }
