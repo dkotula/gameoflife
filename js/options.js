@@ -34,5 +34,5 @@ const options = {
     blockIntensity: 50,
     flashing: false,
     disappearsAfter: 1,
-    appearsAfter: 1, 
+    appearsAfter: 1,
 }

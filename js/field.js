@@ -140,4 +140,13 @@ class Field {
             this.changeFullColor();
         }
     }
+
+    setCell(cell) {
+        for (const param in cell) {
+            if (param !== "positions") {
+                this[param] = cell[param];
+            }
+        }
+        this.changeFullColor();
+    }
 }

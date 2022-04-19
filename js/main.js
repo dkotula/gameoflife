@@ -4,7 +4,8 @@
         this.element.id = "game"
         this.options = options;
         this.configurations = configurations;
-        this.board = new Board(this.options);
+        this.testBoards = testBoards;
+        this.board = new Board(this.options, this.testBoards);
         this.element.appendChild(this.board.getElement());
         this.menu = new Menu(this.options, this.configurations, this.board);
         this.tests = new Tests(this.board, this.options, this.menu);

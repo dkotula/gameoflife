@@ -1,8 +1,9 @@
 class Board {
-    constructor(options) {
+    constructor(options, testBoards) {
         this.element = document.createElement("div");
         this.element.className = "board";
         this.options = options;
+        this.testBoards = testBoards;
         this.fields = [];
         this.interval = null;
         this.cyclesNumber = 0;
@@ -629,5 +630,66 @@ class Board {
 
     changeAppearsAfter(event) {
         this.options.appearsAfter = parseInt(event.target.value);
+    }
+
+    loadConfiguration() {
+        if(this.isStart) {
+            this.isStart = false;
+            clearInterval(this.interval);
+        }
+        this.clearBoard(true);
+        this.setBoardFromJson(this.testBoards[0]);
+    }
+
+    setBoardFromJson(testBoard) {
+        for (const el in testBoard) {
+            if (el === "board" || el === "borders") {
+                for (const el2 in testBoard[el]) {
+                    this.options[el][el2] = testBoard[el][el2];
+                }
+            }
+            else if (el !== "cells") {
+                this.options[el] = testBoard[el];
+            }
+        }
+        this.setInitialValues();
+        this.makeNewBoard();
+        for (let i = 0; i < testBoard.cells.length; i++) {
+            for (let j = 0; j < testBoard.cells[i].positions.length; j++) {
+                this.fields[testBoard.cells[i].positions[j].x][testBoard.cells[i].positions[j].y].setCell(testBoard.cells[i]);
+            }
+        }
+    }
+
+    setInitialValues() {
+        document.querySelector("#width").value = this.options.board.width;
+        document.querySelector("#height").value = this.options.board.height;
+        document.querySelector("#fieldSize").value = this.options.board.fieldSize;
+        document.querySelector("#probability").value = this.options.probability;
+        document.querySelector("#fractionLife").checked = this.options.fractionNeighbors;
+        document.querySelector("#time").value = this.options.timeInterval;
+        document.querySelector("#tribesNumber").value = this.options.tribesNumber;
+        document.querySelector("#innerBorders").checked = this.options.innerBorders;
+        document.querySelector("#subtractGenerating").checked = this.options.subtractGenerating;
+        document.querySelector("#showFullColor").checked = this.options.showFullColor;
+        document.querySelector("#gaussRange").value = this.options.gaussRange;
+        document.querySelector("#massOfTribe").value = this.options.massOfTribe;
+        document.querySelector("#underpopulation").value = this.options.underpopulation;
+        document.querySelector("#overpopulation").value = this.options.overpopulation;
+        document.querySelector("#minDeadCell").value = this.options.minDeadCell;
+        document.querySelector("#maxDeadCell").value = this.options.maxDeadCell;
+        document.querySelector("#toManyOtherTribes").value = this.options.toManyOtherTribes;
+        document.querySelector("#setBlock").checked = this.options.setBlock;
+        document.querySelector("#setDead").checked = this.options.setDead;
+        document.querySelector("#setAlive").checked = this.options.setAlive;
+        document.querySelector("#wholeColumn").checked = this.options.wholeColumn;
+        document.querySelector("#wholeRow").checked = this.options.wholeRow;
+        document.querySelector("#blockIntensity").value = this.options.blockIntensity;
+        document.querySelector("#flashing").checked = this.options.flashing;
+        document.querySelector("#disappearsAfter").value = this.options.disappearsAfter;
+        document.querySelector("#appearsAfter").value = this.options.appearsAfter;
+        document.querySelector("#disappearsAfter").disabled = !this.options.flashing;
+        document.querySelector("#appearsAfter").disabled = !this.options.flashing;
+        this.setBoundaries();
     }
 }

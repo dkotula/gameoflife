@@ -12,7 +12,7 @@ class Menu {
         this.hideMenuBlockElement = document.querySelector("#hideMenuBlock");
         this.showMenuBlockElement = document.querySelector("#showMenuBlockContainer");
         this.makeMenu();
-        this.setInitialValues();
+        this.board.setInitialValues();
         this.addListeners();
     }
 
@@ -73,40 +73,7 @@ class Menu {
         document.querySelector("#flashing").addEventListener("change", (event) => this.board.changeflashing(event));
         document.querySelector("#disappearsAfter").addEventListener("input", (event) => this.board.changeDisappearsAfter(event));
         document.querySelector("#appearsAfter").addEventListener("input", (event) => this.board.changeAppearsAfter(event));
-    }
-
-    setInitialValues() {
-        document.querySelector("#width").value = this.options.board.width;
-        document.querySelector("#height").value = this.options.board.height;
-        document.querySelector("#fieldSize").value = this.options.board.fieldSize;
-        document.querySelector("#probability").value = this.options.probability;
-        document.querySelector("#fractionLife").checked = this.options.fractionNeighbors;
-        document.querySelector("#time").value = this.options.timeInterval;
-        document.querySelector("#tribesNumber").value = this.options.tribesNumber;
-        document.querySelector("#innerBorders").checked = this.options.innerBorders;
-        document.querySelector("#subtractGenerating").checked = this.options.subtractGenerating;
-        document.querySelector("#showFullColor").checked = this.options.showFullColor;
-        document.querySelector("#gaussRange").value = this.options.gaussRange;
-        document.querySelector("#massOfTribe").value = this.options.massOfTribe;
-        document.querySelector("#underpopulation").value = this.options.underpopulation;
-        document.querySelector("#overpopulation").value = this.options.overpopulation;
-        document.querySelector("#minDeadCell").value = this.options.minDeadCell;
-        document.querySelector("#maxDeadCell").value = this.options.maxDeadCell;
-        document.querySelector("#toManyOtherTribes").value = this.options.toManyOtherTribes;
-        document.querySelector("#setBlock").checked = this.options.setBlock;
-        document.querySelector("#setDead").checked = this.options.setDead;
-        document.querySelector("#setAlive").checked = this.options.setAlive;
-        document.querySelector("#wholeColumn").checked = this.options.wholeColumn;
-        document.querySelector("#wholeRow").checked = this.options.wholeRow;
-        document.querySelector("#blockIntensity").value = this.options.blockIntensity;
-        document.querySelector("#flashing").checked = this.options.flashing;
-        document.querySelector("#disappearsAfter").value = this.options.disappearsAfter;
-        document.querySelector("#appearsAfter").value = this.options.appearsAfter;
-        if (!this.options.flashing) {
-            document.querySelector("#disappearsAfter").disabled = true;
-            document.querySelector("#appearsAfter").disabled = true;
-        }
-        this.board.setBoundaries();
+        document.querySelector("#loadConfiguration").addEventListener("click", () => this.board.loadConfiguration());
     }
 
     showAndHideMenu() {
