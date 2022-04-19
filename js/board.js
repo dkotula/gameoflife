@@ -692,4 +692,38 @@ class Board {
         document.querySelector("#appearsAfter").disabled = !this.options.flashing;
         this.setBoundaries();
     }
+
+    saveConfiguration() {
+        let options = this.options;
+        options.cells = this.fetchCells();
+        options = JSON.stringify(options)
+        console.log(options.replace(/"([^"]+)":/g, '$1:'));
+    }
+
+    fetchCells() {
+        const cells = [];
+        for (let i = 0; i < this.fields.length; i++) {
+            for (let j = 0; j < this.fields[i].length; j++) {
+                if (this.fields[i][j].type === "alive") {
+                    cells.push({
+                        type: "alive",
+                        positions: [{x: i, y: j}],
+                        life: this.fields[i][j].life,
+                        color: this.fields[i][j].color
+                    });
+                }
+                else if (this.fields[i][j].type === "block") {
+                    cells.push({
+                        type: "block",
+                        positions: [{x: i, y: j}],
+                        flashing: this.fields[i][j].flashing,
+                        disappearsAfter: this.fields[i][j].disappearsAfter,
+                        appearsAfter: this.fields[i][j].appearsAfter,
+                        counter: this.fields[i][j].counter
+                    });
+                }
+            }
+        }
+        return cells;
+    }
 }
