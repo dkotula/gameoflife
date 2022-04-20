@@ -85,28 +85,24 @@ class Field {
                 this.element.style.backgroundColor = "rgba(" + this.color + "," + this.life + ")";
             else
                 this.element.style.backgroundColor = "rgb(" + this.color + ")";
-        }
-        else if(this.type === "block") {
+        } else if (this.type === "block") {
             if (this.flashing) {
-                if (this.isVisible){
+                if (this.isVisible) {
                     if (this.options.fractionNeighbors && !this.options.showFullColor)
                         this.element.style.backgroundColor = "rgba(128,128,128," + this.blockIntensity + ")";
                     else
                         this.element.style.backgroundColor = "rgb(128,128,128)";
-                }
-                else {
+                } else {
                     if (this.life > 0.0) {
                         if (this.options.fractionNeighbors && !this.options.showFullColor)
                             this.element.style.backgroundColor = "rgba(" + this.color + "," + this.life + ")";
                         else
                             this.element.style.backgroundColor = "rgb(" + this.color + ")";
-                    }
-                    else {
+                    } else {
                         this.element.style.backgroundColor = "rgba(255,255,255)";
                     }
                 }
-            }
-            else {
+            } else {
                 if (this.options.fractionNeighbors && !this.options.showFullColor)
                     this.element.style.backgroundColor = "rgba(128,128,128," + this.blockIntensity + ")";
                 else
@@ -129,8 +125,7 @@ class Field {
                 if (!this.counter) {
                     this.isVisible = false;
                 }
-            }
-            else {
+            } else {
                 this.counter = ++this.counter % this.appearsAfter;
                 if (!this.counter) {
                     this.isVisible = true;

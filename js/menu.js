@@ -1,6 +1,5 @@
 class Menu {
-    constructor(options, configurations, board) {
-        this.options = options;
+    constructor(configurations, board) {
         this.configurations = configurations;
         this.board = board;
         this.hiddenMenu = false;
@@ -70,7 +69,7 @@ class Menu {
         document.querySelector("#hideMenuBlock").addEventListener("click", () => this.showAndHideMenuBlock());
         document.querySelector("#showMenuBlock").addEventListener("click", () => this.showAndHideMenuBlock());
         document.querySelector("#blockIntensity").addEventListener("input", (event) => this.board.changeBlockIntensity(event));
-        document.querySelector("#flashing").addEventListener("change", (event) => this.board.changeflashing(event));
+        document.querySelector("#flashing").addEventListener("change", (event) => this.board.changeFlashing(event));
         document.querySelector("#disappearsAfter").addEventListener("input", (event) => this.board.changeDisappearsAfter(event));
         document.querySelector("#appearsAfter").addEventListener("input", (event) => this.board.changeAppearsAfter(event));
         document.querySelector("#loadConfiguration").addEventListener("click", () => this.board.loadConfiguration());
