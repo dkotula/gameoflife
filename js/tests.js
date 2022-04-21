@@ -10,6 +10,7 @@ class Tests {
         // this.meanAndDensityTest();
         // this.meanTest();
         // this.getCenterOfWeight(5, 100);
+        // this.getCenterOfWeightFromFile(100, 0);
     }
 
     meanAndDensityTest() {
@@ -228,7 +229,7 @@ class Tests {
             let weight = 0.0;
             let centerX = 0.0;
             for (let j = 0; j < this.options.board.width; j++) {
-                if (this.board.fields[i][j].getColor() === color) {
+                if (this.board.fields[i][j].type === "alive" && this.board.fields[i][j].getColor() === color) {
                     weight += this.board.fields[i][j].getLife();
                     centerX += this.board.fields[i][j].getLife() * (j + 1);
                 }
@@ -247,7 +248,7 @@ class Tests {
             let weight = 0.0;
             let centerY = 0.0;
             for (let i = 0; i < this.options.board.height; i++) {
-                if (this.board.fields[i][j].getColor() === color) {
+                if (this.board.fields[i][j].type === "alive" && this.board.fields[i][j].getColor() === color) {
                     weight += this.board.fields[i][j].getLife();
                     centerY += this.board.fields[i][j].getLife() * (i + 1);
                 }
@@ -273,5 +274,19 @@ class Tests {
             }
         }
         return string;
+    }
+
+    getCenterOfWeightFromFile(cyclesNumber, index) {
+        this.board.loadConfiguration(index)
+        let results = [this.calculateWeight("255,0,0")];
+
+        for (let i = 0; i < cyclesNumber - 1; i++) {
+            this.board.steps();
+            if (this.ifAllDead()) {
+                break;
+            }
+            results.push(this.calculateWeight("255,0,0"));
+        }
+        this.saveToFile("weightAll", this.centerOfWeightToString(results));
     }
 }

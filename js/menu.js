@@ -72,7 +72,7 @@ class Menu {
         document.querySelector("#flashing").addEventListener("change", (event) => this.board.changeFlashing(event));
         document.querySelector("#disappearsAfter").addEventListener("input", (event) => this.board.changeDisappearsAfter(event));
         document.querySelector("#appearsAfter").addEventListener("input", (event) => this.board.changeAppearsAfter(event));
-        document.querySelector("#loadConfiguration").addEventListener("click", () => this.board.loadConfiguration());
+        document.querySelector("#loadConfiguration").addEventListener("click", () => this.board.loadConfiguration(0));
         document.querySelector("#saveConfiguration").addEventListener("click", () => this.board.saveConfiguration());
     }
 

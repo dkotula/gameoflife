@@ -644,13 +644,13 @@ class Board {
         this.options.appearsAfter = parseInt(event.target.value);
     }
 
-    loadConfiguration() {
+    loadConfiguration(index) {
         if (this.isStart) {
             this.isStart = false;
             clearInterval(this.interval);
         }
         this.clearBoard(true);
-        this.setBoardFromJson(this.testBoards[0]);
+        this.setBoardFromJson(this.testBoards[index]);
     }
 
     setBoardFromJson(testBoard) {
