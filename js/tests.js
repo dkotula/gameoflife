@@ -11,6 +11,17 @@ class Tests {
         // this.meanTest();
         // this.getCenterOfWeight(5, 100);
         // this.getCenterOfWeightFromFile(100, 0);
+        // this.getCenterOfWeightFromFileFromIntervals(100, 0, [
+        //     [0, 0, 1, 1],
+        //     [4, 0, 6, 1],
+        //     [8, 0, 9, 1],
+        //     [0, 5, 1, 7],
+        //     [4, 5, 6, 7],
+        //     [8, 5, 9, 7],
+        //     [0, 9, 1, 9],
+        //     [4, 9, 6, 9],
+        //     [8, 9, 9, 9],
+        // ]);
     }
 
     meanAndDensityTest() {
@@ -217,7 +228,7 @@ class Tests {
         }
     }
 
-    calculateWeight(color) {
+    calculateWeight(color, xFrom = 0, yFrom = 0, xTo = this.options.board.height - 1, yTo = this.options.board.width - 1) {
         let x = 0.0;
         let y = 0.0;
         let weightX = 0.0;
@@ -225,10 +236,10 @@ class Tests {
         let centerXVect = [];
         let centerYVect = [];
 
-        for (let i = 0; i < this.options.board.height; i++) {
+        for (let i = xFrom; i <= xTo; i++) {
             let weight = 0.0;
             let centerX = 0.0;
-            for (let j = 0; j < this.options.board.width; j++) {
+            for (let j = yFrom; j <= yTo; j++) {
                 if (this.board.fields[i][j].type === "alive" && this.board.fields[i][j].getColor() === color) {
                     weight += this.board.fields[i][j].getLife();
                     centerX += this.board.fields[i][j].getLife() * (j + 1);
@@ -244,10 +255,10 @@ class Tests {
         }
         if (weightX !== 0.0) x /= weightX;
 
-        for (let j = 0; j < this.options.board.width; j++) {
+        for (let j = yFrom; j <= yTo; j++) {
             let weight = 0.0;
             let centerY = 0.0;
-            for (let i = 0; i < this.options.board.height; i++) {
+            for (let i = xFrom; i <= xTo; i++) {
                 if (this.board.fields[i][j].type === "alive" && this.board.fields[i][j].getColor() === color) {
                     weight += this.board.fields[i][j].getLife();
                     centerY += this.board.fields[i][j].getLife() * (i + 1);
@@ -288,5 +299,28 @@ class Tests {
             results.push(this.calculateWeight("255,0,0"));
         }
         this.saveToFile("weightAll", this.centerOfWeightToString(results));
+    }
+
+    getCenterOfWeightFromFileFromIntervals(cyclesNumber, index, intervals) {
+        let results = [];
+        this.board.loadConfiguration(index)
+
+        for (let interval = 0; interval < intervals.length; interval++) {
+            results[interval] = [this.calculateWeight("255,0,0", ...intervals[interval])];
+        }
+
+        for (let i = 0; i < cyclesNumber - 1; i++) {
+            this.board.steps();
+            if (this.ifAllDead()) {
+                break;
+            }
+            for (let interval = 0; interval < intervals.length; interval++) {
+                results[interval].push(this.calculateWeight("255,0,0", ...intervals[interval]));
+            }
+        }
+
+        for (let interval = 0; interval < intervals.length; interval++) {
+            this.saveToFile("weightInterval" + interval, this.centerOfWeightToString(results[interval]));
+        }
     }
 }
