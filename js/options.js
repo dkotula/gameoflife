@@ -35,4 +35,5 @@ const options = {
     flashing: false,
     disappearsAfter: 1,
     appearsAfter: 1,
+    neighboursRange: 1,
 }

@@ -74,6 +74,7 @@ class Menu {
         document.querySelector("#appearsAfter").addEventListener("input", (event) => this.board.changeAppearsAfter(event));
         document.querySelector("#loadConfiguration").addEventListener("click", () => this.board.loadConfiguration(0));
         document.querySelector("#saveConfiguration").addEventListener("click", () => this.board.saveConfiguration());
+        document.querySelector("#neighboursRange").addEventListener("input", (event) => this.board.changeNeighboursRange(event));
     }
 
     showAndHideMenu() {
