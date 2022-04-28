@@ -22,6 +22,7 @@ class Tests {
         //     [4, 9, 6, 9],
         //     [8, 9, 9, 9],
         // ]);
+        // this.getEntropyFromFile(100, 0);
     }
 
     meanAndDensityTest() {
@@ -322,5 +323,32 @@ class Tests {
         for (let interval = 0; interval < intervals.length; interval++) {
             this.saveToFile("weightInterval" + interval, this.centerOfWeightToString(results[interval]));
         }
+    }
+
+    getEntropyFromFile(cyclesNumber, index) {
+        this.board.loadConfiguration(index)
+        let results = [this.calculateEntropy("255,0,0")];
+
+        for (let i = 0; i < cyclesNumber - 1; i++) {
+            this.board.steps();
+            if (this.ifAllDead()) {
+                break;
+            }
+            results.push(this.calculateEntropy("255,0,0"));
+        }
+        this.saveToFile("entropy", this.array1dToString(results));
+    }
+
+    calculateEntropy(color, xFrom = 0, yFrom = 0, xTo = this.options.board.height - 1, yTo = this.options.board.width - 1) {
+        let entropy = 0;
+
+        for (let i = xFrom; i <= xTo; i++) {
+            for (let j = yFrom; j <= yTo; j++) {
+                if (this.board.fields[i][j].type === "alive" && this.board.fields[i][j].getColor() === color) {
+                    entropy++;
+                }
+            }
+        }
+        return entropy;
     }
 }
