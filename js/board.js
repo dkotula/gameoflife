@@ -963,7 +963,8 @@ class Board {
                         flashing: this.fields[i][j].flashing,
                         disappearsAfter: this.fields[i][j].disappearsAfter,
                         appearsAfter: this.fields[i][j].appearsAfter,
-                        counter: this.fields[i][j].counter
+                        counter: this.fields[i][j].counter,
+                        blockIntensity: this.fields[i][j].blockIntensity
                     });
                 }
             }

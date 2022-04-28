@@ -22,7 +22,10 @@ class Tests {
         //     [4, 9, 6, 9],
         //     [8, 9, 9, 9],
         // ]);
-        // this.getEntropyFromFile(100, 0);
+        // this.getEntropyFromFile(100, 0, false);
+        // this.getEntropyFromFile(100, 0, true);
+        // this.getEntropyFromFile(300, 1, true);
+        // this.getEntropyFromFile(300, 1, false);
     }
 
     meanAndDensityTest() {
@@ -325,27 +328,32 @@ class Tests {
         }
     }
 
-    getEntropyFromFile(cyclesNumber, index) {
+    getEntropyFromFile(cyclesNumber, index, fraction) {
         this.board.loadConfiguration(index)
-        let results = [this.calculateEntropy("255,0,0")];
+        let results = [this.calculateEntropy("255,0,0", fraction)];
 
         for (let i = 0; i < cyclesNumber - 1; i++) {
             this.board.steps();
             if (this.ifAllDead()) {
                 break;
             }
-            results.push(this.calculateEntropy("255,0,0"));
+            results.push(this.calculateEntropy("255,0,0", fraction));
         }
         this.saveToFile("entropy", this.array1dToString(results));
     }
 
-    calculateEntropy(color, xFrom = 0, yFrom = 0, xTo = this.options.board.height - 1, yTo = this.options.board.width - 1) {
+    calculateEntropy(color, fraction = false, xFrom = 0, yFrom = 0, xTo = this.options.board.height - 1, yTo = this.options.board.width - 1) {
         let entropy = 0;
 
         for (let i = xFrom; i <= xTo; i++) {
             for (let j = yFrom; j <= yTo; j++) {
                 if (this.board.fields[i][j].type === "alive" && this.board.fields[i][j].getColor() === color) {
-                    entropy++;
+                    if (fraction) {
+                        entropy += this.board.fields[i][j].getLife();
+                    }
+                    else {
+                        entropy++;
+                    }
                 }
             }
         }
