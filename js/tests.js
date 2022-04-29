@@ -347,7 +347,7 @@ class Tests {
 
         for (let i = xFrom; i <= xTo; i++) {
             for (let j = yFrom; j <= yTo; j++) {
-                if (this.board.fields[i][j].type === "alive" && this.board.fields[i][j].getColor() === color) {
+                if ((this.board.fields[i][j].type === "alive" && this.board.fields[i][j].getColor() === color) || (this.board.fields[i][j].type === "block" && this.board.fields[i][j].getColor() === color) && this.board.fields[i][j].isVisible === false) {
                     if (fraction) {
                         entropy += this.board.fields[i][j].getLife();
                     }
