@@ -877,8 +877,10 @@ class Board {
         this.options.appearsAfter = parseInt(event.target.value);
     }
 
-    loadConfiguration() {
-        let index = parseInt(document.querySelector("#loadConfiguration").value)
+    loadConfiguration(index = -1) {
+        if (index === -1) {
+            index = parseInt(document.querySelector("#loadConfiguration").value)
+        }
         if (this.isStart) {
             this.isStart = false;
             clearInterval(this.interval);

@@ -28,6 +28,7 @@ class Tests {
         // this.getEntropyFromFile(300, 1, false);
         // this.getEntropyFromFile(300, 2, false);
         // this.getEntropyFromFile(300, 2, false);
+        this.calculateProbability(10, 100, 3);
     }
 
     meanAndDensityTest() {
@@ -331,7 +332,7 @@ class Tests {
     }
 
     getEntropyFromFile(cyclesNumber, index, fraction) {
-        this.board.loadConfiguration(index)
+        this.board.loadConfiguration(index);
         let results = [this.calculateEntropy("255,0,0", fraction)];
 
         for (let i = 0; i < cyclesNumber - 1; i++) {
@@ -360,5 +361,60 @@ class Tests {
             }
         }
         return entropy;
+    }
+
+    calculateProbability(numberOfRepetitions, numberOfCycles, index) {
+        let probabilities = [];
+        for (let repetition = 0; repetition < numberOfRepetitions; repetition++) {
+            this.board.loadConfiguration(index);
+            for (let cycleNumber = 0; cycleNumber < numberOfCycles; cycleNumber++) {
+                if (probabilities.length <= cycleNumber) {
+                    probabilities.push(this.fetchMassOfBoard());
+                }
+                else {
+                    probabilities[cycleNumber] = this.updateProbability(cycleNumber, probabilities[cycleNumber]);
+                }
+                this.board.steps();
+            }
+        }
+        this.saveToFile("probability_r" + numberOfRepetitions + "_c" + numberOfCycles, this.array3dToString(probabilities));
+    }
+
+    updateProbability(cycleNumber, probabilities) {
+        let mass = this.fetchMassOfBoard();
+        for (let i in mass) {
+            for (let j in mass[i]) {
+                mass[i][j] = (mass[i][j] * cycleNumber + probabilities[i][j]) / (cycleNumber + 1)
+            }
+        }
+        return mass;
+    }
+
+    fetchMassOfBoard() {
+        let mass = [];
+        for (let i in this.board.fields) {
+            mass[i] = [];
+            for (let j in this.board.fields[i]) {
+                if (this.board.fields[i][j].isAlive()) {
+                    mass[i][j] = this.board.fields[i][j].getLife();
+                }
+                else {
+                    mass[i][j] = 0.0;
+                }
+            }
+        }
+        return mass;
+    }
+
+    array3dToString(array) {
+        let string = "";
+        for (let i = 0; i < array.length; i++) {
+            for (let j = 0; j < array[i].length; j++) {
+                for (let k = 0; k < array[i][j].length; k++) {
+                    string += i + '\t' + j + '\t' + k + '\t' + array[i][j][k] + '\n';
+                }
+            }
+        }
+        return string;
     }
 }
