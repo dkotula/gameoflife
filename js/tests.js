@@ -26,6 +26,8 @@ class Tests {
         // this.getEntropyFromFile(100, 0, true);
         // this.getEntropyFromFile(300, 1, true);
         // this.getEntropyFromFile(300, 1, false);
+        // this.getEntropyFromFile(300, 2, false);
+        // this.getEntropyFromFile(300, 2, false);
     }
 
     meanAndDensityTest() {

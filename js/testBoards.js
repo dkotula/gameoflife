@@ -22544,5 +22544,45 @@ const testBoards = [
             counter: 0,
             blockIntensity: 0.5
         }]
+    },
+	{
+        board: {width: 100, height: 100, fieldSize: 5},
+        probability: 80,
+        borders: {borderTop: true, borderBottom: true, borderLeft: true, borderRight: true},
+        fractionNeighbors: true,
+        timeInterval: 200,
+        tribesNumber: 1,
+        innerBorders: false,
+        subtractGenerating: true,
+        showFullColor: false,
+        gaussRange: 20,
+        massOfTribe: 5,
+        underpopulation: 0.3,
+        overpopulation: 0.6,
+        minDeadCell: 0.45,
+        maxDeadCell: 0.7,
+        toManyOtherTribes: 0.3,
+        colors: ["255,0,0", "0,255,0", "0,0,255", "255,255,0", "255,0,255", "0,255,255"],
+        setBlock: false,
+        setDead: false,
+        setAlive: true,
+        wholeColumn: false,
+        wholeRow: false,
+        mouseDown: false,
+        blockIntensity: 50,
+        flashing: true,
+        disappearsAfter: 15,
+        appearsAfter: 15,
+        neighboursRange: 1,
+        cells: [
+            {
+                type: "alive",
+                positions: [
+                    {x: 9, y: 0},
+                    {x: 0, y: 7}
+                ],
+                life: 1.0
+            }
+        ]
     }
 ]
