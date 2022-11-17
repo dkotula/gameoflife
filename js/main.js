@@ -7,7 +7,7 @@
         this.testBoards = testBoards;
         this.board = new Board(this.options, this.testBoards);
         this.element.appendChild(this.board.getElement());
-        this.menu = new Menu(this.configurations, this.board);
+        this.menu = new Menu(this.configurations, this.board, this.testBoards);
         this.tests = new Tests(this.board, this.options, this.menu);
     }
 

@@ -1,7 +1,8 @@
 class Menu {
-    constructor(configurations, board) {
+    constructor(configurations, board, testBoards) {
         this.configurations = configurations;
         this.board = board;
+        this.testBoards = testBoards;
         this.hiddenMenu = false;
         this.hiddenMenuBlock = false;
         this.element = document.querySelector("#menu");
@@ -20,6 +21,13 @@ class Menu {
             if (this.configurations.hasOwnProperty(key)) {
                 this.configurations[key].forEach((el) => this.addOption(key, el));
             }
+        }
+
+        for (let index in this.testBoards) {
+            let option = document.createElement("option");
+            option.value = index;
+            option.innerHTML = "Configuration " + (parseInt(index) + 1);
+            document.querySelector("#loadConfiguration").appendChild(option);
         }
     }
 
@@ -72,10 +80,9 @@ class Menu {
         document.querySelector("#flashing").addEventListener("change", (event) => this.board.changeFlashing(event));
         document.querySelector("#disappearsAfter").addEventListener("input", (event) => this.board.changeDisappearsAfter(event));
         document.querySelector("#appearsAfter").addEventListener("input", (event) => this.board.changeAppearsAfter(event));
-        document.querySelector("#loadConfiguration").addEventListener("click", () => this.board.loadConfiguration(0));
-        document.querySelector("#loadConfiguration2").addEventListener("click", () => this.board.loadConfiguration(1));
         document.querySelector("#saveConfiguration").addEventListener("click", () => this.board.saveConfiguration());
         document.querySelector("#neighboursRange").addEventListener("input", (event) => this.board.changeNeighboursRange(event));
+        document.querySelector("#loadConfigurationButton").addEventListener("click", () => this.board.loadConfiguration());
     }
 
     showAndHideMenu() {
