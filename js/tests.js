@@ -28,7 +28,8 @@ class Tests {
         // this.getEntropyFromFile(300, 1, false);
         // this.getEntropyFromFile(300, 2, false);
         // this.getEntropyFromFile(300, 2, false);
-        this.calculateProbability(10, 100, 3);
+        // this.calculateProbability(10, 100, 3);
+        this.calculateProbability(20, 300, 3);
     }
 
     meanAndDensityTest() {
@@ -384,7 +385,7 @@ class Tests {
         let mass = this.fetchMassOfBoard();
         for (let i in mass) {
             for (let j in mass[i]) {
-                mass[i][j] = (mass[i][j] * cycleNumber + probabilities[i][j]) / (cycleNumber + 1)
+                mass[i][j] = (probabilities[i][j] * cycleNumber + mass[i][j]) / (cycleNumber + 1)
             }
         }
         return mass;
