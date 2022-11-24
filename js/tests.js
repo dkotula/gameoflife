@@ -29,7 +29,9 @@ class Tests {
         // this.getEntropyFromFile(300, 2, false);
         // this.getEntropyFromFile(300, 2, false);
         // this.calculateProbability(10, 100, 3);
-        this.calculateProbability(20, 300, 3);
+        // this.calculateProbability(200, 300, 3, true);
+        // this.calculateProbability(10, 300, 3, false);
+        // this.calculateProbability(10, 200, 4, true);
     }
 
     meanAndDensityTest() {
@@ -364,16 +366,16 @@ class Tests {
         return entropy;
     }
 
-    calculateProbability(numberOfRepetitions, numberOfCycles, index) {
+    calculateProbability(numberOfRepetitions, numberOfCycles, index, fraction) {
         let probabilities = [];
         for (let repetition = 0; repetition < numberOfRepetitions; repetition++) {
             this.board.loadConfiguration(index);
             for (let cycleNumber = 0; cycleNumber < numberOfCycles; cycleNumber++) {
                 if (probabilities.length <= cycleNumber) {
-                    probabilities.push(this.fetchMassOfBoard());
+                    probabilities.push(this.fetchMassOfBoard(fraction));
                 }
                 else {
-                    probabilities[cycleNumber] = this.updateProbability(cycleNumber, probabilities[cycleNumber]);
+                    probabilities[cycleNumber] = this.updateProbability(cycleNumber, probabilities[cycleNumber], fraction);
                 }
                 this.board.steps();
             }
@@ -381,23 +383,38 @@ class Tests {
         this.saveToFile("probability_r" + numberOfRepetitions + "_c" + numberOfCycles, this.array3dToString(probabilities));
     }
 
-    updateProbability(cycleNumber, probabilities) {
-        let mass = this.fetchMassOfBoard();
+    updateProbability(cycleNumber, probabilities, fraction) {
+        let mass = this.fetchMassOfBoard(fraction);
         for (let i in mass) {
             for (let j in mass[i]) {
-                mass[i][j] = (probabilities[i][j] * cycleNumber + mass[i][j]) / (cycleNumber + 1)
+                if (fraction) {
+                    mass[i][j] = (probabilities[i][j] * cycleNumber + mass[i][j]) / (cycleNumber + 1)
+                }
+                else {
+                    if (this.board.fields[i][j].getLife() > 0) {
+                        mass[i][j] = (probabilities[i][j] * cycleNumber + 1) / (cycleNumber + 1)
+                    }
+                    else {
+                        mass[i][j] = (probabilities[i][j] * cycleNumber) / (cycleNumber + 1)
+                    }
+                }
             }
         }
         return mass;
     }
 
-    fetchMassOfBoard() {
+    fetchMassOfBoard(fraction) {
         let mass = [];
         for (let i in this.board.fields) {
             mass[i] = [];
             for (let j in this.board.fields[i]) {
-                if (this.board.fields[i][j].isAlive()) {
-                    mass[i][j] = this.board.fields[i][j].getLife();
+                if (this.board.fields[i][j].isAlive() && this.board.fields[i][j].getLife() > 0) {
+                    if (fraction) {
+                        mass[i][j] = this.board.fields[i][j].getLife();
+                    }
+                    else {
+                        mass[i][j] = 1;
+                    }
                 }
                 else {
                     mass[i][j] = 0.0;
