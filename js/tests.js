@@ -30,8 +30,10 @@ class Tests {
         // this.getEntropyFromFile(300, 2, false);
         // this.calculateProbability(10, 100, 3);
         // this.calculateProbability(200, 300, 3, true);
-        // this.calculateProbability(10, 300, 3, false);
+        // this.calculateProbability(10, 100, 3, true);
+        // this.calculateProbability(1, 300, 3, false);
         // this.calculateProbability(10, 200, 4, true);
+        // this.calculateProbability(200, 500, 3, true);
     }
 
     meanAndDensityTest() {
@@ -387,17 +389,7 @@ class Tests {
         let mass = this.fetchMassOfBoard(fraction);
         for (let i in mass) {
             for (let j in mass[i]) {
-                if (fraction) {
-                    mass[i][j] = (probabilities[i][j] * cycleNumber + mass[i][j]) / (cycleNumber + 1)
-                }
-                else {
-                    if (this.board.fields[i][j].getLife() > 0) {
-                        mass[i][j] = (probabilities[i][j] * cycleNumber + 1) / (cycleNumber + 1)
-                    }
-                    else {
-                        mass[i][j] = (probabilities[i][j] * cycleNumber) / (cycleNumber + 1)
-                    }
-                }
+                mass[i][j] = (probabilities[i][j] * (cycleNumber + 1) + mass[i][j]) / (cycleNumber + 2)
             }
         }
         return mass;
@@ -413,7 +405,7 @@ class Tests {
                         mass[i][j] = this.board.fields[i][j].getLife();
                     }
                     else {
-                        mass[i][j] = 1;
+                        mass[i][j] = 1.0;
                     }
                 }
                 else {
