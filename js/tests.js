@@ -29,11 +29,12 @@ class Tests {
         // this.getEntropyFromFile(300, 2, false);
         // this.getEntropyFromFile(300, 2, false);
         // this.calculateProbability(10, 100, 3);
-        // this.calculateProbability(200, 300, 3, true);
+        // this.calculateProbability(1000, 200, 3, true);
         // this.calculateProbability(10, 100, 3, true);
-        // this.calculateProbability(1, 300, 3, false);
+        // this.calculateProbability(200, 199, 5, true);
         // this.calculateProbability(10, 200, 4, true);
         // this.calculateProbability(200, 500, 3, true);
+        this.calculateProbabilityWithBarriers(100, 200, 3, true, 100);
     }
 
     meanAndDensityTest() {
@@ -377,7 +378,7 @@ class Tests {
                     probabilities.push(this.fetchMassOfBoard(fraction));
                 }
                 else {
-                    probabilities[cycleNumber] = this.updateProbability(cycleNumber, probabilities[cycleNumber], fraction);
+                    probabilities[cycleNumber] = this.updateProbability(repetition, probabilities[cycleNumber], fraction);
                 }
                 this.board.steps();
             }
@@ -385,11 +386,11 @@ class Tests {
         this.saveToFile("probability_r" + numberOfRepetitions + "_c" + numberOfCycles, this.array3dToString(probabilities));
     }
 
-    updateProbability(cycleNumber, probabilities, fraction) {
+    updateProbability(repetition, probabilities, fraction) {
         let mass = this.fetchMassOfBoard(fraction);
         for (let i in mass) {
             for (let j in mass[i]) {
-                mass[i][j] = (probabilities[i][j] * (cycleNumber + 1) + mass[i][j]) / (cycleNumber + 2)
+                mass[i][j] = (probabilities[i][j] * (repetition + 1) + mass[i][j]) / (repetition + 2)
             }
         }
         return mass;
@@ -426,5 +427,26 @@ class Tests {
             }
         }
         return string;
+    }
+
+    calculateProbabilityWithBarriers(numberOfRepetitions, numberOfCycles, index, fraction, round_for_barriers) {
+        let probabilities = [];
+        for (let repetition = 0; repetition < numberOfRepetitions; repetition++) {
+            this.board.loadConfiguration(index);
+            for (let cycleNumber = 0; cycleNumber < numberOfCycles; cycleNumber++) {
+                if (probabilities.length <= cycleNumber) {
+                    probabilities.push(this.fetchMassOfBoard(fraction));
+                }
+                else {
+                    probabilities[cycleNumber] = this.updateProbability(repetition, probabilities[cycleNumber], fraction);
+                }
+
+                if(cycleNumber >= round_for_barriers && cycleNumber < round_for_barriers + this.options.board.width) {
+                    this.board.addBarrier(cycleNumber - round_for_barriers);
+                }
+                this.board.steps();
+            }
+        }
+        this.saveToFile("probability_r" + numberOfRepetitions + "_c" + numberOfCycles, this.array3dToString(probabilities));
     }
 }

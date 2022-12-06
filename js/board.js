@@ -978,4 +978,13 @@ class Board {
     changeNeighboursRange(event) {
         this.options.neighboursRange = parseInt(event.target.value);
     }
+
+    addBarrier(number) {
+        for (let i = 0; i < this.options.board.width; i++) {
+            if (i < this.options.board.width - 2) {
+                this.fields[i][number + 1].setLife(this.fields[i][number + 1].getColor(), this.fields[i][number].getLife() + this.fields[i][number + 1].getLife())
+            }
+            this.fields[i][number].makeBlock();
+        }
+    }
 }
