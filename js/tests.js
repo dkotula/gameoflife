@@ -36,7 +36,7 @@ class Tests {
         // this.calculateProbability(200, 500, 3, true);
         // this.calculateProbabilityWithBarriers(201, 200, 3, true, 100);
         // this.calculateProbabilityWithBarriers(201, 200, 6, true, 100);
-        // this.calculateProbability(100, 100, 4, true);
+        // this.calculateProbability(300, 199, 7, true, true);
     }
 
     meanAndDensityTest() {
@@ -361,8 +361,7 @@ class Tests {
                 if ((this.board.fields[i][j].type === "alive" && this.board.fields[i][j].getColor() === color) || (this.board.fields[i][j].type === "block" && this.board.fields[i][j].getColor() === color) && this.board.fields[i][j].isVisible === false) {
                     if (fraction) {
                         entropy += this.board.fields[i][j].getLife();
-                    }
-                    else {
+                    } else {
                         entropy++;
                     }
                 }
@@ -371,16 +370,15 @@ class Tests {
         return entropy;
     }
 
-    calculateProbability(numberOfRepetitions, numberOfCycles, index, fraction) {
+    calculateProbability(numberOfRepetitions, numberOfCycles, index, fraction, saveAsTribes = false) {
         let probabilities = [];
         for (let repetition = 0; repetition < numberOfRepetitions; repetition++) {
             this.board.loadConfiguration(index);
             for (let cycleNumber = 0; cycleNumber < numberOfCycles; cycleNumber++) {
                 if (probabilities.length <= cycleNumber) {
-                    probabilities.push(this.fetchMassOfBoard(fraction));
-                }
-                else {
-                    probabilities[cycleNumber] = this.updateProbability(repetition, probabilities[cycleNumber], fraction);
+                    probabilities.push(this.fetchMassOfBoard(fraction, saveAsTribes));
+                } else {
+                    probabilities[cycleNumber] = this.updateProbability(repetition, probabilities[cycleNumber], fraction, saveAsTribes);
                 }
                 this.board.steps();
             }
@@ -388,31 +386,45 @@ class Tests {
         this.saveToFile("probability_r" + numberOfRepetitions + "_c" + numberOfCycles, this.array3dToString(probabilities));
     }
 
-    updateProbability(repetition, probabilities, fraction) {
-        let mass = this.fetchMassOfBoard(fraction);
+    updateProbability(repetition, probabilities, fraction, saveAsTribes) {
+        let mass = this.fetchMassOfBoard(fraction, saveAsTribes);
         for (let i in mass) {
             for (let j in mass[i]) {
-                mass[i][j] = (probabilities[i][j] * (repetition + 1) + mass[i][j]) / (repetition + 2)
+                if (saveAsTribes) {
+                    mass[i][j][0] = (probabilities[i][j] * (repetition + 1) + mass[i][j][0]) / (repetition + 2)
+                } else {
+                    mass[i][j] = (probabilities[i][j] * (repetition + 1) + mass[i][j]) / (repetition + 2)
+                }
             }
         }
         return mass;
     }
 
-    fetchMassOfBoard(fraction) {
+    fetchMassOfBoard(fraction, saveAsTribes) {
         let mass = [];
         for (let i in this.board.fields) {
             mass[i] = [];
             for (let j in this.board.fields[i]) {
                 if (this.board.fields[i][j].isAlive() && this.board.fields[i][j].getLife() > 0) {
                     if (fraction) {
-                        mass[i][j] = this.board.fields[i][j].getLife();
+                        if (saveAsTribes) {
+                            mass[i][j] = [this.board.fields[i][j].getLife(), this.board.fields[i][j].getColor()];
+                        } else {
+                            mass[i][j] = this.board.fields[i][j].getLife();
+                        }
+                    } else {
+                        if (saveAsTribes) {
+                            mass[i][j] = [1.0, this.board.fields[i][j].getColor()];
+                        } else {
+                            mass[i][j] = 1.0;
+                        }
                     }
-                    else {
-                        mass[i][j] = 1.0;
+                } else {
+                    if (saveAsTribes) {
+                        mass[i][j] = [0.0, this.board.fields[i][j].getColor()];
+                    } else {
+                        mass[i][j] = 0.0;
                     }
-                }
-                else {
-                    mass[i][j] = 0.0;
                 }
             }
         }
@@ -431,19 +443,18 @@ class Tests {
         return string;
     }
 
-    calculateProbabilityWithBarriers(numberOfRepetitions, numberOfCycles, index, fraction, round_for_barriers) {
+    calculateProbabilityWithBarriers(numberOfRepetitions, numberOfCycles, index, fraction, round_for_barriers, saveAsTribes = false) {
         let probabilities = [];
         for (let repetition = 0; repetition < numberOfRepetitions; repetition++) {
             this.board.loadConfiguration(index);
             for (let cycleNumber = 0; cycleNumber < numberOfCycles; cycleNumber++) {
                 if (probabilities.length <= cycleNumber) {
-                    probabilities.push(this.fetchMassOfBoard(fraction));
-                }
-                else {
-                    probabilities[cycleNumber] = this.updateProbability(repetition, probabilities[cycleNumber], fraction);
+                    probabilities.push(this.fetchMassOfBoard(fraction), saveAsTribes);
+                } else {
+                    probabilities[cycleNumber] = this.updateProbability(repetition, probabilities[cycleNumber], fraction, saveAsTribes);
                 }
 
-                if(cycleNumber >= round_for_barriers && cycleNumber < round_for_barriers + this.options.board.width) {
+                if (cycleNumber >= round_for_barriers && cycleNumber < round_for_barriers + this.options.board.width) {
                     this.board.addBarrier(cycleNumber - round_for_barriers);
                 }
                 this.board.steps();
