@@ -22545,7 +22545,7 @@ const testBoards = [
             blockIntensity: 0.5
         }]
     },
-	{
+    {
         board: {width: 100, height: 100, fieldSize: 5},
         probability: 80,
         borders: {borderTop: true, borderBottom: true, borderLeft: true, borderRight: true},
@@ -23057,5 +23057,839 @@ const testBoards = [
             }
         ]
     },
-    {board:{width:50,height:50,fieldSize:12},probability:80,borders:{borderTop:true,borderBottom:true,borderLeft:true,borderRight:true},fractionNeighbors:true,timeInterval:200,tribesNumber:2,innerBorders:true,subtractGenerating:true,showFullColor:false,gaussRange:20,massOfTribe:5,underpopulation:0.3,overpopulation:0.6,minDeadCell:0.45,maxDeadCell:0.7,toManyOtherTribes:0.3,colors:["255,0,0","0,255,0","0,0,255","255,255,0","255,0,255","0,255,255"],setBlock:true,setDead:false,setAlive:false,wholeColumn:false,wholeRow:false,mouseDown:false,blockIntensity:50,flashing:false,disappearsAfter:1,appearsAfter:1,neighboursRange:1,cells:[{type:"block",positions:[{x:0,y:25}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:0,y:27}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"alive",positions:[{x:1,y:1}],life:0.51,color:"255,0,0"},{type:"alive",positions:[{x:1,y:2}],life:0.57,color:"255,0,0"},{type:"block",positions:[{x:1,y:25}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:1,y:27}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"alive",positions:[{x:2,y:1}],life:0.59,color:"255,0,0"},{type:"alive",positions:[{x:2,y:2}],life:0.64,color:"255,0,0"},{type:"block",positions:[{x:2,y:25}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:2,y:27}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:3,y:25}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:3,y:27}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:4,y:25}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:4,y:27}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:5,y:25}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:5,y:27}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:6,y:25}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:6,y:27}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:7,y:25}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:7,y:27}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:8,y:25}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:8,y:27}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:9,y:25}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:9,y:27}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:10,y:25}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:10,y:27}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:11,y:25}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:11,y:27}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:12,y:25}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:12,y:27}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:13,y:25}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:13,y:27}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:14,y:25}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:14,y:27}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:15,y:25}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:15,y:27}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:16,y:25}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:16,y:27}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:17,y:25}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:17,y:27}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:18,y:25}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:18,y:27}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:19,y:25}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:19,y:27}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:20,y:25}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:20,y:27}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:21,y:25}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:21,y:27}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:22,y:25}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:22,y:27}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"alive",positions:[{x:23,y:46}],life:0.83,color:"0,255,0"},{type:"alive",positions:[{x:23,y:47}],life:0.59,color:"0,255,0"},{type:"block",positions:[{x:24,y:25}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:24,y:27}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"alive",positions:[{x:24,y:46}],life:0.54,color:"0,255,0"},{type:"alive",positions:[{x:24,y:47}],life:0.54,color:"0,255,0"},{type:"block",positions:[{x:25,y:25}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:25,y:27}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:26,y:25}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:26,y:27}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:27,y:25}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:27,y:27}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:28,y:25}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:28,y:27}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:29,y:25}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:29,y:27}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:30,y:25}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:30,y:27}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:31,y:25}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:31,y:27}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:32,y:25}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:32,y:27}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:33,y:25}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:33,y:27}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:34,y:25}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:34,y:27}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:35,y:25}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:35,y:27}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:36,y:25}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:36,y:27}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:37,y:25}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:37,y:27}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:38,y:25}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:38,y:27}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:39,y:25}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:39,y:27}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:40,y:25}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:40,y:27}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:41,y:25}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:41,y:27}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:42,y:25}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:42,y:27}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:43,y:25}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:43,y:27}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:44,y:25}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:44,y:27}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:45,y:25}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:45,y:27}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:46,y:25}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:46,y:27}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:47,y:25}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:47,y:27}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:48,y:25}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:48,y:27}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:49,y:25}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5},{type:"block",positions:[{x:49,y:27}],flashing:false,disappearsAfter:1,appearsAfter:1,counter:0,blockIntensity:0.5}]}
+    {
+        board: {width: 50, height: 50, fieldSize: 12},
+        probability: 80,
+        borders: {borderTop: true, borderBottom: true, borderLeft: true, borderRight: true},
+        fractionNeighbors: true,
+        timeInterval: 200,
+        tribesNumber: 2,
+        innerBorders: true,
+        subtractGenerating: true,
+        showFullColor: false,
+        gaussRange: 20,
+        massOfTribe: 5,
+        underpopulation: 0.3,
+        overpopulation: 0.6,
+        minDeadCell: 0.45,
+        maxDeadCell: 0.7,
+        toManyOtherTribes: 0.3,
+        colors: ["255,0,0", "0,255,0", "0,0,255", "255,255,0", "255,0,255", "0,255,255"],
+        setBlock: true,
+        setDead: false,
+        setAlive: false,
+        wholeColumn: false,
+        wholeRow: false,
+        mouseDown: false,
+        blockIntensity: 50,
+        flashing: false,
+        disappearsAfter: 1,
+        appearsAfter: 1,
+        neighboursRange: 1,
+        cells: [{
+            type: "block",
+            positions: [{x: 0, y: 25}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 0, y: 27}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {type: "alive", positions: [{x: 1, y: 1}], life: 0.51, color: "255,0,0"}, {
+            type: "alive",
+            positions: [{x: 1, y: 2}],
+            life: 0.57,
+            color: "255,0,0"
+        }, {
+            type: "block",
+            positions: [{x: 1, y: 25}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 1, y: 27}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {type: "alive", positions: [{x: 2, y: 1}], life: 0.59, color: "255,0,0"}, {
+            type: "alive",
+            positions: [{x: 2, y: 2}],
+            life: 0.64,
+            color: "255,0,0"
+        }, {
+            type: "block",
+            positions: [{x: 2, y: 25}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 2, y: 27}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 3, y: 25}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 3, y: 27}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 4, y: 25}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 4, y: 27}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 5, y: 25}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 5, y: 27}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 6, y: 25}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 6, y: 27}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 7, y: 25}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 7, y: 27}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 8, y: 25}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 8, y: 27}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 9, y: 25}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 9, y: 27}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 10, y: 25}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 10, y: 27}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 11, y: 25}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 11, y: 27}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 12, y: 25}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 12, y: 27}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 13, y: 25}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 13, y: 27}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 14, y: 25}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 14, y: 27}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 15, y: 25}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 15, y: 27}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 16, y: 25}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 16, y: 27}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 17, y: 25}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 17, y: 27}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 18, y: 25}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 18, y: 27}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 19, y: 25}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 19, y: 27}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 20, y: 25}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 20, y: 27}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 21, y: 25}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 21, y: 27}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 22, y: 25}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 22, y: 27}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {type: "alive", positions: [{x: 23, y: 46}], life: 0.83, color: "0,255,0"}, {
+            type: "alive",
+            positions: [{x: 23, y: 47}],
+            life: 0.59,
+            color: "0,255,0"
+        }, {
+            type: "block",
+            positions: [{x: 24, y: 25}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 24, y: 27}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {type: "alive", positions: [{x: 24, y: 46}], life: 0.54, color: "0,255,0"}, {
+            type: "alive",
+            positions: [{x: 24, y: 47}],
+            life: 0.54,
+            color: "0,255,0"
+        }, {
+            type: "block",
+            positions: [{x: 25, y: 25}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 25, y: 27}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 26, y: 25}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 26, y: 27}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 27, y: 25}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 27, y: 27}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 28, y: 25}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 28, y: 27}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 29, y: 25}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 29, y: 27}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 30, y: 25}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 30, y: 27}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 31, y: 25}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 31, y: 27}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 32, y: 25}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 32, y: 27}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 33, y: 25}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 33, y: 27}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 34, y: 25}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 34, y: 27}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 35, y: 25}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 35, y: 27}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 36, y: 25}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 36, y: 27}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 37, y: 25}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 37, y: 27}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 38, y: 25}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 38, y: 27}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 39, y: 25}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 39, y: 27}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 40, y: 25}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 40, y: 27}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 41, y: 25}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 41, y: 27}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 42, y: 25}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 42, y: 27}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 43, y: 25}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 43, y: 27}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 44, y: 25}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 44, y: 27}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 45, y: 25}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 45, y: 27}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 46, y: 25}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 46, y: 27}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 47, y: 25}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 47, y: 27}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 48, y: 25}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 48, y: 27}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 49, y: 25}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }, {
+            type: "block",
+            positions: [{x: 49, y: 27}],
+            flashing: false,
+            disappearsAfter: 1,
+            appearsAfter: 1,
+            counter: 0,
+            blockIntensity: 0.5
+        }]
+    }
 ]

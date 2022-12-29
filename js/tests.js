@@ -36,7 +36,7 @@ class Tests {
         // this.calculateProbability(200, 500, 3, true);
         // this.calculateProbabilityWithBarriers(201, 200, 3, true, 100);
         // this.calculateProbabilityWithBarriers(201, 200, 6, true, 100);
-        // this.calculateProbability(300, 199, 7, true, true);
+        // this.calculateProbability(300, 200, 7, true, true);
     }
 
     meanAndDensityTest() {
@@ -372,26 +372,51 @@ class Tests {
 
     calculateProbability(numberOfRepetitions, numberOfCycles, index, fraction, saveAsTribes = false) {
         let probabilities = [];
-        for (let repetition = 0; repetition < numberOfRepetitions; repetition++) {
-            this.board.loadConfiguration(index);
-            for (let cycleNumber = 0; cycleNumber < numberOfCycles; cycleNumber++) {
-                if (probabilities.length <= cycleNumber) {
-                    probabilities.push(this.fetchMassOfBoard(fraction, saveAsTribes));
-                } else {
-                    probabilities[cycleNumber] = this.updateProbability(repetition, probabilities[cycleNumber], fraction, saveAsTribes);
-                }
-                this.board.steps();
+        this.board.loadConfiguration(index);
+        if (saveAsTribes) {
+            for (let i = 0; i < this.options.tribesNumber; i++) {
+                probabilities[i] = [];
             }
         }
-        this.saveToFile("probability_r" + numberOfRepetitions + "_c" + numberOfCycles, this.array3dToString(probabilities));
+        for (let repetition = 0; repetition < numberOfRepetitions; repetition++) {
+            this.board.loadConfiguration(index);
+            if (saveAsTribes) {
+                for (let cycleNumber = 0; cycleNumber < numberOfCycles; cycleNumber++) {
+                    for (let i = 0; i < this.options.tribesNumber; i++) {
+                        if (probabilities[i].length <= cycleNumber) {
+                            probabilities[i].push(this.fetchMassOfBoard(fraction, this.options.colors[i]));
+                        } else {
+                            probabilities[i][cycleNumber] = this.updateProbability(repetition, probabilities[i][cycleNumber], fraction, this.options.colors[i]);
+                        }
+                    }
+                    this.board.steps();
+                }
+            } else {
+                for (let cycleNumber = 0; cycleNumber < numberOfCycles; cycleNumber++) {
+                    if (probabilities.length <= cycleNumber) {
+                        probabilities.push(this.fetchMassOfBoard(fraction));
+                    } else {
+                        probabilities[cycleNumber] = this.updateProbability(repetition, probabilities[cycleNumber], fraction);
+                    }
+                    this.board.steps();
+                }
+            }
+        }
+        if (saveAsTribes) {
+            for (let i = 0; i < this.options.tribesNumber; i++) {
+                this.saveToFile("probability_r" + numberOfRepetitions + "_c" + numberOfCycles + "_t" + (i + 1), this.array3dToString(probabilities[i]));
+            }
+        } else {
+            this.saveToFile("probability_r" + numberOfRepetitions + "_c" + numberOfCycles, this.array3dToString(probabilities));
+        }
     }
 
-    updateProbability(repetition, probabilities, fraction, saveAsTribes) {
-        let mass = this.fetchMassOfBoard(fraction, saveAsTribes);
+    updateProbability(repetition, probabilities, fraction, color = "none") {
+        let mass = this.fetchMassOfBoard(fraction, color);
         for (let i in mass) {
             for (let j in mass[i]) {
-                if (saveAsTribes) {
-                    mass[i][j][0] = (probabilities[i][j] * (repetition + 1) + mass[i][j][0]) / (repetition + 2)
+                if (color !== "none") {
+                    mass[i][j] = (probabilities[i][j] * (repetition + 1) + mass[i][j]) / (repetition + 2)
                 } else {
                     mass[i][j] = (probabilities[i][j] * (repetition + 1) + mass[i][j]) / (repetition + 2)
                 }
@@ -400,31 +425,31 @@ class Tests {
         return mass;
     }
 
-    fetchMassOfBoard(fraction, saveAsTribes) {
+    fetchMassOfBoard(fraction, color = "none") {
         let mass = [];
         for (let i in this.board.fields) {
             mass[i] = [];
             for (let j in this.board.fields[i]) {
                 if (this.board.fields[i][j].isAlive() && this.board.fields[i][j].getLife() > 0) {
                     if (fraction) {
-                        if (saveAsTribes) {
-                            mass[i][j] = [this.board.fields[i][j].getLife(), this.board.fields[i][j].getColor()];
+                        if (color !== "none") {
+                            if (color === this.board.fields[i][j].getColor()) {
+                                mass[i][j] = this.board.fields[i][j].getLife();
+                            } else {
+                                mass[i][j] = 0.0;
+                            }
                         } else {
                             mass[i][j] = this.board.fields[i][j].getLife();
                         }
                     } else {
-                        if (saveAsTribes) {
-                            mass[i][j] = [1.0, this.board.fields[i][j].getColor()];
-                        } else {
+                        if (color === this.board.fields[i][j].getColor()) {
                             mass[i][j] = 1.0;
+                        } else {
+                            mass[i][j] = 0.0;
                         }
                     }
                 } else {
-                    if (saveAsTribes) {
-                        mass[i][j] = [0.0, this.board.fields[i][j].getColor()];
-                    } else {
-                        mass[i][j] = 0.0;
-                    }
+                    mass[i][j] = 0.0;
                 }
             }
         }
@@ -443,15 +468,15 @@ class Tests {
         return string;
     }
 
-    calculateProbabilityWithBarriers(numberOfRepetitions, numberOfCycles, index, fraction, round_for_barriers, saveAsTribes = false) {
+    calculateProbabilityWithBarriers(numberOfRepetitions, numberOfCycles, index, fraction, round_for_barriers) {
         let probabilities = [];
         for (let repetition = 0; repetition < numberOfRepetitions; repetition++) {
             this.board.loadConfiguration(index);
             for (let cycleNumber = 0; cycleNumber < numberOfCycles; cycleNumber++) {
                 if (probabilities.length <= cycleNumber) {
-                    probabilities.push(this.fetchMassOfBoard(fraction), saveAsTribes);
+                    probabilities.push(this.fetchMassOfBoard(fraction));
                 } else {
-                    probabilities[cycleNumber] = this.updateProbability(repetition, probabilities[cycleNumber], fraction, saveAsTribes);
+                    probabilities[cycleNumber] = this.updateProbability(repetition, probabilities[cycleNumber], fraction);
                 }
 
                 if (cycleNumber >= round_for_barriers && cycleNumber < round_for_barriers + this.options.board.width) {
