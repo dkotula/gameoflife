@@ -29,7 +29,10 @@ class Field {
         return this.type;
     }
 
-    makeAlive() {
+    makeAlive(color) {
+        if (color) {
+            this.color = color;
+        }
         this.life = (Math.floor(Math.random() * 50) + 51) / 100;
         this.type = "alive";
         this.changeFullColor();
@@ -53,11 +56,11 @@ class Field {
         this.changeFullColor();
     }
 
-    click() {
+    click(color) {
         if (this.type === "alive") {
             this.makeDead();
         } else if (this.type === "dead" || this.type === "block") {
-            this.makeAlive();
+            this.makeAlive(color);
         }
     }
 
