@@ -37,6 +37,7 @@ class Tests {
         // this.calculateProbabilityWithBarriers(201, 200, 3, true, 100);
         // this.calculateProbabilityWithBarriers(201, 200, 6, true, 100);
         // this.calculateProbability(300, 200, 7, true, true);
+        // this.calculateProbability(100, 500, 3, true);
     }
 
     meanAndDensityTest() {
@@ -51,9 +52,9 @@ class Tests {
     }
 
     meanTest() {
-        const probabilities = [99.9, 99.8, 99.7, 99.6, 99.5, 99.4, 99.3, 99.2, 99.1, 99];
+        const probabilities = [81];
         for (let i = 0; i < probabilities.length; i++) {
-            this.calculateMean(500, probabilities[i]);
+            this.calculateMean(100, probabilities[i]);
         }
     }
 
@@ -140,7 +141,7 @@ class Tests {
         document.querySelectorAll(".ranges")[0].value = width;
         document.querySelectorAll(".ranges")[1].value = height;
         document.querySelector("#probability").value = probability;
-        document.querySelector("#slider").checked = fractionLife;
+        document.querySelector("#fractionLife").checked = fractionLife;
         this.board.setBoundaries();
     }
 
@@ -415,11 +416,7 @@ class Tests {
         let mass = this.fetchMassOfBoard(fraction, color);
         for (let i in mass) {
             for (let j in mass[i]) {
-                if (color !== "none") {
-                    mass[i][j] = (probabilities[i][j] * (repetition + 1) + mass[i][j]) / (repetition + 2)
-                } else {
-                    mass[i][j] = (probabilities[i][j] * (repetition + 1) + mass[i][j]) / (repetition + 2)
-                }
+                mass[i][j] = (probabilities[i][j] * repetition + mass[i][j]) / (repetition + 1)
             }
         }
         return mass;

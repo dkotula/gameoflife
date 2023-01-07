@@ -23102,10 +23102,10 @@ const testBoards = [
             appearsAfter: 1,
             counter: 0,
             blockIntensity: 0.5
-        }, {type: "alive", positions: [{x: 1, y: 1}], life: 0.51, color: "255,0,0"}, {
+        }, {type: "alive", positions: [{x: 1, y: 1}], life: 0.59, color: "255,0,0"}, {
             type: "alive",
             positions: [{x: 1, y: 2}],
-            life: 0.57,
+            life: 0.59,
             color: "255,0,0"
         }, {
             type: "block",
@@ -23126,7 +23126,7 @@ const testBoards = [
         }, {type: "alive", positions: [{x: 2, y: 1}], life: 0.59, color: "255,0,0"}, {
             type: "alive",
             positions: [{x: 2, y: 2}],
-            life: 0.64,
+            life: 0.59,
             color: "255,0,0"
         }, {
             type: "block",
@@ -23464,7 +23464,7 @@ const testBoards = [
             appearsAfter: 1,
             counter: 0,
             blockIntensity: 0.5
-        }, {type: "alive", positions: [{x: 23, y: 46}], life: 0.83, color: "0,255,0"}, {
+        }, {type: "alive", positions: [{x: 23, y: 46}], life: 0.59, color: "0,255,0"}, {
             type: "alive",
             positions: [{x: 23, y: 47}],
             life: 0.59,
@@ -23485,10 +23485,10 @@ const testBoards = [
             appearsAfter: 1,
             counter: 0,
             blockIntensity: 0.5
-        }, {type: "alive", positions: [{x: 24, y: 46}], life: 0.54, color: "0,255,0"}, {
+        }, {type: "alive", positions: [{x: 24, y: 46}], life: 0.59, color: "0,255,0"}, {
             type: "alive",
             positions: [{x: 24, y: 47}],
-            life: 0.54,
+            life: 0.59,
             color: "0,255,0"
         }, {
             type: "block",
