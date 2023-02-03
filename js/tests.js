@@ -39,6 +39,7 @@ class Tests {
         // this.calculateProbability(300, 200, 7, true, true);
         // this.calculateProbability(100, 50, 3, true);
         // this.calculateProbability(200, 200, 8, true, true);
+        // this.calculateProbabilityWithMowingBarriers(100, 400, 3, true, 100, 30);
     }
 
     meanAndDensityTest() {
@@ -479,6 +480,37 @@ class Tests {
 
                 if (cycleNumber >= round_for_barriers && cycleNumber < round_for_barriers + this.options.board.width) {
                     this.board.addBarrier(cycleNumber - round_for_barriers);
+                }
+                this.board.steps();
+            }
+        }
+        this.saveToFile("probability_r" + numberOfRepetitions + "_c" + numberOfCycles, this.array3dToString(probabilities));
+    }
+
+    calculateProbabilityWithMowingBarriers(numberOfRepetitions, numberOfCycles, index, fraction, barriersStartRound, barriersInterval) {
+        let probabilities = [];
+        let barriersCounter = 0;
+        let barriersTurn = true;
+        for (let repetition = 0; repetition < numberOfRepetitions; repetition++) {
+            this.board.loadConfiguration(index);
+            for (let cycleNumber = 0; cycleNumber < numberOfCycles; cycleNumber++) {
+                if (probabilities.length <= cycleNumber) {
+                    probabilities.push(this.fetchMassOfBoard(fraction));
+                } else {
+                    probabilities[cycleNumber] = this.updateProbability(repetition, probabilities[cycleNumber], fraction);
+                }
+
+                if (cycleNumber >= barriersStartRound) {
+                    if (barriersTurn) {
+                        this.board.addBarrier(barriersCounter);
+                        barriersCounter++;
+                    } else {
+                        this.board.subtractBarrier(barriersCounter);
+                        barriersCounter--;
+                    }
+                    if (barriersCounter === 0 || barriersCounter === barriersInterval) {
+                        barriersTurn = !barriersTurn;
+                    }
                 }
                 this.board.steps();
             }

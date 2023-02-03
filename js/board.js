@@ -989,4 +989,10 @@ class Board {
             this.fields[i][number].makeBlock();
         }
     }
+
+    subtractBarrier(number) {
+        for (let i = 0; i < this.options.board.width; i++) {
+            this.fields[i][number].makeDead();
+        }
+    }
 }
