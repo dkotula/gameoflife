@@ -37,7 +37,8 @@ class Tests {
         // this.calculateProbabilityWithBarriers(201, 200, 3, true, 100);
         // this.calculateProbabilityWithBarriers(201, 200, 6, true, 100);
         // this.calculateProbability(300, 200, 7, true, true);
-        // this.calculateProbability(100, 500, 3, true);
+        // this.calculateProbability(100, 50, 3, true);
+        // this.calculateProbability(200, 200, 8, true, true);
     }
 
     meanAndDensityTest() {
