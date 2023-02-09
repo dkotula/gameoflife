@@ -83,6 +83,17 @@ class Menu {
         document.querySelector("#saveConfiguration").addEventListener("click", () => this.board.saveConfiguration());
         document.querySelector("#neighboursRange").addEventListener("input", (event) => this.board.changeNeighboursRange(event));
         document.querySelector("#loadConfigurationButton").addEventListener("click", () => this.board.loadConfiguration());
+        document.querySelector("#movingBarriers").addEventListener("change", (event) => this.board.changeMovingBarriers(event));
+        document.querySelector("#leftStartsAfter").addEventListener("input", (event) => this.board.changeBarriersMoving(event, 0));
+        document.querySelector("#rightStartsAfter").addEventListener("input", (event) => this.board.changeBarriersMoving(event, 1));
+        document.querySelector("#leftLinearBarriers").addEventListener("change", (event) => this.board.changeLinear(event, 0));
+        document.querySelector("#rightLinearBarriers").addEventListener("change", (event) => this.board.changeLinear(event, 1));
+        document.querySelector("#leftSinusoidBarriers").addEventListener("change", (event) => this.board.changeSinusoid(event, 0));
+        document.querySelector("#rightSinusoidBarriers").addEventListener("change", (event) => this.board.changeSinusoid(event, 1));
+        document.querySelector("#leftAmplitude").addEventListener("input", (event) => this.board.changeAmplitude(event, 0));
+        document.querySelector("#rightAmplitude").addEventListener("input", (event) => this.board.changeAmplitude(event, 1));
+        document.querySelector("#leftPeriod").addEventListener("input", (event) => this.board.changePeriod(event, 0));
+        document.querySelector("#rightPeriod").addEventListener("input", (event) => this.board.changePeriod(event, 1));
     }
 
     showAndHideMenu() {

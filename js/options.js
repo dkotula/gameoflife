@@ -36,4 +36,10 @@ const options = {
     disappearsAfter: 1,
     appearsAfter: 1,
     neighboursRange: 1,
+    movingBarriers: false,
+    barriersMoveFromCycle: [100, 100],
+    barriersLinear: [true, false],
+    barriersSinusoid: [false, true],
+    barriersAmplitude: [30, 30],
+    barriersPeriod: [60, 60],
 }

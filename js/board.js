@@ -8,6 +8,10 @@ class Board {
         this.interval = null;
         this.cyclesNumber = 0;
         this.isStart = false;
+        this.barrierPosition = [-1, -1];
+        this.barrierNumber = [0, 0];
+        this.barrierDirection = [true, true];
+        this.barrierPhase = [0, 0];
         this.fieldSizeStyle = document.createElement('style');
         this.fieldSizeStyle.innerHTML = '.fieldSize { width: ' + this.options.board.fieldSize + 'px; height: ' + this.options.board.fieldSize + 'px; }';
         document.head.appendChild(this.fieldSizeStyle);
@@ -17,6 +21,10 @@ class Board {
     makeNewBoard() {
         this.cyclesNumber = 0;
         document.querySelector("#cycles").innerHTML = "Cycle " + this.cyclesNumber;
+        this.barrierPosition = [-1, -1];
+        this.barrierNumber = [-1, -1];
+        this.barrierDirection = [true, true];
+        this.barrierPhase = [0, 0];
         this.isStart = false;
         this.element.innerHTML = "";
         this.changeBoardStyle();
@@ -140,6 +148,18 @@ class Board {
     }
 
     steps() {
+        if (this.options.movingBarriers) {
+            for (let i = 0; i < 2; i++) {
+                if (this.cyclesNumber >= this.options.barriersMoveFromCycle[i]) {
+                    if (this.options.barriersLinear[i]) {
+                        this.moveBarrier(i, "linear");
+                    } else {
+                        this.moveBarrier(i, "sinusoid");
+                    }
+                }
+            }
+        }
+
         let fieldsCopy = [];
         for (let i = 0; i < this.fields.length; i++) {
             fieldsCopy.push([]);
@@ -940,6 +960,27 @@ class Board {
         document.querySelector("#disappearsAfter").disabled = !this.options.flashing;
         document.querySelector("#appearsAfter").disabled = !this.options.flashing;
         document.querySelector("#neighboursRange").value = this.options.neighboursRange;
+        document.querySelector("#movingBarriers").checked = this.options.movingBarriers;
+        document.querySelector("#leftStartsAfter").value = this.options.barriersMoveFromCycle[0];
+        document.querySelector("#leftStartsAfter").disabled = !this.options.movingBarriers;
+        document.querySelector("#rightStartsAfter").value = this.options.barriersMoveFromCycle[1];
+        document.querySelector("#rightStartsAfter").disabled = !this.options.movingBarriers;
+        document.querySelector("#leftLinearBarriers").checked = this.options.barriersLinear[0];
+        document.querySelector("#leftLinearBarriers").disabled = !this.options.movingBarriers;
+        document.querySelector("#rightLinearBarriers").checked = this.options.barriersLinear[1];
+        document.querySelector("#rightLinearBarriers").disabled = !this.options.movingBarriers;
+        document.querySelector("#leftSinusoidBarriers").checked = this.options.barriersSinusoid[0];
+        document.querySelector("#leftSinusoidBarriers").disabled = !this.options.movingBarriers;
+        document.querySelector("#rightSinusoidBarriers").checked = this.options.barriersSinusoid[1];
+        document.querySelector("#rightSinusoidBarriers").disabled = !this.options.movingBarriers;
+        document.querySelector("#leftAmplitude").value = this.options.barriersAmplitude[0];
+        document.querySelector("#leftAmplitude").disabled = !this.options.movingBarriers;
+        document.querySelector("#rightAmplitude").value = this.options.barriersAmplitude[1];
+        document.querySelector("#rightAmplitude").disabled = !this.options.movingBarriers;
+        document.querySelector("#leftPeriod").value = this.options.barriersPeriod[0];
+        document.querySelector("#leftPeriod").disabled = !this.options.movingBarriers;
+        document.querySelector("#rightPeriod").value = this.options.barriersPeriod[1];
+        document.querySelector("#rightPeriod").disabled = !this.options.movingBarriers;
         this.setBoundaries();
     }
 
@@ -982,17 +1023,113 @@ class Board {
     }
 
     addBarrier(number) {
-        for (let i = 0; i < this.options.board.width; i++) {
-            if (number < this.options.board.width - 2 && this.fields[i][number + 1].getType() !== "block") {
-                this.fields[i][number + 1].setLife(this.fields[i][number + 1].getColor(), this.fields[i][number].getLife() + this.fields[i][number + 1].getLife())
+        if (number >= 0 && number < this.options.board.width) {
+            for (let i = 0; i < this.options.board.width; i++) {
+                if (number < this.options.board.width - 2 && this.fields[i][number + 1].getType() !== "block") {
+                    this.fields[i][number + 1].setLife(this.fields[i][number + 1].getColor(), this.fields[i][number].getLife() + this.fields[i][number + 1].getLife())
+                }
+                this.fields[i][number].makeBlock();
             }
-            this.fields[i][number].makeBlock();
         }
     }
 
     subtractBarrier(number) {
-        for (let i = 0; i < this.options.board.width; i++) {
-            this.fields[i][number].makeDead();
+        if (number >= 0 && number < this.options.board.width && this.fields[0][number].type === "block") {
+            for (let i = 0; i < this.options.board.width; i++) {
+                this.fields[i][number].makeDead();
+            }
+        }
+    }
+
+    changeMovingBarriers(event) {
+        this.options.movingBarriers = event.target.checked;
+        if (!this.options.movingBarriers) {
+            document.querySelector("#leftStartsAfter").disabled = true;
+            document.querySelector("#leftLinearBarriers").disabled = true;
+            document.querySelector("#leftSinusoidBarriers").disabled = true;
+            document.querySelector("#leftAmplitude").disabled = true;
+            document.querySelector("#leftPeriod").disabled = true;
+            document.querySelector("#rightStartsAfter").disabled = true;
+            document.querySelector("#rightLinearBarriers").disabled = true;
+            document.querySelector("#rightSinusoidBarriers").disabled = true;
+            document.querySelector("#rightAmplitude").disabled = true;
+            document.querySelector("#rightPeriod").disabled = true;
+        } else {
+            document.querySelector("#leftStartsAfter").disabled = false;
+            document.querySelector("#leftLinearBarriers").disabled = false;
+            document.querySelector("#leftSinusoidBarriers").disabled = false;
+            document.querySelector("#leftAmplitude").disabled = false;
+            document.querySelector("#leftPeriod").disabled = false;
+            document.querySelector("#rightStartsAfter").disabled = false;
+            document.querySelector("#rightLinearBarriers").disabled = false;
+            document.querySelector("#rightSinusoidBarriers").disabled = false;
+            document.querySelector("#rightAmplitude").disabled = false;
+            document.querySelector("#rightPeriod").disabled = false;
+        }
+    }
+
+    changeBarriersMoving(event, index) {
+        this.options.barriersMoveFromCycle[index] = parseInt(event.target.value);
+    }
+
+    changeLinear(event, index) {
+        this.options.barriersLinear[index] = event.target.checked;
+        this.options.barriersSinusoid[index] = !event.target.checked;
+        if (index === 0) {
+            document.querySelector("#leftLinearBarriers").checked = event.target.checked;
+            document.querySelector("#leftSinusoidBarriers").checked = !event.target.checked;
+        } else {
+            document.querySelector("#rightLinearBarriers").checked = event.target.checked;
+            document.querySelector("#rightSinusoidBarriers").checked = !event.target.checked;
+        }
+    }
+
+    changeSinusoid(event, index) {
+        this.options.barriersSinusoid[index] = event.target.checked;
+        this.options.barriersLinear[index] = !event.target.checked;
+        if (index === 0) {
+            document.querySelector("#leftSinusoidBarriers").checked = event.target.checked;
+            document.querySelector("#leftLinearBarriers").checked = !event.target.checked;
+        } else {
+            document.querySelector("#rightSinusoidBarriers").checked = event.target.checked;
+            document.querySelector("#rightLinearBarriers").checked = !event.target.checked;
+        }
+    }
+
+    changeAmplitude(event, index) {
+        this.options.barriersAmplitude[index] = parseInt(event.target.value);
+    }
+
+    changePeriod(event, index) {
+        this.options.barriersPeriod[index] = parseInt(event.target.value);
+    }
+
+    moveBarrier(index, type) {
+        if (index === 0) {
+            if (type === "linear") {
+                const fraction = this.options.barriersAmplitude[index] / (this.options.barriersPeriod[index] / 2.0)
+                if (this.barrierDirection[index]) {
+                    for (let i = Math.round(this.barrierPosition[index]); i <= Math.round(this.barrierNumber[index] + fraction); i++) {
+                        this.addBarrier(i);
+                        this.barrierPosition[index] = Math.round(this.barrierNumber[index] + fraction);
+                    }
+                    this.barrierNumber[index] += fraction;
+                    if (this.barrierNumber[index] >= this.options.barriersAmplitude[index] - 1) {
+                        this.barrierDirection[index] = false;
+                    }
+                } else {
+                    for (let i = Math.round(this.barrierPosition[index]); i > Math.round(this.barrierNumber[index] - fraction); i--) {
+                        this.subtractBarrier(i);
+                        this.barrierPosition[index] = Math.round(this.barrierNumber[index] - fraction);
+                    }
+                    this.barrierNumber[index] -= fraction;
+                    if (this.barrierNumber[index] <= -1) {
+                        this.barrierDirection[index] = true;
+                    }
+                }
+            }
+        } else {
+
         }
     }
 }

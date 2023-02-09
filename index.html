@@ -268,6 +268,90 @@
             <label for="neighboursRange">Neighbours range:</label>
             <input id="neighboursRange" max="2" min="1" name="neighboursRange" type="number" value="1">
         </div>
+
+        <hr>
+
+        <div>
+            Moving barriers
+            <label class="switch" for="movingBarriers">
+                <input id="movingBarriers" type="checkbox">
+                <span class="slider round"></span>
+            </label>
+        </div>
+
+        <div id="barriersDivision">
+            <div>
+                <div></div>
+                <div>Barriers move from cycle</div>
+                <div>Linear</div>
+                <div>Sinusoid</div>
+                <div>Amplitude</div>
+                <div>Period</div>
+            </div>
+
+            <div>
+                <div>Left</div>
+                <div>
+                    <label for="leftStartsAfter"></label>
+                    <input id="leftStartsAfter" max="300" min="0" name="leftStartsAfter" step="1" type="number"
+                           value="1">
+                </div>
+                <div>
+                    <label class="switch" for="leftLinearBarriers">
+                        <input id="leftLinearBarriers" type="checkbox">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="switch" for="leftSinusoidBarriers">
+                        <input id="leftSinusoidBarriers" type="checkbox">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+                <div>
+                    <label for="leftAmplitude"></label>
+                    <input id="leftAmplitude" max="999" min="1" name="leftAmplitude" step="1" type="number"
+                           value="1">
+                </div>
+                <div>
+                    <label for="leftPeriod"></label>
+                    <input id="leftPeriod" max="300" min="1" name="leftPeriod" step="1" type="number"
+                           value="1">
+                </div>
+            </div>
+
+            <div>
+                <div>Right</div>
+                <div>
+                    <label for="rightStartsAfter"></label>
+                    <input id="rightStartsAfter" max="300" min="0" name="rightStartsAfter" step="1" type="number"
+                           value="1">
+                </div>
+                <div>
+                    <label class="switch" for="rightLinearBarriers">
+                        <input id="rightLinearBarriers" type="checkbox">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="switch" for="rightSinusoidBarriers">
+                        <input id="rightSinusoidBarriers" type="checkbox">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+                <div>
+                    <label for="rightAmplitude"></label>
+                    <input id="rightAmplitude" max="999" min="1" name="rightAmplitude" step="1" type="number"
+                           value="1">
+                </div>
+                <div>
+                    <label for="rightPeriod"></label>
+                    <input id="rightPeriod" max="300" min="1" name="rightPeriod" step="1" type="number"
+                           value="1">
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
 </body>
