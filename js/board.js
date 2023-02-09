@@ -8,10 +8,10 @@ class Board {
         this.interval = null;
         this.cyclesNumber = 0;
         this.isStart = false;
-        this.barrierPosition = [-1, -1];
-        this.barrierNumber = [0, 0];
+        this.barrierPosition = [-1, this.options.board.width];
+        this.barrierNumber = [0, this.options.board.width];
         this.barrierDirection = [true, true];
-        this.barrierPhase = [0, 0];
+        this.barrierPhase = [-Math.PI / 2.0, Math.PI / 2.0];
         this.fieldSizeStyle = document.createElement('style');
         this.fieldSizeStyle.innerHTML = '.fieldSize { width: ' + this.options.board.fieldSize + 'px; height: ' + this.options.board.fieldSize + 'px; }';
         document.head.appendChild(this.fieldSizeStyle);
@@ -21,10 +21,10 @@ class Board {
     makeNewBoard() {
         this.cyclesNumber = 0;
         document.querySelector("#cycles").innerHTML = "Cycle " + this.cyclesNumber;
-        this.barrierPosition = [-1, -1];
-        this.barrierNumber = [-1, -1];
+        this.barrierPosition = [-1, this.options.board.width];
+        this.barrierNumber = [0, this.options.board.width];
         this.barrierDirection = [true, true];
-        this.barrierPhase = [0, 0];
+        this.barrierPhase = [-Math.PI / 2.0, Math.PI / 2.0];
         this.isStart = false;
         this.element.innerHTML = "";
         this.changeBoardStyle();
@@ -1022,11 +1022,18 @@ class Board {
         this.options.neighboursRange = parseInt(event.target.value);
     }
 
-    addBarrier(number) {
+    addBarrier(number, direction = true) {
         if (number >= 0 && number < this.options.board.width) {
             for (let i = 0; i < this.options.board.width; i++) {
-                if (number < this.options.board.width - 2 && this.fields[i][number + 1].getType() !== "block") {
-                    this.fields[i][number + 1].setLife(this.fields[i][number + 1].getColor(), this.fields[i][number].getLife() + this.fields[i][number + 1].getLife())
+                if (direction) {
+                    if (number < this.options.board.width - 2 && this.fields[i][number + 1].getType() !== "block") {
+                        this.fields[i][number + 1].setLife(this.fields[i][number + 1].getColor(), this.fields[i][number].getLife() + this.fields[i][number + 1].getLife())
+                    }
+                }
+                else {
+                    if (number > 0 && this.fields[i][number - 1].getType() !== "block") {
+                        this.fields[i][number - 1].setLife(this.fields[i][number - 1].getColor(), this.fields[i][number].getLife() + this.fields[i][number - 1].getLife())
+                    }
                 }
                 this.fields[i][number].makeBlock();
             }
@@ -1109,7 +1116,7 @@ class Board {
             if (type === "linear") {
                 const fraction = this.options.barriersAmplitude[index] / (this.options.barriersPeriod[index] / 2.0)
                 if (this.barrierDirection[index]) {
-                    for (let i = Math.round(this.barrierPosition[index]); i <= Math.round(this.barrierNumber[index] + fraction); i++) {
+                    for (let i = this.barrierPosition[index]; i <= Math.round(this.barrierNumber[index] + fraction); i++) {
                         this.addBarrier(i);
                         this.barrierPosition[index] = Math.round(this.barrierNumber[index] + fraction);
                     }
@@ -1118,7 +1125,7 @@ class Board {
                         this.barrierDirection[index] = false;
                     }
                 } else {
-                    for (let i = Math.round(this.barrierPosition[index]); i > Math.round(this.barrierNumber[index] - fraction); i--) {
+                    for (let i = this.barrierPosition[index]; i > Math.round(this.barrierNumber[index] - fraction); i--) {
                         this.subtractBarrier(i);
                         this.barrierPosition[index] = Math.round(this.barrierNumber[index] - fraction);
                     }
@@ -1127,9 +1134,66 @@ class Board {
                         this.barrierDirection[index] = true;
                     }
                 }
+            } else if (type === "sinusoid") {
+                const fraction = 2 * Math.PI / this.options.barriersPeriod[index];
+                this.barrierPhase[index] += fraction;
+                if (this.barrierPhase[index] > Math.PI) {
+                    this.barrierPhase[index] -= 2 * Math.PI;
+                }
+                this.barrierNumber[index] = (this.options.barriersAmplitude[index] - 1) / 2.0 * Math.sin(this.barrierPhase[index]) + (this.options.barriersAmplitude[index] - 1) / 2.0
+                if (this.barrierPosition[index] < Math.round(this.barrierNumber[index])) {
+                    for (let i = this.barrierPosition[index]; i <= Math.round(this.barrierNumber[index]); i++) {
+                        this.addBarrier(i);
+                        this.barrierPosition[index] = Math.round(this.barrierNumber[index]);
+                    }
+                } else if (this.barrierPosition[index] > Math.round(this.barrierNumber[index])) {
+                    for (let i = this.barrierPosition[index]; i >= Math.round(this.barrierNumber[index]); i--) {
+                        this.subtractBarrier(i);
+                        this.barrierPosition[index] = Math.round(this.barrierNumber[index]);
+                    }
+                }
             }
-        } else {
-
+        } else if (index === 1) {
+            if (type === "linear") {
+                const fraction = this.options.barriersAmplitude[index] / (this.options.barriersPeriod[index] / 2.0)
+                if (this.barrierDirection[index]) {
+                    for (let i = this.barrierPosition[index]; i >= Math.round(this.barrierNumber[index] - fraction); i--) {
+                        this.addBarrier(i, false);
+                        this.barrierPosition[index] = Math.round(this.barrierNumber[index] - fraction);
+                    }
+                    this.barrierNumber[index] -= fraction;
+                    if (this.barrierNumber[index] <= this.options.board.width - this.options.barriersAmplitude[index]) {
+                        this.barrierDirection[index] = false;
+                    }
+                } else {
+                    for (let i = this.barrierPosition[index]; i < Math.round(this.barrierNumber[index] + fraction); i++) {
+                        this.subtractBarrier(i);
+                        this.barrierPosition[index] = Math.round(this.barrierNumber[index] + fraction);
+                    }
+                    this.barrierNumber[index] += fraction;
+                    if (this.barrierNumber[index] > this.options.board.width - 1) {
+                        this.barrierDirection[index] = true;
+                    }
+                }
+            } else if (type === "sinusoid") {
+                const fraction = 2 * Math.PI / this.options.barriersPeriod[index];
+                this.barrierPhase[index] += fraction;
+                if (this.barrierPhase[index] > Math.PI) {
+                    this.barrierPhase[index] -= 2 * Math.PI;
+                }
+                this.barrierNumber[index] = (this.options.barriersAmplitude[index] - 1) / 2.0 * Math.sin(this.barrierPhase[index]) + (this.options.barriersAmplitude[index] - 1) / 2.0 + (this.options.board.width - this.options.barriersAmplitude[index])
+                if (this.barrierPosition[index] > Math.round(this.barrierNumber[index])) {
+                    for (let i = this.barrierPosition[index]; i >= Math.round(this.barrierNumber[index]); i--) {
+                        this.addBarrier(i, false);
+                        this.barrierPosition[index] = Math.round(this.barrierNumber[index]);
+                    }
+                } else if (this.barrierPosition[index] < Math.round(this.barrierNumber[index])) {
+                    for (let i = this.barrierPosition[index]; i <= Math.round(this.barrierNumber[index]); i++) {
+                        this.subtractBarrier(i);
+                        this.barrierPosition[index] = Math.round(this.barrierNumber[index]);
+                    }
+                }
+            }
         }
     }
 }
