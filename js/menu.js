@@ -94,6 +94,9 @@ class Menu {
         document.querySelector("#rightAmplitude").addEventListener("input", (event) => this.board.changeAmplitude(event, 1));
         document.querySelector("#leftPeriod").addEventListener("input", (event) => this.board.changePeriod(event, 0));
         document.querySelector("#rightPeriod").addEventListener("input", (event) => this.board.changePeriod(event, 1));
+        document.querySelector("#testCycles").addEventListener("input", (event) => this.board.changeTestCycles(event));
+        document.querySelector("#testTribes").addEventListener("change", (event) => this.board.changeTestTribes(event));
+        document.querySelector("#testDownloadMap").addEventListener("click", () => this.board.calculateProbability());
     }
 
     showAndHideMenu() {

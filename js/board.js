@@ -1,9 +1,10 @@
 class Board {
-    constructor(options, testBoards) {
+    constructor(options, testBoards, main) {
         this.element = document.createElement("div");
         this.element.className = "board";
         this.options = options;
         this.testBoards = testBoards;
+        this.main = main;
         this.fields = [];
         this.interval = null;
         this.cyclesNumber = 0;
@@ -1195,5 +1196,17 @@ class Board {
                 }
             }
         }
+    }
+
+    changeTestCycles(event) {
+        this.options.testCycles = parseInt(event.target.value);
+    }
+
+    changeTestTribes(event) {
+        this.options.testTribes = event.target.checked;
+    }
+
+    calculateProbability() {
+        this.main.tests.calculateProbability(1, this.options.testCycles, -1, true, this.options.testTribes);
     }
 }
