@@ -9,7 +9,7 @@ class Board {
         this.cyclesNumber = 0;
         this.isStart = false;
         this.barrierPosition = [-1, this.options.board.width];
-        this.barrierNumber = [0, this.options.board.width];
+        this.barrierNumber = [-1, this.options.board.width];
         this.barrierDirection = [true, true];
         this.barrierPhase = [-Math.PI / 2.0, Math.PI / 2.0];
         this.fieldSizeStyle = document.createElement('style');
@@ -22,7 +22,7 @@ class Board {
         this.cyclesNumber = 0;
         document.querySelector("#cycles").innerHTML = "Cycle " + this.cyclesNumber;
         this.barrierPosition = [-1, this.options.board.width];
-        this.barrierNumber = [0, this.options.board.width];
+        this.barrierNumber = [-1, this.options.board.width];
         this.barrierDirection = [true, true];
         this.barrierPhase = [-Math.PI / 2.0, Math.PI / 2.0];
         this.isStart = false;
@@ -1111,7 +1111,7 @@ class Board {
         this.options.barriersPeriod[index] = parseInt(event.target.value);
     }
 
-    moveBarrier(index, type) {
+    moveBarrier(index, type) { // TODO przy period niepodzielnym jest problem, np. 10x10 board A=10, Period=9 idzie w 5 cykli w jedną i 5 cykli w drugą zamiast 9 cykli
         if (index === 0) {
             if (type === "linear") {
                 const fraction = this.options.barriersAmplitude[index] / (this.options.barriersPeriod[index] / 2.0)
@@ -1130,7 +1130,7 @@ class Board {
                         this.barrierPosition[index] = Math.round(this.barrierNumber[index] - fraction);
                     }
                     this.barrierNumber[index] -= fraction;
-                    if (this.barrierNumber[index] <= -1) {
+                    if (this.barrierNumber[index] <= -0.99) {
                         this.barrierDirection[index] = true;
                     }
                 }
@@ -1171,7 +1171,7 @@ class Board {
                         this.barrierPosition[index] = Math.round(this.barrierNumber[index] + fraction);
                     }
                     this.barrierNumber[index] += fraction;
-                    if (this.barrierNumber[index] > this.options.board.width - 1) {
+                    if (this.barrierNumber[index] >= this.options.board.width - 0.01) {
                         this.barrierDirection[index] = true;
                     }
                 }
