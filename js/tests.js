@@ -40,6 +40,7 @@ class Tests {
         // this.calculateProbability(100, 50, 3, true);
         // this.calculateProbability(200, 200, 8, true, true);
         // this.calculateProbabilityWithMowingBarriers(100, 400, 3, true, 100, 30);
+        // this.calculateProbability(100, 300, 9, true, false);
     }
 
     meanAndDensityTest() {
