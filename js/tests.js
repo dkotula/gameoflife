@@ -379,6 +379,7 @@ class Tests {
         if (index === -1) {
             index = this.board.addConfiguration(configuration);
         }
+        this.board.loadConfiguration(index);
         if (saveAsTribes) {
             for (let i = 0; i < this.options.tribesNumber; i++) {
                 probabilities[i] = [];
