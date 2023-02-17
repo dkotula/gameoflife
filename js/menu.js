@@ -1,41 +1,12 @@
 class Menu {
-    constructor(configurations, board, testBoards) {
-        this.configurations = configurations;
+    constructor(board) {
         this.board = board;
-        this.testBoards = testBoards;
         this.hiddenMenu = false;
-        this.hiddenMenuBlock = false;
         this.element = document.querySelector("#menu");
-        this.elementBlock = document.querySelector("#menuBlock");
         this.hideMenuElement = document.querySelector("#hideMenu");
         this.showMenuElement = document.querySelector("#showMenuContainer");
-        this.hideMenuBlockElement = document.querySelector("#hideMenuBlock");
-        this.showMenuBlockElement = document.querySelector("#showMenuBlockContainer");
-        this.makeMenu();
         this.board.setInitialValues();
         this.addListeners();
-    }
-
-    makeMenu() {
-        for (let key in this.configurations) {
-            if (this.configurations.hasOwnProperty(key)) {
-                this.configurations[key].forEach((el) => this.addOption(key, el));
-            }
-        }
-
-        for (let index in this.testBoards) {
-            let option = document.createElement("option");
-            option.value = index;
-            option.innerHTML = "Configuration " + (parseInt(index) + 1);
-            document.querySelector("#loadConfiguration").appendChild(option);
-        }
-    }
-
-    addOption(type, el) {
-        let option = document.createElement("option");
-        option.value = type + "_" + el.name;
-        option.innerHTML = type + "-" + el.name;
-        document.querySelector("#configurations").appendChild(option);
     }
 
     addListeners() {
@@ -43,59 +14,21 @@ class Menu {
         document.querySelector("#start").addEventListener("click", () => this.board.start());
         document.querySelector("#stop").addEventListener("click", () => this.board.stop());
         document.querySelector("#restart").addEventListener("click", () => this.board.restart());
-        document.querySelector("#insertShape").addEventListener("click", () => this.board.insertShape(this.configurations));
-        document.querySelector("#fetchShape").addEventListener("click", () => this.board.fetchShape());
-        document.querySelector("#fractionLife").addEventListener("change", (event) => this.board.changeNeighbors(event));
         document.querySelector("#time").addEventListener("input", (event) => this.board.changeTimeInterval(event));
         document.querySelector("#clear").addEventListener("click", () => this.board.clearBoard(true));
         document.querySelector("#probability").addEventListener("input", (event) => this.board.changeProbability(event));
-        document.querySelectorAll(".border").forEach((el) => el.addEventListener("click", (event) => this.board.changeBorder(event)));
-        document.querySelector("#bordersOn").addEventListener("click", () => this.board.boundariesOn());
-        document.querySelector("#bordersOff").addEventListener("click", () => this.board.boundariesOff());
-        document.querySelector("#tribesNumber").addEventListener("input", (event) => this.board.changeTribesNumber(event));
-        document.querySelector("#generateTribes").addEventListener("click", () => this.board.generateTribes());
         document.querySelector("#innerBorders").addEventListener("change", (event) => this.board.changeInnerBorders(event));
-        document.querySelector("#subtractGenerating").addEventListener("change", (event) => this.board.changeSubtractGenerating(event));
-        document.querySelector("#gaussRange").addEventListener("input", (event) => this.board.changeGaussRange(event));
-        document.querySelector("#massOfTribe").addEventListener("input", (event) => this.board.changeMassOfTribe(event));
         document.querySelector("#hideMenu").addEventListener("click", () => this.showAndHideMenu());
         document.querySelector("#showMenu").addEventListener("click", () => this.showAndHideMenu());
-        document.querySelector("#showFullColor").addEventListener("change", (event) => this.board.changeFullColor(event));
         document.querySelector("#underpopulation").addEventListener("input", (event) => this.board.changeUnderpopulation(event));
         document.querySelector("#overpopulation").addEventListener("input", (event) => this.board.changeOverpopulation(event));
         document.querySelector("#minDeadCell").addEventListener("input", (event) => this.board.changeMinDeadCell(event));
         document.querySelector("#maxDeadCell").addEventListener("input", (event) => this.board.changeMaxDeadCell(event));
-        document.querySelector("#toManyOtherTribes").addEventListener("input", (event) => this.board.changeToManyOtherTribes(event));
-        document.querySelector("#setBlock").addEventListener("change", (event) => this.board.changeSetBlock(event));
         document.querySelector("#setDead").addEventListener("change", (event) => this.board.changeSetDead(event));
         document.querySelector("#setAlive").addEventListener("change", (event) => this.board.changeSetAlive(event));
-        document.querySelector("#wholeColumn").addEventListener("change", (event) => this.board.changeWholeColumn(event));
-        document.querySelector("#wholeRow").addEventListener("change", (event) => this.board.changeWholeRow(event));
         document.querySelector("#main").addEventListener("mousedown", () => this.board.fieldClick());
         document.querySelector("#main").addEventListener("mouseup", () => this.board.fieldUnClick());
-        document.querySelector("#clearWithoutBlocks").addEventListener("click", () => this.board.clearBoard(false));
-        document.querySelector("#hideMenuBlock").addEventListener("click", () => this.showAndHideMenuBlock());
-        document.querySelector("#showMenuBlock").addEventListener("click", () => this.showAndHideMenuBlock());
-        document.querySelector("#blockIntensity").addEventListener("input", (event) => this.board.changeBlockIntensity(event));
-        document.querySelector("#flashing").addEventListener("change", (event) => this.board.changeFlashing(event));
-        document.querySelector("#disappearsAfter").addEventListener("input", (event) => this.board.changeDisappearsAfter(event));
-        document.querySelector("#appearsAfter").addEventListener("input", (event) => this.board.changeAppearsAfter(event));
-        document.querySelector("#saveConfiguration").addEventListener("click", () => this.board.saveConfiguration());
-        document.querySelector("#neighboursRange").addEventListener("input", (event) => this.board.changeNeighboursRange(event));
-        document.querySelector("#loadConfigurationButton").addEventListener("click", () => this.board.loadConfiguration());
-        document.querySelector("#movingBarriers").addEventListener("change", (event) => this.board.changeMovingBarriers(event));
-        document.querySelector("#leftStartsAfter").addEventListener("input", (event) => this.board.changeBarriersMoving(event, 0));
-        document.querySelector("#rightStartsAfter").addEventListener("input", (event) => this.board.changeBarriersMoving(event, 1));
-        document.querySelector("#leftLinearBarriers").addEventListener("change", (event) => this.board.changeLinear(event, 0));
-        document.querySelector("#rightLinearBarriers").addEventListener("change", (event) => this.board.changeLinear(event, 1));
-        document.querySelector("#leftSinusoidBarriers").addEventListener("change", (event) => this.board.changeSinusoid(event, 0));
-        document.querySelector("#rightSinusoidBarriers").addEventListener("change", (event) => this.board.changeSinusoid(event, 1));
-        document.querySelector("#leftAmplitude").addEventListener("input", (event) => this.board.changeAmplitude(event, 0));
-        document.querySelector("#rightAmplitude").addEventListener("input", (event) => this.board.changeAmplitude(event, 1));
-        document.querySelector("#leftPeriod").addEventListener("input", (event) => this.board.changePeriod(event, 0));
-        document.querySelector("#rightPeriod").addEventListener("input", (event) => this.board.changePeriod(event, 1));
         document.querySelector("#testCycles").addEventListener("input", (event) => this.board.changeTestCycles(event));
-        document.querySelector("#testTribes").addEventListener("change", (event) => this.board.changeTestTribes(event));
         document.querySelector("#testDownloadMap").addEventListener("click", () => this.board.calculateProbability());
     }
 
@@ -110,18 +43,5 @@ class Menu {
             this.showMenuElement.style.display = "block";
         }
         this.hiddenMenu = !this.hiddenMenu;
-    }
-
-    showAndHideMenuBlock() {
-        if (this.hiddenMenuBlock) {
-            this.elementBlock.style.display = "block";
-            this.hideMenuBlockElement.style.display = "block";
-            this.showMenuBlockElement.style.display = "none";
-        } else {
-            this.elementBlock.style.display = "none";
-            this.hideMenuBlockElement.style.display = "none";
-            this.showMenuBlockElement.style.display = "block";
-        }
-        this.hiddenMenuBlock = !this.hiddenMenuBlock;
     }
 }
