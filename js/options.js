@@ -13,5 +13,6 @@ const options = {
     setDead: false,
     setAlive: false,
     mouseDown: false,
+    testRepetitions: 1,
     testCycles: 200,
 }

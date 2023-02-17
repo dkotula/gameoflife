@@ -28,6 +28,7 @@ class Menu {
         document.querySelector("#setAlive").addEventListener("change", (event) => this.board.changeSetAlive(event));
         document.querySelector("#main").addEventListener("mousedown", () => this.board.fieldClick());
         document.querySelector("#main").addEventListener("mouseup", () => this.board.fieldUnClick());
+        document.querySelector("#testRepetitions").addEventListener("input", (event) => this.board.changeTestRepetitions(event));
         document.querySelector("#testCycles").addEventListener("input", (event) => this.board.changeTestCycles(event));
         document.querySelector("#testDownloadMap").addEventListener("click", () => this.board.calculateProbability());
     }

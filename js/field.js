@@ -66,4 +66,13 @@ class Field {
     changeFullColor() {
         this.element.style.backgroundColor = "rgba(" + this.color + "," + this.life + ")";
     }
+
+    setCell(cell) {
+        for (const param in cell) {
+            if (param !== "positions") {
+                this[param] = cell[param];
+            }
+        }
+        this.changeFullColor();
+    }
 }

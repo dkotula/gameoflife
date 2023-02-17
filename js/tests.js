@@ -23,10 +23,10 @@ class Tests {
         window.URL.revokeObjectURL(url);
     }
 
-    calculateProbability(numberOfRepetitions, numberOfCycles) {
+    calculateProbability(numberOfRepetitions, numberOfCycles, configuration) {
         let probabilities = [];
         for (let repetition = 0; repetition < numberOfRepetitions; repetition++) {
-            // this.board.loadConfiguration(index); // TODO
+            this.board.loadConfiguration(configuration);
             for (let cycleNumber = 0; cycleNumber < numberOfCycles; cycleNumber++) {
                 if (probabilities.length <= cycleNumber) {
                     probabilities.push(this.fetchMassOfBoard());

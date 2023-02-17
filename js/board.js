@@ -247,6 +247,34 @@ class Board {
         }
     }
 
+    loadConfiguration(configuration) {
+        if (this.isStart) {
+            this.isStart = false;
+            clearInterval(this.interval);
+        }
+        this.clearBoard(true);
+        this.setBoardFromJson(configuration);
+    }
+
+    setBoardFromJson(testBoard) {
+        for (const el in testBoard) {
+            if (el === "board" || el === "borders") {
+                for (const el2 in testBoard[el]) {
+                    this.options[el][el2] = testBoard[el][el2];
+                }
+            } else if (el !== "cells") {
+                this.options[el] = testBoard[el];
+            }
+        }
+        this.setInitialValues();
+        this.makeNewBoard();
+        for (let i = 0; i < testBoard.cells.length; i++) {
+            for (let j = 0; j < testBoard.cells[i].positions.length; j++) {
+                this.fields[testBoard.cells[i].positions[j].x].setCell(testBoard.cells[i]);
+            }
+        }
+    }
+
     setInitialValues() {
         document.querySelector("#width").value = this.options.board.width;
         document.querySelector("#fieldSize").value = this.options.board.fieldSize;
@@ -259,6 +287,28 @@ class Board {
         document.querySelector("#maxDeadCell").value = this.options.maxDeadCell;
         document.querySelector("#setDead").checked = this.options.setDead;
         document.querySelector("#setAlive").checked = this.options.setAlive;
+        document.querySelector("#testRepetitions").value = this.options.testRepetitions;
+        document.querySelector("#testCycles").value = this.options.testCycles;
+    }
+
+    fetchCells() {
+        const cells = [];
+        for (let i = 0; i < this.fields.length; i++) {
+            if (this.fields[i].type === "alive") {
+                cells.push({
+                    type: "alive",
+                    positions: [{x: i}],
+                    phase: this.fields[i].phase,
+                    life: this.fields[i].life,
+                    color: this.fields[i].color
+                });
+            }
+        }
+        return cells;
+    }
+
+    changeTestRepetitions(event) {
+        this.options.testRepetitions = parseInt(event.target.value);
     }
 
     changeTestCycles(event) {
@@ -266,7 +316,9 @@ class Board {
     }
 
     calculateProbability() {
-        this.main.tests.calculateProbability(1, this.options.testCycles);
+        let options = this.options;
+        options.cells = this.fetchCells();
+        this.main.tests.calculateProbability(this.options.testRepetitions, this.options.testCycles, options);
     }
 
     loadDefault() {
