@@ -42,6 +42,7 @@ const options = {
     barriersSinusoid: [false, true],
     barriersAmplitude: [30, 30],
     barriersPeriod: [60, 60],
+    testRepetitions: 1,
     testCycles: 200,
     testTribes: false,
 }

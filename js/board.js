@@ -982,6 +982,9 @@ class Board {
         document.querySelector("#leftPeriod").disabled = !this.options.movingBarriers;
         document.querySelector("#rightPeriod").value = this.options.barriersPeriod[1];
         document.querySelector("#rightPeriod").disabled = !this.options.movingBarriers;
+        document.querySelector("#testRepetitions").value = this.options.testRepetitions;
+        document.querySelector("#testCycles").value = this.options.testCycles;
+        document.querySelector("#testTribes").checked = this.options.testTribes;
         this.setBoundaries();
     }
 
@@ -1198,6 +1201,10 @@ class Board {
         }
     }
 
+    changeTestRepetitions(event) {
+        this.options.testRepetitions = parseInt(event.target.value);
+    }
+
     changeTestCycles(event) {
         this.options.testCycles = parseInt(event.target.value);
     }
@@ -1207,6 +1214,13 @@ class Board {
     }
 
     calculateProbability() {
-        this.main.tests.calculateProbability(1, this.options.testCycles, -1, true, this.options.testTribes);
+        let options = this.options;
+        options.cells = this.fetchCells();
+        this.main.tests.calculateProbability(this.options.testRepetitions, this.options.testCycles, -1, true, this.options.testTribes, options);
+    }
+
+    addConfiguration(configuration) {
+        this.testBoards.push(configuration);
+        return this.testBoards.length - 1;
     }
 }

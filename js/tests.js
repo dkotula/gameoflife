@@ -374,10 +374,10 @@ class Tests {
         return entropy;
     }
 
-    calculateProbability(numberOfRepetitions, numberOfCycles, index, fraction, saveAsTribes = false) {
+    calculateProbability(numberOfRepetitions, numberOfCycles, index, fraction, saveAsTribes = false, configuration = {}) {
         let probabilities = [];
-        if (index !== -1) {
-            this.board.loadConfiguration(index);
+        if (index === -1) {
+            index = this.board.addConfiguration(configuration);
         }
         if (saveAsTribes) {
             for (let i = 0; i < this.options.tribesNumber; i++) {
@@ -385,9 +385,7 @@ class Tests {
             }
         }
         for (let repetition = 0; repetition < numberOfRepetitions; repetition++) {
-            if (index !== -1) {
-                this.board.loadConfiguration(index);
-            }
+            this.board.loadConfiguration(index);
             if (saveAsTribes) {
                 for (let cycleNumber = 0; cycleNumber < numberOfCycles; cycleNumber++) {
                     for (let i = 0; i < this.options.tribesNumber; i++) {
