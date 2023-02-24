@@ -111,7 +111,9 @@ class Board {
                 phase: this.fields[i].phase,
                 type: this.fields[i].getType(),
                 life: this.fields[i].getLife(),
+                imaginaryLife: this.fields[i].imaginaryLife,
                 color: this.fields[i].getColor(),
+                phaseStep: this.fields[i].phaseStep,
             });
         }
 
@@ -126,57 +128,65 @@ class Board {
         let probability = Math.random() * 100;
         let neighborsNumber;
         neighborsNumber = this.countNeighborsNumberAndColor(width, fieldsCopy)
-        if (neighborsNumber[0] > 0 && probability > this.options.probability) {
-            this.fields[width].click(neighborsNumber[2]);
+        if (this.getModulus(neighborsNumber[0], neighborsNumber[1]) > 0 && probability > this.options.probability) {
+            this.fields[width].click(neighborsNumber[4]);
             return;
         }
 
         if (fieldsCopy[width].type === "alive") {
-            if (neighborsNumber[0] < this.options.underpopulation || neighborsNumber[0] > this.options.overpopulation) {
+            if (this.getModulus(neighborsNumber[0], neighborsNumber[1]) < this.options.underpopulation || this.getModulus(neighborsNumber[0], neighborsNumber[1]) > this.options.overpopulation) {
                 this.fields[width].makeDead();
             } else {
-                this.fields[width].setLife(this.fields[width].color, 0.9 * neighborsNumber[0]); // TODO Zmieniłem to
+                this.fields[width].setLife(this.fields[width].color, ...this.getNextCycleMass(fieldsCopy[width]), this.getNextCyclePhase(fieldsCopy[width])); // TODO Zmieniłem to
             }
         } else if (fieldsCopy[width].type === "dead") {
             let neighbors = this.countNeighborsNumberAndColor(width, fieldsCopy)
-            if (neighbors[0] > this.options.minDeadCell && neighbors[0] < this.options.maxDeadCell) {
-                this.fields[width].setLife(neighbors[2], neighbors[0]); // TODO Zmieniłem to
+            if (this.getModulus(neighbors[0], neighbors[1]) > this.options.minDeadCell && this.getModulus(neighbors[0], neighbors[1]) < this.options.maxDeadCell) {
+                this.fields[width].setLife(neighbors[4], neighbors[0] / 2.0, neighbors[1] / 2.0, neighbors[5] / 2.0); // TODO Zmieniłem to (trzeba wprowadzić liczbę sąsiadów komórki)
             }
         }
     }
 
     countNeighborsFraction(width, fieldsCopy) {
-        let neighborsFraction = [0.0, 0.0];
+        let neighborsFraction = [0.0, 0.0, 0.0, 0.0, 0.0];
         let neighboursPower = 1.0;
 
         if (width > 0) {
             const i = width - 1;
-            if (fieldsCopy[i].type === "alive")
+            if (fieldsCopy[i].type === "alive") {
                 neighborsFraction = this.addNeighborsFraction(neighboursPower, neighborsFraction, fieldsCopy[width], fieldsCopy[i]);
+            }
         }
 
         if (width < this.options.board.width - 1) {
             const i = width + 1;
-            if (fieldsCopy[i].type === "alive")
+            if (fieldsCopy[i].type === "alive") {
                 neighborsFraction = this.addNeighborsFraction(neighboursPower, neighborsFraction, fieldsCopy[width], fieldsCopy[i]);
+            }
         }
 
         return neighborsFraction;
     }
 
     addNeighborsFraction(neighboursPower, neighborsFraction, field1, field2) {
-        if (field1.color === field2.color) neighborsFraction[0] += neighboursPower * field2.life;
-        else neighborsFraction[1] += neighboursPower * field2.life;
+        if (field1.color === field2.color) {
+            neighborsFraction[0] += neighboursPower * field2.life;
+            neighborsFraction[1] += neighboursPower * field2.imaginaryLife;
+        } else {
+            neighborsFraction[2] += neighboursPower * field2.life;
+            neighborsFraction[3] += neighboursPower * field2.imaginaryLife;
+        }
+        neighborsFraction[4] += field2.phase;
         return neighborsFraction;
     }
 
     countNeighborsNumberAndColor(width, fieldsCopy) {
         const color = fieldsCopy[width].color;
-        let neighbors = [0.0, 0.0, color];
+        let neighbors = [0.0, 0.0, 0.0, 0.0, color, 0.0];
         fieldsCopy[width].color = "255,0,0";
         const neighborsFraction = this.countNeighborsFraction(width, fieldsCopy);
-        if (neighborsFraction[0] > neighbors[0]) {
-            neighbors = [neighborsFraction[0], neighborsFraction[1], fieldsCopy[width].color];
+        if (this.getModulus(neighborsFraction[0], neighborsFraction[1]) > this.getModulus(neighbors[0], neighbors[1])) {
+            neighbors = [neighborsFraction[0], neighborsFraction[1], neighborsFraction[2], neighborsFraction[3], fieldsCopy[width].color, neighborsFraction[4]];
         }
         fieldsCopy[width].color = color;
         return neighbors;
@@ -323,8 +333,21 @@ class Board {
 
     loadDefault() {
         if (this.options.board.width === 100) {
-            this.fields[1].setLife("255,0,0", 0.5);
-            this.fields[98].setLife("255,0,0", 0.5);
+            this.fields[1].setLife("255,0,0", 0.5, 0.5, 0.0);
+            this.fields[98].setLife("255,0,0", 0.5, 0.5, 0.0);
         }
+    }
+
+    getModulus(re, im) {
+        return Math.sqrt(re * re + im * im);
+    }
+
+    getNextCycleMass(cell) {
+        const modulus = this.getModulus(cell.life, cell.imaginaryLife);
+        return [modulus * Math.cos(cell.phase), modulus * Math.sin(cell.phase)];
+    }
+
+    getNextCyclePhase(cell) {
+        return cell.phase + cell.phaseStep;
     }
 }

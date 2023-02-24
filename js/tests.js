@@ -50,19 +50,19 @@ class Tests {
     fetchMassOfBoard(color = "none") {
         let mass = [];
         for (let i in this.board.fields) {
-                if (this.board.fields[i].isAlive() && this.board.fields[i].getLife() > 0) {
-                    if (color !== "none") {
-                        if (color === this.board.fields[i].getColor()) {
-                            mass[i] = this.board.fields[i].getLife();
-                        } else {
-                            mass[i] = 0.0;
-                        }
+            if (this.board.fields[i].isAlive() && this.board.fields[i].getModulus() > 0) {
+                if (color !== "none") {
+                    if (color === this.board.fields[i].getColor()) {
+                        mass[i] = this.board.fields[i].getModulus();
                     } else {
-                        mass[i] = this.board.fields[i].getLife();
+                        mass[i] = 0.0;
                     }
                 } else {
-                    mass[i] = 0.0;
+                    mass[i] = this.board.fields[i].getModulus();
                 }
+            } else {
+                mass[i] = 0.0;
+            }
         }
         return mass;
     }

@@ -6,6 +6,8 @@ class Field {
         this.element = document.createElement("div");
         this.element.className = "field fieldSize";
         this.life = 0.0;
+        this.imaginaryLife = 0.0;
+        this.phaseStep = 0.1;
         this.color = "255,0,0";
         this.type = "dead";
     }
@@ -27,6 +29,8 @@ class Field {
             this.color = color;
         }
         this.life = (Math.floor(Math.random() * 50) + 51) / 100;
+        this.imaginaryLife = (Math.floor(Math.random() * 50) + 51) / 100;
+        this.phase = (Math.floor(Math.random() * 50) + 51) / 100;
         this.type = "alive";
         this.changeFullColor();
     }
@@ -34,6 +38,8 @@ class Field {
     makeDead() {
         this.type = "dead";
         this.life = 0.0;
+        this.imaginaryLife = 0.0;
+        this.phase = 0.0;
         this.element.style.backgroundColor = "white";
     }
 
@@ -49,9 +55,11 @@ class Field {
         return this.life;
     }
 
-    setLife(color, life) {
+    setLife(color, life, imaginaryLife = 0.0, phase = 0) {
         this.color = color;
         this.life = life;
+        this.imaginaryLife = imaginaryLife;
+        this.phase = phase;
         this.type = "alive";
         if (this.life === 0.0) {
             this.type = "dead";
@@ -74,5 +82,9 @@ class Field {
             }
         }
         this.changeFullColor();
+    }
+
+    getModulus() {
+        return Math.sqrt(this.life * this.life + this.imaginaryLife * this.imaginaryLife);
     }
 }
