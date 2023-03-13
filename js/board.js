@@ -334,6 +334,8 @@ class Board {
     loadDefault() {
         if (this.options.board.width === 100) {
             this.fields[1].setLife("255,0,0", 0.5, 0.5, 0.0);
+            this.fields[2].setLife("255,0,0", 0.5, 0.5, 0.0);
+            this.fields[97].setLife("255,0,0", 0.5, 0.5, 0.0);
             this.fields[98].setLife("255,0,0", 0.5, 0.5, 0.0);
         }
     }

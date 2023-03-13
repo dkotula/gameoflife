@@ -25,6 +25,7 @@ class Tests {
 
     calculateProbability(numberOfRepetitions, numberOfCycles, configuration) {
         let probabilities = [];
+        let phases = [];
         for (let repetition = 0; repetition < numberOfRepetitions; repetition++) {
             this.board.loadConfiguration(configuration);
             for (let cycleNumber = 0; cycleNumber < numberOfCycles; cycleNumber++) {
@@ -33,10 +34,16 @@ class Tests {
                 } else {
                     probabilities[cycleNumber] = this.updateProbability(repetition, probabilities[cycleNumber]);
                 }
+                if (phases.length <= cycleNumber) {
+                    phases.push(this.fetchPhaseOfBoard());
+                } else {
+                    phases[cycleNumber] = this.updatePhase(repetition, phases[cycleNumber]);
+                }
                 this.board.steps();
             }
         }
         this.saveToFile("probability_r" + numberOfRepetitions + "_c" + numberOfCycles, this.array2dToString(probabilities));
+        this.saveToFile("phase_r" + numberOfRepetitions + "_c" + numberOfCycles, this.array2dToString(phases));
     }
 
     updateProbability(repetition, probabilities, color = "none") {
@@ -65,5 +72,33 @@ class Tests {
             }
         }
         return mass;
+    }
+
+    updatePhase(repetition, phase, color = "none") {
+        let phaseTemp = this.fetchPhaseOfBoard(color);
+        for (let i in phaseTemp) {
+            phaseTemp[i] = (phase[i] * repetition + phaseTemp[i]) / (repetition + 1)
+        }
+        return phaseTemp;
+    }
+
+    fetchPhaseOfBoard(color = "none") {
+        let phase = [];
+        for (let i in this.board.fields) {
+            if (this.board.fields[i].isAlive() && this.board.fields[i].phase > 0) {
+                if (color !== "none") {
+                    if (color === this.board.fields[i].getColor()) {
+                        phase[i] = this.board.fields[i].phase;
+                    } else {
+                        phase[i] = 0.0;
+                    }
+                } else {
+                    phase[i] = this.board.fields[i].phase;
+                }
+            } else {
+                phase[i] = 0.0;
+            }
+        }
+        return phase;
     }
 }
