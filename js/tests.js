@@ -55,7 +55,9 @@ class Tests {
     }
 
     meanTest() {
-        const probabilities = [81];
+        const probabilities = [100, 99, 98, 95, 90, 70, 50, 30, 1, 0];
+        // const probabilities = [99.99, 99.95, 99.9, 99.8, 99.7, 99.6, 99.5, 99.4, 99.3, 99.2, 99.1, 97, 96, 94, 93, 92, 91, 89, 88, 87, 86, 85, 83, 80];
+        // const probabilities = [100, 99.99, 99.95, 99.9, 99.8, 99.7, 99.6, 99.5, 99.4, 99.3, 99.2, 99.1, 99, 98, 97, 96, 95, 94, 93, 92, 91, 90, 89, 88, 87, 86, 85, 83, 80, 70, 50, 30, 1, 0];
         for (let i = 0; i < probabilities.length; i++) {
             this.calculateMean(100, probabilities[i]);
         }
@@ -64,7 +66,7 @@ class Tests {
     calculateMean(cycles, probability) {
         let securityLevel = 1000;
         let results = [];
-        this.setDefault(10, 10, probability, {
+        this.setDefault(20, 20, probability, {
             borderTop: true,
             borderBottom: true,
             borderLeft: true,
@@ -72,7 +74,7 @@ class Tests {
         }, false);
         for (let i = 0; i < cycles; i++) {
             this.board.makeNewBoard();
-            this.board.coordinatesToShape([3, 4, 3, 5, 4, 3, 4, 6, 5, 3, 5, 6, 6, 4, 6, 5]);
+            this.board.coordinatesToShape([9, 9, 10, 9, 10, 10, 9, 10]);
             for (let j = 0; j < securityLevel; j++) {
                 this.board.steps();
                 if (this.ifAllDead()) {
@@ -81,7 +83,7 @@ class Tests {
             }
             results.push(this.board.cyclesNumber);
         }
-        this.saveToFile("mean_p" + this.options.probability, this.array1dToString(results));
+        this.saveToFile("mean2_p" + this.options.probability, this.array1dToString(results));
     }
 
     calculateDensity(rounds, cycles, probability) {
