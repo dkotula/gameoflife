@@ -1318,7 +1318,7 @@ class Board {
                 (this.fields[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible))
                 livingCells = this.addLivingCells(this.fields[i][j]);
         }
-        if (livingCells === 0) return 1;
+        if (livingCells < 0.01) return 1;
         return livingCells;
     }
 

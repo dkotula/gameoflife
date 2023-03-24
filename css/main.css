@@ -9,7 +9,6 @@
 .board {
     display: grid;
     margin: 10px auto;
-    border: 1px grey solid;
 }
 
 .field {

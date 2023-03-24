@@ -3,10 +3,12 @@
         this.element = document.createElement("div");
         this.element.id = "game"
         this.options = options;
-        this.board = new Board(this.options, this);
+        this.configurations = configurations;
+        this.testBoards = testBoards;
+        this.board = new Board(this.options, this.testBoards, this);
         this.element.appendChild(this.board.getElement());
-        this.menu = new Menu(this.board);
-        this.tests = new Tests(this.board);
+        this.menu = new Menu(this.configurations, this.board, this.testBoards);
+        this.tests = new Tests(this.board, this.options, this.menu);
     }
 
     getElement() {
