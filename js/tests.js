@@ -39,7 +39,7 @@ class Tests {
         // this.calculateProbability(300, 200, 7, true, true);
         // this.calculateProbability(100, 50, 3, true);
         // this.calculateProbability(200, 200, 8, true, true);
-        // this.calculateProbabilityWithMowingBarriers(100, 400, 3, true, 100, 30);
+        // this.calculateProbabilityWithMovingBarriers(100, 400, 3, true, 100, 30);
         // this.calculateProbability(100, 300, 9, true, false);
     }
 
@@ -378,6 +378,7 @@ class Tests {
 
     calculateProbability(numberOfRepetitions, numberOfCycles, index, fraction, saveAsTribes = false, configuration = {}) {
         let probabilities = [];
+        let phases = [];
         if (index === -1) {
             index = this.board.addConfiguration(configuration);
         }
@@ -385,6 +386,7 @@ class Tests {
         if (saveAsTribes) {
             for (let i = 0; i < this.options.tribesNumber; i++) {
                 probabilities[i] = [];
+                phases[i] = [];
             }
         }
         for (let repetition = 0; repetition < numberOfRepetitions; repetition++) {
@@ -397,6 +399,11 @@ class Tests {
                         } else {
                             probabilities[i][cycleNumber] = this.updateProbability(repetition, probabilities[i][cycleNumber], fraction, this.options.colors[i]);
                         }
+                        if (phases[i].length <= cycleNumber) {
+                            phases[i].push(this.fetchPhaseOfBoard(fraction, this.options.colors[i]));
+                        } else {
+                            phases[i][cycleNumber] = this.updatePhase(repetition, phases[i][cycleNumber], fraction, this.options.colors[i]);
+                        }
                     }
                     this.board.steps();
                 }
@@ -407,6 +414,11 @@ class Tests {
                     } else {
                         probabilities[cycleNumber] = this.updateProbability(repetition, probabilities[cycleNumber], fraction);
                     }
+                    if (phases.length <= cycleNumber) {
+                        phases.push(this.fetchPhaseOfBoard(fraction));
+                    } else {
+                        phases[cycleNumber] = this.updatePhase(repetition, phases[cycleNumber], fraction);
+                    }
                     this.board.steps();
                 }
             }
@@ -414,9 +426,11 @@ class Tests {
         if (saveAsTribes) {
             for (let i = 0; i < this.options.tribesNumber; i++) {
                 this.saveToFile("probability_r" + numberOfRepetitions + "_c" + numberOfCycles + "_t" + (i + 1), this.array3dToString(probabilities[i]));
+                this.saveToFile("phase_r" + numberOfRepetitions + "_c" + numberOfCycles + "_t" + (i + 1), this.array3dToString(phases[i]));
             }
         } else {
             this.saveToFile("probability_r" + numberOfRepetitions + "_c" + numberOfCycles, this.array3dToString(probabilities));
+            this.saveToFile("phase_r" + numberOfRepetitions + "_c" + numberOfCycles, this.array3dToString(phases));
         }
     }
 
@@ -435,16 +449,16 @@ class Tests {
         for (let i in this.board.fields) {
             mass[i] = [];
             for (let j in this.board.fields[i]) {
-                if (this.board.fields[i][j].isAlive() && this.board.fields[i][j].getLife() > 0) {
+                if (this.board.fields[i][j].isAlive() && this.board.fields[i][j].getModulus() > 0) {
                     if (fraction) {
                         if (color !== "none") {
                             if (color === this.board.fields[i][j].getColor()) {
-                                mass[i][j] = this.board.fields[i][j].getLife();
+                                mass[i][j] = this.board.fields[i][j].getModulus();
                             } else {
                                 mass[i][j] = 0.0;
                             }
                         } else {
-                            mass[i][j] = this.board.fields[i][j].getLife();
+                            mass[i][j] = this.board.fields[i][j].getModulus();
                         }
                     } else {
                         if (color === this.board.fields[i][j].getColor()) {
@@ -459,6 +473,47 @@ class Tests {
             }
         }
         return mass;
+    }
+
+    updatePhase(repetition, phase, fraction, color = "none") {
+        let phaseTemp = this.fetchPhaseOfBoard(fraction, color);
+        for (let i in phaseTemp) {
+            for (let j in phaseTemp[i]) {
+                phaseTemp[i][j] = (phase[i][j] * repetition + phaseTemp[i][j]) / (repetition + 1)
+            }
+        }
+        return phaseTemp;
+    }
+
+    fetchPhaseOfBoard(fraction, color = "none") {
+        let phase = [];
+        for (let i in this.board.fields) {
+            phase[i] = [];
+            for (let j in this.board.fields[i]) {
+                if (this.board.fields[i][j].isAlive() && this.board.fields[i][j].phase > 0) {
+                    if (fraction) {
+                        if (color !== "none") {
+                            if (color === this.board.fields[i][j].getColor()) {
+                                phase[i][j] = this.board.fields[i][j].phase;
+                            } else {
+                                phase[i][j] = 0.0;
+                            }
+                        } else {
+                            phase[i][j] = this.board.fields[i][j].phase;
+                        }
+                    } else {
+                        if (color === this.board.fields[i][j].getColor()) {
+                            phase[i][j] = this.board.fields[i][j].phase;
+                        } else {
+                            phase[i][j] = 0.0;
+                        }
+                    }
+                } else {
+                    phase[i][j] = 0.0;
+                }
+            }
+        }
+        return phase;
     }
 
     array3dToString(array) {
@@ -493,7 +548,7 @@ class Tests {
         this.saveToFile("probability_r" + numberOfRepetitions + "_c" + numberOfCycles, this.array3dToString(probabilities));
     }
 
-    calculateProbabilityWithMowingBarriers(numberOfRepetitions, numberOfCycles, index, fraction, barriersStartRound, barriersInterval) {
+    calculateProbabilityWithMovingBarriers(numberOfRepetitions, numberOfCycles, index, fraction, barriersStartRound, barriersInterval) {
         let probabilities = [];
         let barriersCounter = 0;
         let barriersTurn = true;

@@ -173,7 +173,10 @@ class Board {
                     height: j,
                     type: this.fields[i][j].getType(),
                     life: this.fields[i][j].getLife(),
+                    imaginaryLife: this.fields[i][j].imaginaryLife,
                     color: this.fields[i][j].getColor(),
+                    phase: this.fields[i][j].phase,
+                    phaseStep: this.fields[i][j].phaseStep
                 });
             }
         }
@@ -195,15 +198,20 @@ class Board {
         } else {
             neighborsNumber = this.countNeighborsNumber(width, height, fieldsCopy);
         }
-        if (neighborsNumber[0] > 0 && probability > this.options.probability) {
+        if (this.getModulus(neighborsNumber[0], neighborsNumber[1]) > 0 && probability > this.options.probability) {
             if (this.fields[width][height].getType() !== "block") {
-                this.fields[width][height].click(neighborsNumber[2]);
+                this.fields[width][height].click(neighborsNumber[4]);
             } else {
                 if (this.fields[width][height].flashing && !this.fields[width][height].isVisible) {
-                    if (this.fields[width][height].life > 0.0)
+                    if (this.fields[width][height].life > 0.0) {
                         this.fields[width][height].life = 0.0;
-                    else
+                        this.fields[width][height].imaginaryLife = 0.0;
+                        this.fields[width][height].phase = 0.0;
+                    } else {
                         this.fields[width][height].life = (Math.floor(Math.random() * 50) + 51) / 100;
+                        this.fields[width][height].imaginaryLife = (Math.floor(Math.random() * 50) + 51) / 100;
+                        this.fields[width][height].phase = (Math.floor(Math.random() * 50) + 51) / 100;
+                    }
                 }
             }
             return;
@@ -211,28 +219,29 @@ class Board {
 
         if (this.options.fractionNeighbors) {
             if (fieldsCopy[width][height].type === "alive") {
-                if (neighborsNumber[0] < this.options.underpopulation || neighborsNumber[0] > this.options.overpopulation) {
+                if (this.getModulus(neighborsNumber[0], neighborsNumber[1]) < this.options.underpopulation || this.getModulus(neighborsNumber[0], neighborsNumber[1]) > this.options.overpopulation) {
                     this.fields[width][height].makeDead();
                 } else {
-                    this.fields[width][height].setLife(this.fields[width][height].color, neighborsNumber[0] / 2.0 + neighborsNumber[1] / 3.0);
+                    this.fields[width][height].setLife(this.fields[width][height].color, ...this.getNextCycleMass(fieldsCopy[width], neighborsNumber), this.getNextCyclePhase(fieldsCopy[width][height]));
                 }
             } else if (fieldsCopy[width][height].type === "dead") {
                 let neighbors = this.countNeighborsNumberAndColor(width, height, fieldsCopy)
-                if (neighbors[0] > this.options.minDeadCell && neighbors[0] < this.options.maxDeadCell && neighbors[1] < this.options.toManyOtherTribes) {
-                    this.fields[width][height].setLife(neighbors[2], neighbors[0] / 2.0 + neighbors[1] / 4.0);
+                if (this.getModulus(neighbors[0], neighbors[1]) > this.options.minDeadCell && this.getModulus(neighbors[0], neighbors[1]) < this.options.maxDeadCell && this.getModulus(neighbors[2], neighbors[3]) < this.options.toManyOtherTribes) {
+                    this.fields[width][height].setLife(neighbors[4], neighbors[0] / 2.0 + neighbors[2] / 4.0, neighbors[1] / 2.0 + neighbors[3] / 4.0, neighbors[5] / this.livingCells(width, height));
                 }
             } else if (fieldsCopy[width][height].type === "block" && this.fields[width][height].flashing && !this.fields[width][height].isVisible) {
-                if (fieldsCopy[width][height].life > 0.0) {
-                    if (neighborsNumber[0] < this.options.underpopulation || neighborsNumber[0] > this.options.overpopulation) {
+                if (this.getModulus(fieldsCopy[width][height].life, fieldsCopy[width][height].imaginaryLife) > 0.0) {
+                    if (this.getModulus(neighborsNumber[0], neighborsNumber[1]) < this.options.underpopulation || this.getModulus(neighborsNumber[0], neighborsNumber[1]) > this.options.overpopulation) {
                         this.fields[width][height].life = 0.0;
+                        this.fields[width][height].imaginaryLife = 0.0;
+                        this.fields[width][height].phase = 0.0;
                     } else {
-                        this.fields[width][height].life = neighborsNumber[0] / 2.0 + neighborsNumber[1] / 3.0;
+                        this.fields[width][height].setLife(this.fields[width][height].color, ...this.getNextCycleMass(fieldsCopy[width], neighborsNumber), this.getNextCyclePhase(fieldsCopy[width][height]));
                     }
                 } else {
                     let neighbors = this.countNeighborsNumberAndColor(width, height, fieldsCopy)
-                    if (neighbors[0] > this.options.minDeadCell && neighbors[0] < this.options.maxDeadCell && neighbors[1] < this.options.toManyOtherTribes) {
-                        this.fields[width][height].life = neighbors[0] / 2.0 + neighbors[1] / 4.0;
-                        this.fields[width][height].color = neighbors[2];
+                    if (this.getModulus(neighbors[0], neighbors[1]) > this.options.minDeadCell && this.getModulus(neighbors[0], neighbors[1]) < this.options.maxDeadCell && this.getModulus(neighbors[2], neighbors[3]) < this.options.toManyOtherTribes) {
+                        this.fields[width][height].setLife(neighbors[4], neighbors[0] / 2.0 + neighbors[2] / 4.0, neighbors[1] / 2.0 + neighbors[3] / 4.0, neighbors[5] / this.livingCells(width, height));
                     }
                 }
             }
@@ -246,13 +255,17 @@ class Board {
                     this.fields[width][height].makeAlive();
                 }
             } else if (fieldsCopy[width][height].type === "block" && this.fields[width][height].flashing && !this.fields[width][height].isVisible) {
-                if (fieldsCopy[width][height].life > 0.0) {
+                if (this.getModulus(fieldsCopy[width][height].life, fieldsCopy[width][height].imaginaryLife) > 0.0) {
                     if (neighborsNumber[0] < 2 || neighborsNumber[0] > 3) {
                         fieldsCopy[width][height].life = 0.0
+                        fieldsCopy[width][height].imaginaryLife = 0.0
+                        fieldsCopy[width][height].phase = 0.0
                     }
                 } else {
                     if (neighborsNumber[0] === 3) {
                         this.fields[width][height].life = (Math.floor(Math.random() * 50) + 51) / 100;
+                        this.fields[width][height].imaginaryLife = (Math.floor(Math.random() * 50) + 51) / 100;
+                        this.fields[width][height].phase = (Math.floor(Math.random() * 50) + 51) / 100;
                     }
                 }
             }
@@ -266,56 +279,56 @@ class Board {
             const i = (width + this.options.board.height - 1) % this.options.board.height;
             const j = (height + this.options.board.width - 1) % this.options.board.width;
             if (fieldsCopy[i][j].type === "alive" ||
-                (fieldsCopy[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible && fieldsCopy[i][j].life > 0.0))
+                (fieldsCopy[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible && this.getModulus(fieldsCopy[width][height].life, fieldsCopy[width][height].imaginaryLife) > 0.0))
                 neighborsNumber++;
         }
         if (width > 0 || !this.options.borders["borderBottom"]) {
             const i = (width + this.options.board.height - 1) % this.options.board.height;
             const j = (height + this.options.board.width) % this.options.board.width;
             if (fieldsCopy[i][j].type === "alive" ||
-                (fieldsCopy[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible && fieldsCopy[i][j].life > 0.0))
+                (fieldsCopy[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible && this.getModulus(fieldsCopy[width][height].life, fieldsCopy[width][height].imaginaryLife) > 0.0))
                 neighborsNumber++;
         }
         if (width > 0 && height < this.options.board.width - 1 || !this.options.borders["borderBottom"] && !this.options.borders["borderLeft"]) {
             const i = (width + this.options.board.height - 1) % this.options.board.height;
             const j = (height + this.options.board.width + 1) % this.options.board.width;
             if (fieldsCopy[i][j].type === "alive" ||
-                (fieldsCopy[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible && fieldsCopy[i][j].life > 0.0))
+                (fieldsCopy[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible && this.getModulus(fieldsCopy[width][height].life, fieldsCopy[width][height].imaginaryLife) > 0.0))
                 neighborsNumber++;
         }
         if (height > 0 || !this.options.borders["borderRight"]) {
             const i = (width + this.options.board.height) % this.options.board.height;
             const j = (height + this.options.board.width - 1) % this.options.board.width;
             if (fieldsCopy[i][j].type === "alive" ||
-                (fieldsCopy[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible && fieldsCopy[i][j].life > 0.0))
+                (fieldsCopy[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible && this.getModulus(fieldsCopy[width][height].life, fieldsCopy[width][height].imaginaryLife) > 0.0))
                 neighborsNumber++;
         }
         if (height < this.options.board.width - 1 || !this.options.borders["borderLeft"]) {
             const i = (width + this.options.board.height) % this.options.board.height;
             const j = (height + this.options.board.width + 1) % this.options.board.width;
             if (fieldsCopy[i][j].type === "alive" ||
-                (fieldsCopy[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible && fieldsCopy[i][j].life > 0.0))
+                (fieldsCopy[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible && this.getModulus(fieldsCopy[width][height].life, fieldsCopy[width][height].imaginaryLife) > 0.0))
                 neighborsNumber++;
         }
         if (width < this.options.board.height - 1 && height > 0 || !this.options.borders["borderTop"] && !this.options.borders["borderRight"]) {
             const i = (width + this.options.board.height + 1) % this.options.board.height;
             const j = (height + this.options.board.width - 1) % this.options.board.width;
             if (fieldsCopy[i][j].type === "alive" ||
-                (fieldsCopy[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible && fieldsCopy[i][j].life > 0.0))
+                (fieldsCopy[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible && this.getModulus(fieldsCopy[width][height].life, fieldsCopy[width][height].imaginaryLife) > 0.0))
                 neighborsNumber++;
         }
         if (width < this.options.board.height - 1 || !this.options.borders["borderTop"]) {
             const i = (width + this.options.board.height + 1) % this.options.board.height;
             const j = (height + this.options.board.width) % this.options.board.width;
             if (fieldsCopy[i][j].type === "alive" ||
-                (fieldsCopy[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible && fieldsCopy[i][j].life > 0.0))
+                (fieldsCopy[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible && this.getModulus(fieldsCopy[width][height].life, fieldsCopy[width][height].imaginaryLife) > 0.0))
                 neighborsNumber++;
         }
         if (width < this.options.board.height - 1 && height < this.options.board.width - 1 || !this.options.borders["borderTop"] && !this.options.borders["borderLeft"]) {
             const i = (width + this.options.board.height + 1) % this.options.board.height;
             const j = (height + this.options.board.width + 1) % this.options.board.width;
             if (fieldsCopy[i][j].type === "alive" ||
-                (fieldsCopy[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible && fieldsCopy[i][j].life > 0.0))
+                (fieldsCopy[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible && this.getModulus(fieldsCopy[width][height].life, fieldsCopy[width][height].imaginaryLife) > 0.0))
                 neighborsNumber++;
         }
         if (this.options.neighboursRange > 1) {
@@ -323,112 +336,112 @@ class Board {
                 const i = (width + this.options.board.height - 2) % this.options.board.height;
                 const j = (height + this.options.board.width - 2) % this.options.board.width;
                 if (fieldsCopy[i][j].type === "alive" ||
-                    (fieldsCopy[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible && fieldsCopy[i][j].life > 0.0))
+                    (fieldsCopy[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible && this.getModulus(fieldsCopy[width][height].life, fieldsCopy[width][height].imaginaryLife) > 0.0))
                     neighborsNumber++;
             }
             if ((width > 1 || !this.options.borders["borderBottom"]) && (height > 0 || !this.options.borders["borderRight"])) {
                 const i = (width + this.options.board.height - 2) % this.options.board.height;
                 const j = (height + this.options.board.width - 1) % this.options.board.width;
                 if (fieldsCopy[i][j].type === "alive" ||
-                    (fieldsCopy[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible && fieldsCopy[i][j].life > 0.0))
+                    (fieldsCopy[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible && this.getModulus(fieldsCopy[width][height].life, fieldsCopy[width][height].imaginaryLife) > 0.0))
                     neighborsNumber++;
             }
             if (width > 1 || !this.options.borders["borderBottom"]) {
                 const i = (width + this.options.board.height - 2) % this.options.board.height;
                 const j = (height + this.options.board.width) % this.options.board.width;
                 if (fieldsCopy[i][j].type === "alive" ||
-                    (fieldsCopy[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible && fieldsCopy[i][j].life > 0.0))
+                    (fieldsCopy[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible && this.getModulus(fieldsCopy[width][height].life, fieldsCopy[width][height].imaginaryLife) > 0.0))
                     neighborsNumber++;
             }
             if ((width > 1 || !this.options.borders["borderBottom"]) && (height < this.options.board.width - 1 || !this.options.borders["borderLeft"])) {
                 const i = (width + this.options.board.height - 2) % this.options.board.height;
                 const j = (height + this.options.board.width + 1) % this.options.board.width;
                 if (fieldsCopy[i][j].type === "alive" ||
-                    (fieldsCopy[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible && fieldsCopy[i][j].life > 0.0))
+                    (fieldsCopy[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible && this.getModulus(fieldsCopy[width][height].life, fieldsCopy[width][height].imaginaryLife) > 0.0))
                     neighborsNumber++;
             }
             if ((width > 1 || !this.options.borders["borderBottom"]) && (height < this.options.board.width - 2 || !this.options.borders["borderLeft"])) {
                 const i = (width + this.options.board.height - 2) % this.options.board.height;
                 const j = (height + this.options.board.width + 2) % this.options.board.width;
                 if (fieldsCopy[i][j].type === "alive" ||
-                    (fieldsCopy[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible && fieldsCopy[i][j].life > 0.0))
+                    (fieldsCopy[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible && this.getModulus(fieldsCopy[width][height].life, fieldsCopy[width][height].imaginaryLife) > 0.0))
                     neighborsNumber++;
             }
             if ((width > 0 || !this.options.borders["borderBottom"]) && (height > 1 || !this.options.borders["borderRight"])) {
                 const i = (width + this.options.board.height - 1) % this.options.board.height;
                 const j = (height + this.options.board.width - 2) % this.options.board.width;
                 if (fieldsCopy[i][j].type === "alive" ||
-                    (fieldsCopy[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible && fieldsCopy[i][j].life > 0.0))
+                    (fieldsCopy[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible && this.getModulus(fieldsCopy[width][height].life, fieldsCopy[width][height].imaginaryLife) > 0.0))
                     neighborsNumber++;
             }
             if ((width > 0 || !this.options.borders["borderBottom"]) && (height < this.options.board.width - 2 || !this.options.borders["borderLeft"])) {
                 const i = (width + this.options.board.height - 1) % this.options.board.height;
                 const j = (height + this.options.board.width + 2) % this.options.board.width;
                 if (fieldsCopy[i][j].type === "alive" ||
-                    (fieldsCopy[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible && fieldsCopy[i][j].life > 0.0))
+                    (fieldsCopy[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible && this.getModulus(fieldsCopy[width][height].life, fieldsCopy[width][height].imaginaryLife) > 0.0))
                     neighborsNumber++;
             }
             if (height > 1 || !this.options.borders["borderRight"]) {
                 const i = (width + this.options.board.height) % this.options.board.height;
                 const j = (height + this.options.board.width - 2) % this.options.board.width;
                 if (fieldsCopy[i][j].type === "alive" ||
-                    (fieldsCopy[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible && fieldsCopy[i][j].life > 0.0))
+                    (fieldsCopy[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible && this.getModulus(fieldsCopy[width][height].life, fieldsCopy[width][height].imaginaryLife) > 0.0))
                     neighborsNumber++;
             }
             if (height < this.options.board.width - 2 || !this.options.borders["borderLeft"]) {
                 const i = (width + this.options.board.height) % this.options.board.height;
                 const j = (height + this.options.board.width + 2) % this.options.board.width;
                 if (fieldsCopy[i][j].type === "alive" ||
-                    (fieldsCopy[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible && fieldsCopy[i][j].life > 0.0))
+                    (fieldsCopy[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible && this.getModulus(fieldsCopy[width][height].life, fieldsCopy[width][height].imaginaryLife) > 0.0))
                     neighborsNumber++;
             }
             if ((width < this.options.board.height - 1 || !this.options.borders["borderTop"]) && (height > 1 || !this.options.borders["borderRight"])) {
                 const i = (width + this.options.board.height + 1) % this.options.board.height;
                 const j = (height + this.options.board.width - 2) % this.options.board.width;
                 if (fieldsCopy[i][j].type === "alive" ||
-                    (fieldsCopy[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible && fieldsCopy[i][j].life > 0.0))
+                    (fieldsCopy[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible && this.getModulus(fieldsCopy[width][height].life, fieldsCopy[width][height].imaginaryLife) > 0.0))
                     neighborsNumber++;
             }
             if ((width < this.options.board.height - 1 || !this.options.borders["borderTop"]) && (height < this.options.board.width - 2 || !this.options.borders["borderLeft"])) {
                 const i = (width + this.options.board.height + 1) % this.options.board.height;
                 const j = (height + this.options.board.width + 2) % this.options.board.width;
                 if (fieldsCopy[i][j].type === "alive" ||
-                    (fieldsCopy[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible && fieldsCopy[i][j].life > 0.0))
+                    (fieldsCopy[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible && this.getModulus(fieldsCopy[width][height].life, fieldsCopy[width][height].imaginaryLife) > 0.0))
                     neighborsNumber++;
             }
             if ((width < this.options.board.height - 2 || !this.options.borders["borderTop"]) && (height > 1 || !this.options.borders["borderRight"])) {
                 const i = (width + this.options.board.height + 2) % this.options.board.height;
                 const j = (height + this.options.board.width - 2) % this.options.board.width;
                 if (fieldsCopy[i][j].type === "alive" ||
-                    (fieldsCopy[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible && fieldsCopy[i][j].life > 0.0))
+                    (fieldsCopy[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible && this.getModulus(fieldsCopy[width][height].life, fieldsCopy[width][height].imaginaryLife) > 0.0))
                     neighborsNumber++;
             }
             if ((width < this.options.board.height - 2 || !this.options.borders["borderTop"]) && (height > 0 || !this.options.borders["borderRight"])) {
                 const i = (width + this.options.board.height + 2) % this.options.board.height;
                 const j = (height + this.options.board.width - 1) % this.options.board.width;
                 if (fieldsCopy[i][j].type === "alive" ||
-                    (fieldsCopy[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible && fieldsCopy[i][j].life > 0.0))
+                    (fieldsCopy[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible && this.getModulus(fieldsCopy[width][height].life, fieldsCopy[width][height].imaginaryLife) > 0.0))
                     neighborsNumber++;
             }
             if (width < this.options.board.height - 2 || !this.options.borders["borderTop"]) {
                 const i = (width + this.options.board.height + 2) % this.options.board.height;
                 const j = (height + this.options.board.width) % this.options.board.width;
                 if (fieldsCopy[i][j].type === "alive" ||
-                    (fieldsCopy[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible && fieldsCopy[i][j].life > 0.0))
+                    (fieldsCopy[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible && this.getModulus(fieldsCopy[width][height].life, fieldsCopy[width][height].imaginaryLife) > 0.0))
                     neighborsNumber++;
             }
             if ((width < this.options.board.height - 2 || !this.options.borders["borderTop"]) && (height < this.options.board.width - 1 || !this.options.borders["borderLeft"])) {
                 const i = (width + this.options.board.height + 2) % this.options.board.height;
                 const j = (height + this.options.board.width + 1) % this.options.board.width;
                 if (fieldsCopy[i][j].type === "alive" ||
-                    (fieldsCopy[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible && fieldsCopy[i][j].life > 0.0))
+                    (fieldsCopy[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible && this.getModulus(fieldsCopy[width][height].life, fieldsCopy[width][height].imaginaryLife) > 0.0))
                     neighborsNumber++;
             }
             if ((width < this.options.board.height - 2 || !this.options.borders["borderTop"]) && (height < this.options.board.width - 2 || !this.options.borders["borderLeft"])) {
                 const i = (width + this.options.board.height + 2) % this.options.board.height;
                 const j = (height + this.options.board.width + 2) % this.options.board.width;
                 if (fieldsCopy[i][j].type === "alive" ||
-                    (fieldsCopy[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible && fieldsCopy[i][j].life > 0.0))
+                    (fieldsCopy[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible && this.getModulus(fieldsCopy[width][height].life, fieldsCopy[width][height].imaginaryLife) > 0.0))
                     neighborsNumber++;
             }
         }
@@ -437,7 +450,7 @@ class Board {
     }
 
     countNeighborsFraction(width, height, fieldsCopy) {
-        let neighborsFraction = [0.0, 0.0];
+        let neighborsFraction = [0.0, 0.0, 0.0, 0.0, 0.0];
         let neighboursPower = 1.0;
         if (this.options.neighboursRange > 1) {
             neighboursPower = 0.75;
@@ -619,19 +632,25 @@ class Board {
     }
 
     addNeighborsFraction(neighboursPower, neighborsFraction, field1, field2) {
-        if (field1.color === field2.color) neighborsFraction[0] += neighboursPower * field2.life;
-        else neighborsFraction[1] += neighboursPower * field2.life;
+        if (field1.color === field2.color) {
+            neighborsFraction[0] += neighboursPower * field2.life;
+            neighborsFraction[1] += neighboursPower * field2.imaginaryLife;
+        } else {
+            neighborsFraction[2] += neighboursPower * field2.life;
+            neighborsFraction[3] += neighboursPower * field2.imaginaryLife;
+        }
+        neighborsFraction[4] += field2.phase;
         return neighborsFraction;
     }
 
     countNeighborsNumberAndColor(width, height, fieldsCopy) {
         const color = fieldsCopy[width][height].color;
-        let neighbors = [0.0, 0.0, color];
+        let neighbors = [0.0, 0.0, 0.0, 0.0, color, 0.0];
         for (let tribe = 0; tribe < this.options.colors.length && tribe < this.options.tribesNumber; tribe++) {
             fieldsCopy[width][height].color = this.options.colors[tribe];
             const neighborsFraction = this.countNeighborsFraction(width, height, fieldsCopy);
-            if (neighborsFraction[0] > neighbors[0]) {
-                neighbors = [neighborsFraction[0], neighborsFraction[1], fieldsCopy[width][height].color];
+            if (this.getModulus(neighborsFraction[0], neighborsFraction[1]) > this.getModulus(neighbors[0], neighbors[1])) {
+                neighbors = [neighborsFraction[0], neighborsFraction[1], neighborsFraction[2], neighborsFraction[3], fieldsCopy[width][height].color, neighborsFraction[4]];
             }
         }
         fieldsCopy[width][height].color = color;
@@ -758,13 +777,13 @@ class Board {
                         if (life < 0.0001) life = 0;
                         sum += life;
                         if (this.options.subtractGenerating) {
-                            if (life > this.fields[i][j].getLife()) {
-                                this.fields[i][j].setLife(this.options.colors[tribe], life - this.fields[i][j].getLife());
+                            if (life > this.fields[i][j].getModulus()) {
+                                this.fields[i][j].setLife(this.options.colors[tribe], life - this.fields[i][j].getModulus() / Math.sqrt(2.0), life - this.fields[i][j].getModulus() / Math.sqrt(2.0));
                             } else if (this.fields[i][j].isAlive()) {
-                                this.fields[i][j].setLife(this.fields[i][j].color, this.fields[i][j].getLife() - life);
+                                this.fields[i][j].setLife(this.fields[i][j].color, this.fields[i][j].getLife() / Math.sqrt(2.0) - life, this.fields[i][j].getLife() / Math.sqrt(2.0) - life);
                             }
                         } else if (life > this.fields[i][j].getLife()) {
-                            this.fields[i][j].setLife(this.options.colors[tribe], life);
+                            this.fields[i][j].setLife(this.options.colors[tribe], life / Math.sqrt(2.0), life / Math.sqrt(2.0));
                         }
                     }
                 }
@@ -1004,7 +1023,10 @@ class Board {
                         type: "alive",
                         positions: [{x: i, y: j}],
                         life: this.fields[i][j].life,
-                        color: this.fields[i][j].color
+                        imaginaryLife: this.fields[i][j].imaginaryLife,
+                        color: this.fields[i][j].color,
+                        phase: this.fields[i][j].phase,
+                        phaseStep: this.fields[i][j].phaseStep
                     });
                 } else if (this.fields[i][j].type === "block") {
                     cells.push({
@@ -1031,12 +1053,11 @@ class Board {
             for (let i = 0; i < this.options.board.width; i++) {
                 if (direction) {
                     if (number < this.options.board.width - 2 && this.fields[i][number + 1].getType() !== "block") {
-                        this.fields[i][number + 1].setLife(this.fields[i][number + 1].getColor(), this.fields[i][number].getLife() + this.fields[i][number + 1].getLife())
+                        this.fields[i][number + 1].setLife(this.fields[i][number + 1].getColor(), this.fields[i][number].getLife() + this.fields[i][number + 1].getLife(), this.fields[i][number].imaginaryLife + this.fields[i][number + 1].imaginaryLife, this.fields[i][number].phase + this.fields[i][number + 1].phase)
                     }
-                }
-                else {
+                } else {
                     if (number > 0 && this.fields[i][number - 1].getType() !== "block") {
-                        this.fields[i][number - 1].setLife(this.fields[i][number - 1].getColor(), this.fields[i][number].getLife() + this.fields[i][number - 1].getLife())
+                        this.fields[i][number - 1].setLife(this.fields[i][number - 1].getColor(), this.fields[i][number].getLife() + this.fields[i][number - 1].getLife(), this.fields[i][number].imaginaryLife + this.fields[i][number - 1].imaginaryLife, this.fields[i][number].phase + this.fields[i][number - 1].phase)
                     }
                 }
                 this.fields[i][number].makeBlock();
@@ -1222,5 +1243,86 @@ class Board {
     addConfiguration(configuration) {
         this.testBoards.push(configuration);
         return this.testBoards.length - 1;
+    }
+
+    getModulus(re, im) {
+        return Math.sqrt(re * re + im * im);
+    }
+
+    getNextCycleMass(cell, neighbors) {
+        const modulus = this.getModulus(cell.life, cell.imaginaryLife) * (this.getModulus(neighbors[0], neighbors[1]) / 2.0 + this.getModulus(neighbors[2], neighbors[3]) / 3.0);
+        return [modulus * Math.cos(cell.phase), modulus * Math.sin(cell.phase)];
+    }
+
+    getNextCyclePhase(cell) {
+        return cell.phase + cell.phaseStep;
+    }
+
+    livingCells(x, y) {
+        const width = x;
+        const height = y;
+        let livingCells = 0;
+        if (width > 0 && height > 0 || !this.options.borders["borderBottom"] && !this.options.borders["borderRight"]) {
+            const i = (width + this.options.board.height - 1) % this.options.board.height;
+            const j = (height + this.options.board.width - 1) % this.options.board.width;
+            if (this.fields[i][j].type === "alive" ||
+                (this.fields[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible))
+                livingCells = this.addLivingCells(this.fields[i][j]);
+        }
+        if (width > 0 || !this.options.borders["borderBottom"]) {
+            const i = (width + this.options.board.height - 1) % this.options.board.height;
+            const j = (height + this.options.board.width) % this.options.board.width;
+            if (this.fields[i][j].type === "alive" ||
+                (this.fields[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible))
+                livingCells = this.addLivingCells(this.fields[i][j]);
+        }
+        if (width > 0 && height < this.options.board.width - 1 || !this.options.borders["borderBottom"] && !this.options.borders["borderLeft"]) {
+            const i = (width + this.options.board.height - 1) % this.options.board.height;
+            const j = (height + this.options.board.width + 1) % this.options.board.width;
+            if (this.fields[i][j].type === "alive" ||
+                (this.fields[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible))
+                livingCells = this.addLivingCells(this.fields[i][j]);
+        }
+        if (height > 0 || !this.options.borders["borderRight"]) {
+            const i = (width + this.options.board.height) % this.options.board.height;
+            const j = (height + this.options.board.width - 1) % this.options.board.width;
+            if (this.fields[i][j].type === "alive" ||
+                (this.fields[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible))
+                livingCells = this.addLivingCells(this.fields[i][j]);
+        }
+        if (height < this.options.board.width - 1 || !this.options.borders["borderLeft"]) {
+            const i = (width + this.options.board.height) % this.options.board.height;
+            const j = (height + this.options.board.width + 1) % this.options.board.width;
+            if (this.fields[i][j].type === "alive" ||
+                (this.fields[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible))
+                livingCells = this.addLivingCells(this.fields[i][j]);
+        }
+        if (width < this.options.board.height - 1 && height > 0 || !this.options.borders["borderTop"] && !this.options.borders["borderRight"]) {
+            const i = (width + this.options.board.height + 1) % this.options.board.height;
+            const j = (height + this.options.board.width - 1) % this.options.board.width;
+            if (this.fields[i][j].type === "alive" ||
+                (this.fields[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible))
+                livingCells = this.addLivingCells(this.fields[i][j]);
+        }
+        if (width < this.options.board.height - 1 || !this.options.borders["borderTop"]) {
+            const i = (width + this.options.board.height + 1) % this.options.board.height;
+            const j = (height + this.options.board.width) % this.options.board.width;
+            if (this.fields[i][j].type === "alive" ||
+                (this.fields[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible))
+                livingCells = this.addLivingCells(this.fields[i][j]);
+        }
+        if (width < this.options.board.height - 1 && height < this.options.board.width - 1 || !this.options.borders["borderTop"] && !this.options.borders["borderLeft"]) {
+            const i = (width + this.options.board.height + 1) % this.options.board.height;
+            const j = (height + this.options.board.width + 1) % this.options.board.width;
+            if (this.fields[i][j].type === "alive" ||
+                (this.fields[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible))
+                livingCells = this.addLivingCells(this.fields[i][j]);
+        }
+        if (livingCells === 0) return 1;
+        return livingCells;
+    }
+
+    addLivingCells(cell) {
+        return this.getModulus(cell.life, cell.imaginaryLife) > 0;
     }
 }
