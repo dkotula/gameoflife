@@ -200,7 +200,7 @@ class Board {
         }
         if (this.getModulus(neighborsNumber[0], neighborsNumber[1]) > 0 && probability > this.options.probability) {
             if (this.fields[width][height].getType() !== "block") {
-                this.fields[width][height].click(neighborsNumber[4]);
+                this.fields[width][height].click(neighborsNumber[4], this.livingCells(width, height, fieldsCopy));
             } else {
                 if (this.fields[width][height].flashing && !this.fields[width][height].isVisible) {
                     if (this.fields[width][height].life > 0.0) {
@@ -210,7 +210,7 @@ class Board {
                     } else {
                         this.fields[width][height].life = (Math.floor(Math.random() * 50) + 51) / 100;
                         this.fields[width][height].imaginaryLife = (Math.floor(Math.random() * 50) + 51) / 100;
-                        this.fields[width][height].phase = (Math.floor(Math.random() * 50) + 51) / 100;
+                        this.fields[width][height].phase = this.livingCells(width, height, fieldsCopy);
                     }
                 }
             }
@@ -227,7 +227,7 @@ class Board {
             } else if (fieldsCopy[width][height].type === "dead") {
                 let neighbors = this.countNeighborsNumberAndColor(width, height, fieldsCopy)
                 if (this.getModulus(neighbors[0], neighbors[1]) > this.options.minDeadCell && this.getModulus(neighbors[0], neighbors[1]) < this.options.maxDeadCell && this.getModulus(neighbors[2], neighbors[3]) < this.options.toManyOtherTribes) {
-                    this.fields[width][height].setLife(neighbors[4], neighbors[0] / 2.0 + neighbors[2] / 4.0, neighbors[1] / 2.0 + neighbors[3] / 4.0, neighbors[5] / this.livingCells(width, height));
+                    this.fields[width][height].setLife(neighbors[4], neighbors[0] / 2.0 + neighbors[2] / 4.0, neighbors[1] / 2.0 + neighbors[3] / 4.0, this.livingCells(width, height, fieldsCopy));
                 }
             } else if (fieldsCopy[width][height].type === "block" && this.fields[width][height].flashing && !this.fields[width][height].isVisible) {
                 if (this.getModulus(fieldsCopy[width][height].life, fieldsCopy[width][height].imaginaryLife) > 0.0) {
@@ -241,7 +241,7 @@ class Board {
                 } else {
                     let neighbors = this.countNeighborsNumberAndColor(width, height, fieldsCopy)
                     if (this.getModulus(neighbors[0], neighbors[1]) > this.options.minDeadCell && this.getModulus(neighbors[0], neighbors[1]) < this.options.maxDeadCell && this.getModulus(neighbors[2], neighbors[3]) < this.options.toManyOtherTribes) {
-                        this.fields[width][height].setLife(neighbors[4], neighbors[0] / 2.0 + neighbors[2] / 4.0, neighbors[1] / 2.0 + neighbors[3] / 4.0, neighbors[5] / this.livingCells(width, height));
+                        this.fields[width][height].setLife(neighbors[4], neighbors[0] / 2.0 + neighbors[2] / 4.0, neighbors[1] / 2.0 + neighbors[3] / 4.0, this.livingCells(width, height, fieldsCopy));
                     }
                 }
             }
@@ -265,7 +265,7 @@ class Board {
                     if (neighborsNumber[0] === 3) {
                         this.fields[width][height].life = (Math.floor(Math.random() * 50) + 51) / 100;
                         this.fields[width][height].imaginaryLife = (Math.floor(Math.random() * 50) + 51) / 100;
-                        this.fields[width][height].phase = (Math.floor(Math.random() * 50) + 51) / 100;
+                        this.fields[width][height].phase = this.livingCells(width, height, fieldsCopy);
                     }
                 }
             }
@@ -1258,68 +1258,85 @@ class Board {
         return cell.phase + cell.phaseStep;
     }
 
-    livingCells(x, y) {
+    livingCells(x, y, fieldsCopy) {
         const width = x;
         const height = y;
+        let phase = 0.0
         let livingCells = 0;
         if (width > 0 && height > 0 || !this.options.borders["borderBottom"] && !this.options.borders["borderRight"]) {
             const i = (width + this.options.board.height - 1) % this.options.board.height;
             const j = (height + this.options.board.width - 1) % this.options.board.width;
-            if (this.fields[i][j].type === "alive" ||
-                (this.fields[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible))
-                livingCells = this.addLivingCells(this.fields[i][j]);
+            if (fieldsCopy[i][j].type === "alive" ||
+                (fieldsCopy[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible)) {
+                phase += fieldsCopy[i][j].phase;
+                livingCells += this.addLivingCells(fieldsCopy[i][j]);
+            }
         }
         if (width > 0 || !this.options.borders["borderBottom"]) {
             const i = (width + this.options.board.height - 1) % this.options.board.height;
             const j = (height + this.options.board.width) % this.options.board.width;
-            if (this.fields[i][j].type === "alive" ||
-                (this.fields[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible))
-                livingCells = this.addLivingCells(this.fields[i][j]);
+            if (fieldsCopy[i][j].type === "alive" ||
+                (fieldsCopy[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible)) {
+                phase += fieldsCopy[i][j].phase;
+                livingCells += this.addLivingCells(fieldsCopy[i][j]);
+            }
         }
         if (width > 0 && height < this.options.board.width - 1 || !this.options.borders["borderBottom"] && !this.options.borders["borderLeft"]) {
             const i = (width + this.options.board.height - 1) % this.options.board.height;
             const j = (height + this.options.board.width + 1) % this.options.board.width;
-            if (this.fields[i][j].type === "alive" ||
-                (this.fields[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible))
-                livingCells = this.addLivingCells(this.fields[i][j]);
+            if (fieldsCopy[i][j].type === "alive" ||
+                (fieldsCopy[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible)) {
+                phase += fieldsCopy[i][j].phase;
+                livingCells += this.addLivingCells(fieldsCopy[i][j]);
+            }
         }
         if (height > 0 || !this.options.borders["borderRight"]) {
             const i = (width + this.options.board.height) % this.options.board.height;
             const j = (height + this.options.board.width - 1) % this.options.board.width;
-            if (this.fields[i][j].type === "alive" ||
-                (this.fields[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible))
-                livingCells = this.addLivingCells(this.fields[i][j]);
+            if (fieldsCopy[i][j].type === "alive" ||
+                (fieldsCopy[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible)) {
+                phase += fieldsCopy[i][j].phase;
+                livingCells += this.addLivingCells(fieldsCopy[i][j]);
+            }
         }
         if (height < this.options.board.width - 1 || !this.options.borders["borderLeft"]) {
             const i = (width + this.options.board.height) % this.options.board.height;
             const j = (height + this.options.board.width + 1) % this.options.board.width;
-            if (this.fields[i][j].type === "alive" ||
-                (this.fields[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible))
-                livingCells = this.addLivingCells(this.fields[i][j]);
+            if (fieldsCopy[i][j].type === "alive" ||
+                (fieldsCopy[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible)) {
+                phase += fieldsCopy[i][j].phase;
+                livingCells += this.addLivingCells(fieldsCopy[i][j]);
+            }
         }
         if (width < this.options.board.height - 1 && height > 0 || !this.options.borders["borderTop"] && !this.options.borders["borderRight"]) {
             const i = (width + this.options.board.height + 1) % this.options.board.height;
             const j = (height + this.options.board.width - 1) % this.options.board.width;
-            if (this.fields[i][j].type === "alive" ||
-                (this.fields[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible))
-                livingCells = this.addLivingCells(this.fields[i][j]);
+            if (fieldsCopy[i][j].type === "alive" ||
+                (fieldsCopy[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible)) {
+                phase += fieldsCopy[i][j].phase;
+                livingCells += this.addLivingCells(fieldsCopy[i][j]);
+            }
         }
         if (width < this.options.board.height - 1 || !this.options.borders["borderTop"]) {
             const i = (width + this.options.board.height + 1) % this.options.board.height;
             const j = (height + this.options.board.width) % this.options.board.width;
-            if (this.fields[i][j].type === "alive" ||
-                (this.fields[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible))
-                livingCells = this.addLivingCells(this.fields[i][j]);
+            if (fieldsCopy[i][j].type === "alive" ||
+                (fieldsCopy[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible)) {
+                phase += fieldsCopy[i][j].phase;
+                livingCells += this.addLivingCells(fieldsCopy[i][j]);
+            }
         }
         if (width < this.options.board.height - 1 && height < this.options.board.width - 1 || !this.options.borders["borderTop"] && !this.options.borders["borderLeft"]) {
             const i = (width + this.options.board.height + 1) % this.options.board.height;
             const j = (height + this.options.board.width + 1) % this.options.board.width;
-            if (this.fields[i][j].type === "alive" ||
-                (this.fields[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible))
-                livingCells = this.addLivingCells(this.fields[i][j]);
+            if (fieldsCopy[i][j].type === "alive" ||
+                (fieldsCopy[i][j].type === "block" && this.fields[i][j].flashing && !this.fields[i][j].isVisible)) {
+                phase += fieldsCopy[i][j].phase;
+                livingCells += this.addLivingCells(fieldsCopy[i][j]);
+            }
         }
-        if (livingCells < 0.01) return 1;
-        return livingCells;
+        if (livingCells < 0.01) return 0;
+        return phase / livingCells;
     }
 
     addLivingCells(cell) {

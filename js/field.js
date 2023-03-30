@@ -32,13 +32,16 @@ class Field {
         return this.type;
     }
 
-    makeAlive(color) {
+    makeAlive(color, phase = 999) {
         if (color) {
             this.color = color;
         }
         this.life = (Math.floor(Math.random() * 50) + 51) / 100;
         this.imaginaryLife = (Math.floor(Math.random() * 50) + 51) / 100;
-        this.phase = (Math.floor(Math.random() * 50) + 51) / 100;
+        if (phase !== 999)
+            this.phase = phase;
+        else
+            this.phase = (Math.floor(Math.random() * 50) + 51) / 100;
         this.type = "alive";
         this.changeFullColor();
 
@@ -65,11 +68,11 @@ class Field {
         this.changeFullColor();
     }
 
-    click(color) {
+    click(color, phase = 999) {
         if (this.type === "alive") {
             this.makeDead();
         } else if (this.type === "dead" || this.type === "block") {
-            this.makeAlive(color);
+            this.makeAlive(color, phase);
         }
     }
 
