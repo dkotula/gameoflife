@@ -400,9 +400,9 @@ class Tests {
                             probabilities[i][cycleNumber] = this.updateProbability(repetition, probabilities[i][cycleNumber], fraction, this.options.colors[i]);
                         }
                         if (phases[i].length <= cycleNumber) {
-                            phases[i].push(this.fetchPhaseOfBoard(fraction, this.options.colors[i]));
+                            phases[i].push(this.fetchPhaseOfBoard());
                         } else {
-                            phases[i][cycleNumber] = this.updatePhase(repetition, phases[i][cycleNumber], fraction, this.options.colors[i]);
+                            phases[i][cycleNumber] = this.updatePhase(repetition, phases[i][cycleNumber]);
                         }
                     }
                     this.board.steps();
@@ -415,9 +415,9 @@ class Tests {
                         probabilities[cycleNumber] = this.updateProbability(repetition, probabilities[cycleNumber], fraction);
                     }
                     if (phases.length <= cycleNumber) {
-                        phases.push(this.fetchPhaseOfBoard(fraction));
+                        phases.push(this.fetchPhaseOfBoard());
                     } else {
-                        phases[cycleNumber] = this.updatePhase(repetition, phases[cycleNumber], fraction);
+                        phases[cycleNumber] = this.updatePhase(repetition, phases[cycleNumber]);
                     }
                     this.board.steps();
                 }
@@ -475,8 +475,8 @@ class Tests {
         return mass;
     }
 
-    updatePhase(repetition, phase, fraction, color = "none") {
-        let phaseTemp = this.fetchPhaseOfBoard(fraction, color);
+    updatePhase(repetition, phase) {
+        let phaseTemp = this.fetchPhaseOfBoard();
         for (let i in phaseTemp) {
             for (let j in phaseTemp[i]) {
                 phaseTemp[i][j] = (phase[i][j] * repetition + phaseTemp[i][j]) / (repetition + 1)
@@ -485,32 +485,12 @@ class Tests {
         return phaseTemp;
     }
 
-    fetchPhaseOfBoard(fraction, color = "none") {
+    fetchPhaseOfBoard() {
         let phase = [];
         for (let i in this.board.fields) {
             phase[i] = [];
             for (let j in this.board.fields[i]) {
-                if (this.board.fields[i][j].isAlive() && this.board.fields[i][j].phase > 0) {
-                    if (fraction) {
-                        if (color !== "none") {
-                            if (color === this.board.fields[i][j].getColor()) {
-                                phase[i][j] = this.board.fields[i][j].phase;
-                            } else {
-                                phase[i][j] = 0.0;
-                            }
-                        } else {
-                            phase[i][j] = this.board.fields[i][j].phase;
-                        }
-                    } else {
-                        if (color === this.board.fields[i][j].getColor()) {
-                            phase[i][j] = this.board.fields[i][j].phase;
-                        } else {
-                            phase[i][j] = 0.0;
-                        }
-                    }
-                } else {
-                    phase[i][j] = 0.0;
-                }
+                phase[i][j] = this.board.fields[i][j].phase;
             }
         }
         return phase;

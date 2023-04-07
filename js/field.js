@@ -32,7 +32,7 @@ class Field {
         return this.type;
     }
 
-    makeAlive(color, phase = 999) {
+    makeAlive(color = this.color = "255,0,0", phase = 999) {
         if (color) {
             this.color = color;
         }
@@ -167,5 +167,12 @@ class Field {
 
     getModulus() {
         return Math.sqrt(this.life * this.life + this.imaginaryLife * this.imaginaryLife);
+    }
+
+    updateMassAndPhaseWithoutNeighbours() {
+        const modulus = this.getModulus();
+        this.phase += this.phaseStep;
+        this.life = modulus * Math.cos(this.phase);
+        this.imaginaryLife = modulus * Math.sin(this.phase);
     }
 }
