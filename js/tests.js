@@ -378,6 +378,8 @@ class Tests {
 
     calculateProbability(numberOfRepetitions, numberOfCycles, index, fraction, saveAsTribes = false, configuration = {}) {
         let probabilities = [];
+        let life = [];
+        let imaginaryLife = []
         let phases = [];
         if (index === -1) {
             index = this.board.addConfiguration(configuration);
@@ -386,6 +388,8 @@ class Tests {
         if (saveAsTribes) {
             for (let i = 0; i < this.options.tribesNumber; i++) {
                 probabilities[i] = [];
+                life[i] = [];
+                imaginaryLife[i] = [];
                 phases[i] = [];
             }
         }
@@ -398,6 +402,16 @@ class Tests {
                             probabilities[i].push(this.fetchMassOfBoard(fraction, this.options.colors[i]));
                         } else {
                             probabilities[i][cycleNumber] = this.updateProbability(repetition, probabilities[i][cycleNumber], fraction, this.options.colors[i]);
+                        }
+                        if (life[i].length <= cycleNumber) {
+                            life[i].push(this.fetchLifeOfBoard(fraction, this.options.colors[i]));
+                        } else {
+                            life[i][cycleNumber] = this.updateLife(repetition, life[i][cycleNumber], fraction, this.options.colors[i]);
+                        }
+                        if (imaginaryLife[i].length <= cycleNumber) {
+                            imaginaryLife[i].push(this.fetchImaginaryLifeOfBoard(fraction, this.options.colors[i]));
+                        } else {
+                            imaginaryLife[i][cycleNumber] = this.updateImaginaryLife(repetition, imaginaryLife[i][cycleNumber], fraction, this.options.colors[i]);
                         }
                         if (phases[i].length <= cycleNumber) {
                             phases[i].push(this.fetchPhaseOfBoard());
@@ -414,6 +428,16 @@ class Tests {
                     } else {
                         probabilities[cycleNumber] = this.updateProbability(repetition, probabilities[cycleNumber], fraction);
                     }
+                    if (life.length <= cycleNumber) {
+                        life.push(this.fetchLifeOfBoard(fraction));
+                    } else {
+                        life[cycleNumber] = this.updateLife(repetition, life[cycleNumber], fraction);
+                    }
+                    if (imaginaryLife.length <= cycleNumber) {
+                        imaginaryLife.push(this.fetchImaginaryLifeOfBoard(fraction));
+                    } else {
+                        imaginaryLife[cycleNumber] = this.updateImaginaryLife(repetition, imaginaryLife[cycleNumber], fraction);
+                    }
                     if (phases.length <= cycleNumber) {
                         phases.push(this.fetchPhaseOfBoard());
                     } else {
@@ -426,10 +450,14 @@ class Tests {
         if (saveAsTribes) {
             for (let i = 0; i < this.options.tribesNumber; i++) {
                 this.saveToFile("probability_r" + numberOfRepetitions + "_c" + numberOfCycles + "_t" + (i + 1), this.array3dToString(probabilities[i]));
+                this.saveToFile("life_r" + numberOfRepetitions + "_c" + numberOfCycles + "_t" + (i + 1), this.array3dToString(life[i]));
+                this.saveToFile("imaginaryLife_r" + numberOfRepetitions + "_c" + numberOfCycles + "_t" + (i + 1), this.array3dToString(imaginaryLife[i]));
                 this.saveToFile("phase_r" + numberOfRepetitions + "_c" + numberOfCycles + "_t" + (i + 1), this.array3dToString(phases[i]));
             }
         } else {
             this.saveToFile("probability_r" + numberOfRepetitions + "_c" + numberOfCycles, this.array3dToString(probabilities));
+            this.saveToFile("life_r" + numberOfRepetitions + "_c" + numberOfCycles, this.array3dToString(life));
+            this.saveToFile("imaginaryLife_r" + numberOfRepetitions + "_c" + numberOfCycles, this.array3dToString(imaginaryLife));
             this.saveToFile("phase_r" + numberOfRepetitions + "_c" + numberOfCycles, this.array3dToString(phases));
         }
     }
@@ -442,6 +470,26 @@ class Tests {
             }
         }
         return mass;
+    }
+
+    updateLife(repetition, lives, fraction, color = "none") {
+        let life = this.fetchLifeOfBoard(fraction, color);
+        for (let i in life) {
+            for (let j in life[i]) {
+                life[i][j] = (lives[i][j] * repetition + life[i][j]) / (repetition + 1)
+            }
+        }
+        return life;
+    }
+
+    updateImaginaryLife(repetition, imaginaryLives, fraction, color = "none") {
+        let ImaginaryLife = this.fetchImaginaryLifeOfBoard(fraction, color);
+        for (let i in ImaginaryLife) {
+            for (let j in ImaginaryLife[i]) {
+                ImaginaryLife[i][j] = (imaginaryLives[i][j] * repetition + ImaginaryLife[i][j]) / (repetition + 1)
+            }
+        }
+        return ImaginaryLife;
     }
 
     fetchMassOfBoard(fraction, color = "none") {
@@ -473,6 +521,68 @@ class Tests {
             }
         }
         return mass;
+    }
+
+    fetchLifeOfBoard(fraction, color = "none") {
+        let life = [];
+        for (let i in this.board.fields) {
+            life[i] = [];
+            for (let j in this.board.fields[i]) {
+                if (this.board.fields[i][j].isAlive() && this.board.fields[i][j].life > 0) {
+                    if (fraction) {
+                        if (color !== "none") {
+                            if (color === this.board.fields[i][j].getColor()) {
+                                life[i][j] = this.board.fields[i][j].life;
+                            } else {
+                                life[i][j] = 0.0;
+                            }
+                        } else {
+                            life[i][j] = this.board.fields[i][j].life;
+                        }
+                    } else {
+                        if (color === this.board.fields[i][j].getColor()) {
+                            life[i][j] = 1.0;
+                        } else {
+                            life[i][j] = 0.0;
+                        }
+                    }
+                } else {
+                    life[i][j] = 0.0;
+                }
+            }
+        }
+        return life;
+    }
+
+    fetchImaginaryLifeOfBoard(fraction, color = "none") {
+        let imaginaryLife = [];
+        for (let i in this.board.fields) {
+            imaginaryLife[i] = [];
+            for (let j in this.board.fields[i]) {
+                if (this.board.fields[i][j].isAlive() && this.board.fields[i][j].imaginaryLife > 0) {
+                    if (fraction) {
+                        if (color !== "none") {
+                            if (color === this.board.fields[i][j].getColor()) {
+                                imaginaryLife[i][j] = this.board.fields[i][j].imaginaryLife;
+                            } else {
+                                imaginaryLife[i][j] = 0.0;
+                            }
+                        } else {
+                            imaginaryLife[i][j] = this.board.fields[i][j].imaginaryLife;
+                        }
+                    } else {
+                        if (color === this.board.fields[i][j].getColor()) {
+                            imaginaryLife[i][j] = 1.0;
+                        } else {
+                            imaginaryLife[i][j] = 0.0;
+                        }
+                    }
+                } else {
+                    imaginaryLife[i][j] = 0.0;
+                }
+            }
+        }
+        return imaginaryLife;
     }
 
     updatePhase(repetition, phase) {

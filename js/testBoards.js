@@ -24853,5 +24853,47 @@ const testBoards = [
             {type: "alive", positions: [{x: 50, y: 30}], life: 0.4, imaginaryLife: 0.4, phase: 1.0, color: "255,0,0"},
             {type: "alive", positions: [{x: 50, y: 70}], life: 0.4, imaginaryLife: 0.4, phase: -1.0, color: "255,0,0"}
         ]
+    },
+    {
+        board: {width: 100, height: 100, fieldSize: 5},
+        probability: 80,
+        borders: {borderTop: true, borderBottom: true, borderLeft: true, borderRight: true},
+        fractionNeighbors: true,
+        timeInterval: 100,
+        tribesNumber: 1,
+        innerBorders: false,
+        subtractGenerating: false,
+        showFullColor: false,
+        gaussRange: 20,
+        massOfTribe: 5,
+        underpopulation: 0.3,
+        overpopulation: 1.0,
+        minDeadCell: 0.45,
+        maxDeadCell: 1.0,
+        toManyOtherTribes: 0.3,
+        colors: ["255,0,0", "0,255,0", "0,0,255", "255,255,0", "255,0,255", "0,255,255"],
+        setBlock: false,
+        setDead: false,
+        setAlive: true,
+        wholeColumn: false,
+        wholeRow: false,
+        mouseDown: false,
+        blockIntensity: 50,
+        flashing: false,
+        disappearsAfter: 15,
+        appearsAfter: 15,
+        neighboursRange: 1,
+        movingBarriers: false,
+        barriersMoveFromCycle: [100, 100],
+        barriersLinear: [false, false],
+        barriersSinusoid: [true, true],
+        barriersAmplitude: [30, 30],
+        barriersPeriod: [30, 30],
+        testCycles: 200,
+        testTribes: false,
+        cells: [
+            {type: "alive", positions: [{x: 50, y: 30}], life: 0.2, imaginaryLife: 0.8, phase: 1.0, color: "255,0,0"},
+            {type: "alive", positions: [{x: 50, y: 70}], life: 0.2, imaginaryLife: 0.8, phase: -1.0, color: "255,0,0"}
+        ]
     }
 ]
