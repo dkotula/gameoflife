@@ -497,7 +497,7 @@ class Tests {
         for (let i in this.board.fields) {
             mass[i] = [];
             for (let j in this.board.fields[i]) {
-                if (this.board.fields[i][j].isAlive() && this.board.fields[i][j].getModulus() > 0) {
+                if (this.board.fields[i][j].isAlive()) {
                     if (fraction) {
                         if (color !== "none") {
                             if (color === this.board.fields[i][j].getColor()) {
@@ -528,7 +528,7 @@ class Tests {
         for (let i in this.board.fields) {
             life[i] = [];
             for (let j in this.board.fields[i]) {
-                if (this.board.fields[i][j].isAlive() && this.board.fields[i][j].life > 0) {
+                if (this.board.fields[i][j].isAlive()) {
                     if (fraction) {
                         if (color !== "none") {
                             if (color === this.board.fields[i][j].getColor()) {
@@ -559,7 +559,7 @@ class Tests {
         for (let i in this.board.fields) {
             imaginaryLife[i] = [];
             for (let j in this.board.fields[i]) {
-                if (this.board.fields[i][j].isAlive() && this.board.fields[i][j].imaginaryLife > 0) {
+                if (this.board.fields[i][j].isAlive()) {
                     if (fraction) {
                         if (color !== "none") {
                             if (color === this.board.fields[i][j].getColor()) {

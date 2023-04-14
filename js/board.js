@@ -210,21 +210,43 @@ class Board {
             if (this.fields[width][height].getType() !== "block") {
                 if (this.fields[width][height].getType() === "dead") {
                     let neighbors = this.countNeighborsNumberAndColor(width, height, fieldsCopy);
-                    this.fields[width][height].setLife(neighbors[4], ...this.getAverageMass(width, height, fieldsCopy), this.getAveragePhase(width, height, fieldsCopy));
-                    this.fields[width][height].updateMassAndPhaseWithoutNeighbours();
+                    if (this.getModulus(neighbors[0], neighbors[1]) < this.options.minDeadCell || this.getModulus(neighbors[0], neighbors[1]) > this.options.maxDeadCell || this.getModulus(neighbors[2], neighbors[3]) > this.options.toManyOtherTribes) {
+                        this.fields[width][height].setLife(neighbors[4], ...this.getAverageMass(width, height, fieldsCopy), this.getAveragePhase(width, height, fieldsCopy));
+                        this.fields[width][height].updateMassAndPhaseWithoutNeighbours();
+                    }
                 } else {
-                    this.fields[width][height].makeDead();
+                    if (this.getModulus(neighbors[0], neighbors[1]) < this.options.minDeadCell || this.getModulus(neighbors[0], neighbors[1]) > this.options.maxDeadCell || this.getModulus(neighbors[2], neighbors[3]) > this.options.toManyOtherTribes) {
+                        this.fields[width][height].setLife(neighbors[4], ...this.getAverageMass(width, height, fieldsCopy), this.getAveragePhase(width, height, fieldsCopy));
+                        this.fields[width][height].updateMassAndPhaseWithoutNeighbours();
+                    }
+                    else {
+                        this.fields[width][height].makeDead();
+                    }
                 }
             } else {
                 if (this.fields[width][height].flashing && !this.fields[width][height].isVisible) {
-                    if (this.fields[width][height].life > 0.0) {
-                        this.fields[width][height].life = 0.0;
-                        this.fields[width][height].imaginaryLife = 0.0;
-                        this.fields[width][height].phase = 0.0;
-                    } else {
-                        let neighbors = this.countNeighborsNumberAndColor(width, height, fieldsCopy);
-                        this.fields[width][height].setLife(neighbors[4], neighbors[0] / 2.0 + neighbors[2] / 4.0, neighbors[1] / 2.0 + neighbors[3] / 4.0, this.getAveragePhase(width, height, fieldsCopy));
+                    let neighbors = this.countNeighborsNumberAndColor(width, height, fieldsCopy);
+                    if (this.fields[width][height].life === 0.0) {
+                        this.fields[width][height].color = neighbors[4];
+                        this.fields[width][height].life = this.getAverageMass(width, height, fieldsCopy)[0];
+                        this.fields[width][height].imaginaryLife = this.getAverageMass(width, height, fieldsCopy)[1];
+                        this.fields[width][height].phase = this.getAveragePhase(width, height, fieldsCopy);
                         this.fields[width][height].updateMassAndPhaseWithoutNeighbours();
+                        this.changeFullColor();
+                    } else {
+                        if (this.getModulus(neighbors[0], neighbors[1]) < this.options.minDeadCell || this.getModulus(neighbors[0], neighbors[1]) > this.options.maxDeadCell || this.getModulus(neighbors[2], neighbors[3]) > this.options.toManyOtherTribes) {
+                            this.fields[width][height].color = neighbors[4];
+                            this.fields[width][height].life = this.getAverageMass(width, height, fieldsCopy)[0];
+                            this.fields[width][height].imaginaryLife = this.getAverageMass(width, height, fieldsCopy)[1];
+                            this.fields[width][height].phase = this.getAveragePhase(width, height, fieldsCopy);
+                            this.fields[width][height].updateMassAndPhaseWithoutNeighbours();
+                            this.changeFullColor();
+                        }
+                        else {
+                            this.fields[width][height].life = 0.0;
+                            this.fields[width][height].imaginaryLife = 0.0;
+                            this.fields[width][height].phase = 0.0;
+                        }
                     }
                 }
             }

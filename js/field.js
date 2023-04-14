@@ -174,5 +174,6 @@ class Field {
         this.phase += this.phaseStep;
         this.life = modulus * Math.cos(this.phase);
         this.imaginaryLife = modulus * Math.sin(this.phase);
+        this.changeFullColor();
     }
 }
