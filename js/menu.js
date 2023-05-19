@@ -98,6 +98,7 @@ class Menu {
         document.querySelector("#testRepetitions").addEventListener("input", (event) => this.board.changeTestRepetitions(event));
         document.querySelector("#testTribes").addEventListener("change", (event) => this.board.changeTestTribes(event));
         document.querySelector("#testDownloadMap").addEventListener("click", () => this.board.calculateProbability());
+        document.querySelector("#average").addEventListener("change", (event) => this.board.changeAverage(event));
     }
 
     showAndHideMenu() {

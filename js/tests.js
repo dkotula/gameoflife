@@ -41,6 +41,7 @@ class Tests {
         // this.calculateProbability(200, 200, 8, true, true);
         // this.calculateProbabilityWithMovingBarriers(100, 400, 3, true, 100, 30);
         // this.calculateProbability(100, 300, 9, true, false);
+        // this.calculateProbability(100, 300, 9, true, false);
     }
 
     meanAndDensityTest() {
@@ -376,7 +377,7 @@ class Tests {
         return entropy;
     }
 
-    calculateProbability(numberOfRepetitions, numberOfCycles, index, fraction, saveAsTribes = false, configuration = {}) {
+    calculateProbability(numberOfRepetitions, numberOfCycles, index, fraction, saveAsTribes = false, configuration = {}, average = false) {
         let probabilities = [];
         let life = [];
         let imaginaryLife = []
@@ -398,6 +399,9 @@ class Tests {
             if (saveAsTribes) {
                 for (let cycleNumber = 0; cycleNumber < numberOfCycles; cycleNumber++) {
                     for (let i = 0; i < this.options.tribesNumber; i++) {
+                        if (average && cycleNumber % 10 === 0) {
+                            this.board.averageCells2by2();
+                        }
                         if (probabilities[i].length <= cycleNumber) {
                             probabilities[i].push(this.fetchMassOfBoard(fraction, this.options.colors[i]));
                         } else {
@@ -423,6 +427,9 @@ class Tests {
                 }
             } else {
                 for (let cycleNumber = 0; cycleNumber < numberOfCycles; cycleNumber++) {
+                    if (average && cycleNumber % 10 === 0) {
+                        this.board.averageCells2by2();
+                    }
                     if (probabilities.length <= cycleNumber) {
                         probabilities.push(this.fetchMassOfBoard(fraction));
                     } else {
@@ -445,6 +452,9 @@ class Tests {
                     }
                     this.board.steps();
                 }
+            }
+            if (average && numberOfCycles % 10 === 0) {
+                this.board.averageCells2by2();
             }
         }
         if (saveAsTribes) {
