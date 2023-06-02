@@ -1493,7 +1493,7 @@ class Board {
 
         for (let i = 0; i < this.options.board.height; i++) {
             for (let j = 0; j < this.options.board.width; j++) {
-                if (2 * Math.floor(i / 2) + 1 < this.options.board.height && 2 * Math.floor(j / 2) + 1 < this.options.board.width) {
+                if (2 * Math.floor(i / 2) + 1 < this.options.board.height && 2 * Math.floor(j / 2) + 1 < this.options.board.width && this.fields[i][j].getType() !== "block") {
                     this.fields[i][j].setLife(this.fields[i][j].getColor(), ...this.calculateMassAndPhase(fieldsCopy, i, j));
                 }
             }
